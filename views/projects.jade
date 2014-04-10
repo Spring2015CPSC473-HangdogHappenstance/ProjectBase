@@ -1,12 +1,13 @@
 extends layout
 block content
+	a(href='/').btn.btn-warning Home
 	.container
 		.right.dash
 			h1 Projects 
 			<br />
 			a(href='/newproject').btn.btn-success Add New Project
 			<br />
-			table(border="1", width='100%', cellpadding='2')
+			table.table(border="1", width='100%', cellpadding='2')
 				thead
 					tr: th(width='500') Project Name
 						th Start Date
@@ -21,13 +22,5 @@ block content
 									a(href="/viewproject?_id=#{projs._id}") #{projs.Name}
 								td #{projs.StartDate}
 								td #{projs.Status.Name}
-								td #{projs.Duration}
+								td #{projs["Estimated Duration"]}
 								td #{projs.Description}
-			
-	.container
-		.right.dash
-			h1 Tasks		
-			ul
-				each task, i in tasklist
-					li
-						a(href="viewtask?_id=#{task._id}") #{task.Name}

@@ -1,31 +1,36 @@
 extends layout
 
 block content
+	a(href='/').btn.btn-warning Home
 	h1= title
 	form#AddTimesheet(role="form", method="post", action="/addtimesheet")
 		.form-group
 			label Timesheet Name
 			input.form-control(type="text", placeholder="Name", name="timesheetname")
 		.form-group
-			label(for="user") Enter user
-			input.form-control#inputUser(type="text", placeholder="user", name="user")
-		.form-group
-			label(for="task") Enter task
-			input.form-control#inputTask(type="text", placeholder="task", name="task")
-		.form-group
 			label(for="starttime") Enter Start Time
 			input.form-control#inputStartTime(type="text", placeholder="Start Time"
 				, name="starttime")
 		.form-group
 			label(for="endtime") Enter End Time
-			input.form-control#inputEndTime(type="text", placeholder="End Time"
-				, name="endtime")
+			input.form-control#inputEndTime(type="text", placeholder="End Time", name="endtime")
 		.form-group
 			label(for="description") Enter Work Description
-			input.form-control#inputWorkDescription(type="text", placeholder="Work Description"
-			, name="description")
+			textarea.form-control#inputWorkDescription(type="text", placeholder="Work Description"
+				, name="description")
+		.form-group
+			label(for="Task") Enter task
+			select(name="Task")
+				each task, i in tasklist
+					option(selected="#{task._id}") #{task.Name}		
 		.form-group
 			label(for="status") Enter Status
-			input.form-control#inputUserStatus(type="text", placeholder="status"
-				, name="status")
+			select(name="status", Disabled)
+				option(value="Initialized" selected="selected") Initialized
+				option(value="Complete") = Completed
+				option(value="Approved") = Approved
+				option(value="Paid Out") = Paid Out	
 		button#btnSubmit(type="submit") submit
+		if messges
+			each msg, i in messges
+				p #{msg.msg}		

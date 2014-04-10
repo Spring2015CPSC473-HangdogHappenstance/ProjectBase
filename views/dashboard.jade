@@ -1,28 +1,33 @@
 extends layout
 block content
+	a(href='/').btn.btn-warning Home
 	.container
 		.right.dash
-			h1 Users
+			h1 
+				a(href="/newuser") +Users
 			ul
 				each user, i in dashboard
 					li
-						a(href="mailto:#{user.email}")= user.username
+						a(href="/viewuser?_id=#{user._id}")= user.username
 		.right.dash
-			h1 Projects
+			h1 
+				a(href="/newproject") +Projects
 			ul
 				each projs, i in projectlist
 					li
-						a(href="mailto:#{projs.users}")= projs.Name
+						a(href="/viewproject?_id=#{projs._id}")= projs.Name
 		.right.dash
-			h1 Tasks		
+			h1 
+				a(href="/newtask") +Tasks		
 			ul
 				each task, i in tasklist
 					li
-						a(href="mailto:#{task.email}")= task.Name
+						a(href="/viewtask?_id=#{task._id}")= task.Name
 	.container
 		.right.dash
-			h1 Timesheets		
+			h1 
+				a(href="/newtimesheet") +Timesheets		
 			ul
 				each timesheet, i in timesheetlist
 					li
-						a(href="mailto:#{timesheet.email}")= timesheet.Name
+						a(href="/viewtimesheet?_id=#{timesheet._id}")= timesheet.Name

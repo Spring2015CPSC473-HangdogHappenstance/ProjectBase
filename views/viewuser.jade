@@ -1,0 +1,89 @@
+extends layout
+
+block content
+	a(href='/').btn.btn-warning Home
+	h1= title
+	each user, i in userlist
+		form#AddUser(role="form", method="post",action="/edituser?_id=#{user._id}")
+			.form-group
+				label Enter User Name
+				if IsEnabled===true
+					input.form-control#inputUserName(type="text", placeholder="username"
+						, name="username" value="#{user.username}")
+				else
+					input.form-control#inputUserName(type="text", placeholder="username"
+						, name="username" value="#{user.username}" Disabled)
+				
+				label(for="useremail") Enter Email Address
+				if IsEnabled===true
+					input.form-control#inputUserEmail(type="text", placeholder="email", name="useremail", value="#{user.email}")			
+				else
+					input.form-control#inputUserEmail(type="text", placeholder="email", name="useremail", value="#{user.email}", Disabled)				
+				
+				label(for="userpassword") Enter Password
+				if IsEnabled===true
+					input.form-control#inputUserPassword(type="password", value="#{user.password}"
+						, placeholder="user password", name="userpassword")
+				else
+					input.form-control#inputUserPassword(type="password", value="#{user.password}"
+						, placeholder="userpassword", name="userpassword", Disabled)
+										
+			.form-group
+				label(for="status") Enter Status
+				if IsEnabled===true
+					select(name="status", value="#{user.status}")
+						option(value="1") Initialized
+						option(value="2") Active
+						option(value="3") Locked Out
+				else
+					select(name="status", value="#{user.status}" Disabled)
+						option(value="1") Initialized
+						option(value="2") Active
+						option(value="3") Locked Out					
+			.form-group
+				label(for="role") Enter Role
+				if IsEnabled===true
+					select(name="role", value="#{user.Role}")
+						option(value="1") Admin
+						option(value="2") Supervisor
+						option(value="3") Contractor
+				else
+					select(name="role", value="#{user.Role}" Disabled)
+						option(value="1") Admin
+						option(value="2") Supervisor
+						option(value="3") Contractor
+			.form-group
+				if IsEnabled===true
+					button#btnSubmit(type="submit", name="edit") Edit User
+				else
+					button#btnEnabler(type="submit", name="enabler") Enable Edit
+				//button#btnChangePass(type="submit", name="changepass") Change password
+				//button#btnUnlock(type="submit", name="unlock") Unlock Account
+				button#btnUnlock(type="submit", name="delete") Delete Account
+	<br />	
+	label Related Lists:
+	.container
+		.right.dash
+			h2 
+					a(href="newtimesheet") +Timesheets
+			if timesheetlist && timesheetlist.length > 0
+				ul
+					each timesheet, i in timesheetlist
+						li
+							a(href="/viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
+		.right.dash
+			h2 
+				a(href="newtask") +Tasks
+			if tasklist && tasklist.length > 0		
+				ul
+					each task, i in tasklist
+						li
+							a(href="viewtask?_id=#{task._id}") #{task.Name}
+		.right.dash
+			h2 
+				a(href="newproject") +Projects
+			if projectlist && projectlist.length > 0
+				ul
+					each projs, i in projectlist
+						li
+							a(href="/viewproject?_id=#{projs._id}")= projs.Name

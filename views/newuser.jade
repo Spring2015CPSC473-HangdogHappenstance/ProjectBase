@@ -1,6 +1,7 @@
 extends layout
 
 block content
+	a(href='/').btn.btn-warning Home
 	h1= title
 	form#AddUser(role="form", method="post",action="/adduser")
 		.form-group
@@ -18,4 +19,21 @@ block content
 			label(for="userpasswordvalid") Confirm Password
 			input.form-control#inputUserPasswordValid(type="password"
 				, placeholder="userpassword", name="userpasswordvalid")
+		.form-group
+			label(for="status") Enter Status
+			select(name="status")
+				option(value="Initialized", selected="selected") Initialized
+				option(value="Active") Active
+				option(value="Locked Out") Locked Out
+				
+		.form-group
+			label(for="role") Enter Role
+			select(name="role")
+				option(value="Admin") Admin
+				option(value="Supervisor") Supervisor
+				option(value="Contractor", selected="selected") Contractor
+				
 		button#btnSubmit(type="submit") submit
+		if messges
+			each msg, i in messges
+				p #{msg.msg}	

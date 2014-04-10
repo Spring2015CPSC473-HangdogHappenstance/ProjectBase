@@ -1,22 +1,23 @@
 extends layout
 block content
+	a(href='/').btn.btn-warning Home
 	.container
 		.right.dash
 			h1 Timesheets
-			<br />
+			br
 			a(href='/newtimesheet').btn.btn-success + New Timesheet
-			
-			table(border="1", cellpadding='2')
-				thead
-					tr: th Name
-						th Work Description
-						th Start Time
-						th End Time
-						th Status
-						th Associated Task
-						th Assoicated User
-				tbody
-					if timesheetlist && timesheetlist.length > 0
+			br
+			if timesheetlist && timesheetlist.length > 0
+				table.table(border="1", cellpadding='2')
+					thead
+						tr: th Name
+							th Work Description
+							th Start Time
+							th End Time
+							th Status
+							th Associated Task
+							th Assoicated User
+					tbody
 						each timesheet, i in timesheetlist
 							tr
 								td
@@ -24,8 +25,11 @@ block content
 								td #{timesheet["Work Description"]}
 								td #{timesheet["Start Time"]}
 								td #{timesheet["End Time"]}
-								td #{timesheet.Status.Name}
+								td #{timesheet.Status}
 								td
-									a(href="/viewtask?_id=#{timesheet.Task}") #{timesheet.Task}
+									a(href="/viewtask?_id=#{timesheet._id}") #{timesheet.Task._id}
 								td
-									a(href="/viewuser?_id=#{timesheet.User}") #{timesheet.user}
+									a(href="/viewuser?_id=#{timesheet.user._id}") #{timesheet.user.username}
+			else
+				br
+				label Unable to display any Timesheets

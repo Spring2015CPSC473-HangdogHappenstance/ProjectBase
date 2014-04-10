@@ -1,9 +1,10 @@
 extends layout
 
 block content
+
 	h1.
 		Welcome to the Project Manager
-	a(href='/userlist').btn.btn-primary View User Accounts
+	a(href='/users').btn.btn-primary View User Accounts
 	a(href='/projects').btn.btn-primary View Projects
 	a(href='/tasks').btn.btn-primary View Tasks
 	a(href='/timesheets').btn.btn-primary View Timesheets
@@ -14,3 +15,4 @@ block content
 	a(href='/newtimesheet').btn.btn-success Create Timesheet
 	<br /><br />
 	a(href='/dashboard').btn.btn-warning See Dashboard
+	a(href='/login').btn.btn-danger Login
