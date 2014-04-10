@@ -1,0 +1,18 @@
+extends layout
+
+block content
+	h1= title
+	form#AddTask(role="form", method="post", action="/addtask")
+		.form-group
+			label Task Name
+			input.form-control(type="text", placeholder="Name", name="taskname")
+		.form-group
+			label(for="Project") Enter Project
+			input.form-control#inputProject(type="text", placeholder="Project", name="description")
+		.form-group
+			label(for="duration") Enter estimated duration
+			input.form-control#inputduration(type="text", placeholder="duration", name="duration")
+		.form-group
+			label(for="status") Enter Status
+			input.form-control#inputuserstatus(type="text", placeholder="status", name="status")
+		button#btnSubmit(type="submit") submit

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+	h1= title
+	each proj, i in projectlist
+		form#editProject(role="form", method="post", action="/editproject")
+			.form-group
+				label Project Name
+				input.form-control(type="text", placeholder="Name", name="projname"
+					, value="#{proj.Name}", disabled="#{ImEnabled}")
+			.form-group
+				label(for="description") Enter Description
+				input.form-control#inputdescription(type="text", placeholder="Description"
+					, name="description", value="#{proj.Description}", disabled="#{ImEnabled}")
+			.form-group
+				label(for="startdate") Enter start date
+				input.form-control#inputstartdate(type="text", placeholder="start date"
+					, name="startdate", value="#{proj.StartDate}", disabled="#{ImEnabled}")
+			.form-group
+				label(for="duration") Enter estimated duration
+				input.form-control#inputduration(type="text", placeholder="duration"
+					, name="duration", value="#{proj['Estimated Duration']}", disabled="#{ImEnabled}")
+			.form-group
+				label(for="status") Enter Status
+				input.form-control#inputuserstatus(type="text"
+					, name="status", disabled="#{ImEnabled}", value="Initialized")
+			if (ImEnabled)
+				button#btnSubmit(type="submit") Save Edit
+			else
+				a(href='/editproject?_id=#{proj._id}').btn.btn-success Edit Record

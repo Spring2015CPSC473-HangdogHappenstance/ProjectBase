@@ -1,0 +1,33 @@
+extends layout
+block content
+	.container
+		.right.dash
+			h1 Projects 
+			<br />
+			a(href='/newproject').btn.btn-success Add New Project
+			<br />
+			table(border="1", width='100%', cellpadding='2')
+				thead
+					tr: th(width='500') Project Name
+						th Start Date
+						th Project Status
+						th Duration
+						th Project Description
+				tbody
+					if projectlist && projectlist.length > 0
+						each projs, i in projectlist
+							tr
+								td(width='50%')
+									a(href="/viewproject?_id=#{projs._id}") #{projs.Name}
+								td #{projs.StartDate}
+								td #{projs.Status.Name}
+								td #{projs.Duration}
+								td #{projs.Description}
+			
+	.container
+		.right.dash
+			h1 Tasks		
+			ul
+				each task, i in tasklist
+					li
+						a(href="viewtask?_id=#{task._id}") #{task.Name}

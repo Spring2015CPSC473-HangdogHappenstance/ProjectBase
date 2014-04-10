@@ -1,0 +1,21 @@
+extends layout
+
+block content
+	h1= title
+	form#AddUser(role="form", method="post",action="/adduser")
+		.form-group
+			label Enter User Name
+			input.form-control(type="text", placeholder="username", name="username")
+		.form-group
+			label(for="useremail") Enter Email Address
+			input.form-control#inputUserEmail(type="text", placeholder="useremail"
+				, name="useremail")
+		.form-group
+			label(for="userpassword") Enter Password
+			input.form-control#inputUserPassword(type="password"
+				, placeholder="userpassword", name="userpassword")
+		.form-group
+			label(for="userpasswordvalid") Confirm Password
+			input.form-control#inputUserPasswordValid(type="password"
+				, placeholder="userpassword", name="userpasswordvalid")
+		button#btnSubmit(type="submit") submit

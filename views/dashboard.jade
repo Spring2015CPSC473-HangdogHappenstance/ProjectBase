@@ -1,0 +1,28 @@
+extends layout
+block content
+	.container
+		.right.dash
+			h1 Users
+			ul
+				each user, i in dashboard
+					li
+						a(href="mailto:#{user.email}")= user.username
+		.right.dash
+			h1 Projects
+			ul
+				each projs, i in projectlist
+					li
+						a(href="mailto:#{projs.users}")= projs.Name
+		.right.dash
+			h1 Tasks		
+			ul
+				each task, i in tasklist
+					li
+						a(href="mailto:#{task.email}")= task.Name
+	.container
+		.right.dash
+			h1 Timesheets		
+			ul
+				each timesheet, i in timesheetlist
+					li
+						a(href="mailto:#{timesheet.email}")= timesheet.Name

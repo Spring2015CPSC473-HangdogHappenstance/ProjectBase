@@ -1,0 +1,32 @@
+extends layout
+block content
+	.container
+		.right.dash
+			h1 Tasks 
+			<br />
+			a(href='/newtask').btn.btn-success + New Task
+			
+			table(border="1", cellpadding='2')
+				thead
+					tr: th Name
+						th Est Duration
+						th Status
+						th Project
+				tbody
+					if tasklist && tasklist.length > 0
+						each task, i in tasklist
+							tr
+								td
+									a(href="/viewtask?_id=#{task._id}") #{task.Name}
+								td #{task.EstimatedDuration}
+								td #{task.Status.Name}
+								td 
+									a(href="/viewproject?_id=#{task.Project}") #{task.Project}
+
+	.container
+		.right.dash
+			h1 Timesheets
+			ul
+				each timesheet, i in timesheetlist
+					li
+						a(href="viewtimesheet#{timesheet.email}")= timesheet.Name
