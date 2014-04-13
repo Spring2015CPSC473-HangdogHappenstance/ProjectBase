@@ -41,9 +41,28 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+///Authentication
+/*
+var auth = express.basicAuth(function(user, pass) {
+	var actCollection = db.accounts;
+	console.log(actCollection);
+	
+ return user === 'testUser' && pass === 'testPass';
+});
+*/
+// Asynchronous
+var auth = express.basicAuth(function(user, pass, callback) {
+	//var actCollection = db.accounts;
+	//console.log(db.accounts);
+	
+ var result = (user === 'testUser' && pass === 'testPass');
+ callback(null /* error */, result);
+});
+
+
 app.get('/', routes.index);
 app.get('/users', user.list(db));
-app.get('/newuser', user.callNew);
+app.get('/newuser',user.checklogin, user.callNew);   //trying to get autehntication working
 app.get('/newproject', project.callNew);
 app.get('/newtask', task.callNew(db));
 app.get('/newtimesheet', timesheet.callNew(db));
@@ -58,7 +77,16 @@ app.get('/viewtask', task.record(db));
 app.get('/viewtimesheet', timesheet.record(db));
 app.get('/editproject', project.record(db));
 app.get('/login', user.login);
+app.get('/logout', function (req, res) {
+  delete req.session.authStatus;
+  res.send([
+    'You are now logged out.',
+    '&lt;br/>',
+    '<a href="./secure">Return to the secure page. You will have to log in again.</a>',
+  ].join(''));
+});
 app.get(/^\/submit/,routes.checkAuth);
+
 
 app.post('/adduser', user.add(db));
 app.post('/login', user.checklogin(db));
@@ -72,34 +100,7 @@ app.post('/edittimesheet', timesheet.edit(db));
 app.post('/login', user.checklogin(db));
 
 
-//--------test code
-//var breadcrumbs = require('express-breadcrumbs');
-//app.use(breadcrumbs.init());
 
-// Set Breadcrumbs home information
-//app.use(breadcrumbs.setHome());
-
-// Mount the breadcrumbs at `/admin`
-//app.use('/admin', breadcrumbs.setHome({
- // name: 'Dashboard',
-//  url: '/admin'
-//}));
-
-//app.get('/signup', function(req, res) {
-//  req.breadcrumbs('SignUp');
-//  res.render('/signup', {
-//    breadcrumbs: req.breadcrumbs()
-//  });
-//});
-
-// one by one
-//var j = reqbreadcrumbs('name', 'url'));
-
-// object with properties `name` and `url`
-//req.breadcrumbs({
-//  name: 'name',
-//  url: 'url'
-//});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

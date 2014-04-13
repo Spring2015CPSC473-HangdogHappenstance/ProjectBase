@@ -189,24 +189,32 @@ exports.login=function(req,res){
 	res.render('login',{title:"New User Registration"});
 };
 
-exports.checklogin = function(db){
-	return function(req, res){
+//this is broken cannot get it to proceed;
+exports.checklogin = function(db, next){
+	return function(req, res, next){
 		
 		var userName = req.body.username;
 		var userPassword = req.body.userpassword;
 		var collection =db.get(tableName);
-		
-		collection.find({
+		//console.log(collection.find({},{},function(e, accounts){console.log(accounts)}));
+		console.log(collection);
+		collection.findOne({
 			"username": userName,
 			"password": userPassword,
 			}, function(err, doc) {
 			if(err){
+				console.log(err);
 				res.send("Psh what database");
+			}
+			if(doc === null){
+				console.log("No account pass match");
+				res.location("login");
+				res.redirect("login");
 			}
 			else {
 				console.log("inside checklogin");
-				res.location("users");
-				res.redirect("users");
+				console.log(doc);
+				return next();
 			}
 			
 		});
