@@ -60,9 +60,10 @@ var auth = express.basicAuth(function(user, pass, callback) {
 });
 
 
+//app.get('/', routes.index);
 app.get('/', routes.index);
 app.get('/users', user.list(db));
-app.get('/newuser',user.checklogin, user.callNew);   //trying to get autehntication working
+app.get('/newuser', user.callNew);   //trying to get autehntication working
 app.get('/newproject', project.callNew);
 app.get('/newtask', task.callNew(db));
 app.get('/newtimesheet', timesheet.callNew(db));
@@ -82,10 +83,10 @@ app.get('/logout', function (req, res) {
   res.send([
     'You are now logged out.',
     '&lt;br/>',
-    '<a href="./secure">Return to the secure page. You will have to log in again.</a>',
+    '<a href="./login">Return to the login page. You will have to log in again.</a>',
   ].join(''));
 });
-app.get(/^\/submit/,routes.checkAuth);
+//app.get(/^\/submit/,routes.checkAuth);
 
 
 app.post('/adduser', user.add(db));
@@ -97,7 +98,7 @@ app.post('/editproject', project.edit(db));
 app.post('/edituser', user.edit(db));
 app.post('/edittask', task.edit(db));
 app.post('/edittimesheet', timesheet.edit(db));
-app.post('/login', user.checklogin(db));
+//app.post('/login', user.checklogin(db));
 
 
 

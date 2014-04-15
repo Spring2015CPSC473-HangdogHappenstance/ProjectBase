@@ -1,26 +1,34 @@
 extends layout
 block content
-	a(href='/').btn.btn-warning Home
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
+	
+	h1 Projects 
 	.container
-		.right.dash
-			h1 Projects 
-			<br />
-			a(href='/newproject').btn.btn-success Add New Project
-			<br />
-			table.table(border="1", width='100%', cellpadding='2')
+		br
+		a(href='/newproject').btn.btn-success Add New Project
+		br
+		if projectlist && projectlist.length > 0
+			table.table(border="1", cellpadding='2')
 				thead
-					tr: th(width='500') Project Name
+					tr: th Project Name
 						th Start Date
 						th Project Status
 						th Duration
 						th Project Description
 				tbody
-					if projectlist && projectlist.length > 0
-						each projs, i in projectlist
-							tr
-								td(width='50%')
-									a(href="/viewproject?_id=#{projs._id}") #{projs.Name}
-								td #{projs.StartDate}
-								td #{projs.Status.Name}
-								td #{projs["Estimated Duration"]}
-								td #{projs.Description}
+					each projs, i in projectlist
+						tr
+							td(width='50%')
+								a(href="/viewproject?_id=#{projs._id}") #{projs.Name}
+							td #{projs.StartDate}
+							td #{projs.Status.Name}
+							td #{projs["Estimated Duration"]}
+							td #{projs.Description}
+		else
+			br
+			label Unable to display any Projects

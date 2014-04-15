@@ -1,7 +1,12 @@
 extends layout
 
 block content
-	a(href='/').btn.btn-warning Home
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
 	h1= title
 	each task, i in tasklist
 		form#AddTask(role="form", method="post", action="/edittask?_id=#{task._id}")
@@ -61,11 +66,11 @@ block content
 				else
 					button#btnEnabler(type="submit", name="enabler") Enable Edit
 				button#btnDelete(type="submit", name="delete") Delete Record
-	<br />	
+	br
 	label Related Lists:		
 	.container
 		.right.dash
-			h2 
+			h3 
 				a(href="newtimesheet") +Timesheets
 			if timesheetlist && timesheetlist.length > 0
 				ul
@@ -73,7 +78,7 @@ block content
 					li
 						a(href="viewtimesheet#{timesheet.email}")= timesheet.Name
 		.right.dash
-			h2 
+			h3 
 				a(href="/newuser") +Users
 			if userlist && userlist.length > 0	
 				ul
@@ -81,7 +86,7 @@ block content
 						li
 							a(href="/viewuser?_id=#{user._id}") #{user.username}
 		.right.dash
-			h2 
+			h3 
 				a(href="newproject") +Projects
 			if projectlist && projectlist.length > 0
 				ul

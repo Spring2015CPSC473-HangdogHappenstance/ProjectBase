@@ -2,7 +2,12 @@ var BSON = require('mongodb').BSONPure,
 	tableName = 'Timesheets';
 	
 exports.newtimesheet = function(req, res){
-	res.render("newtimesheet", {title: "Add a New Timesheet"});
+	res.render("newtimesheet", 
+		{
+			title: "Add a New Timesheet",
+			"currentUser": req.session.currentUser
+		}
+	);
 };
 
 exports.record = function(db){
@@ -12,9 +17,11 @@ exports.record = function(db){
 			collection1 = db.get('Tasks');
 			collection2 = db.get('accounts');
 			collection3 = db.get('Project');
-		req.session.curRecord = { "table": tableName, "_id" : obj_id }
 		console.log('req.session.curRecord', req.session.curRecord);
 		collection.find({_id: obj_id},{}, function(e, timesheet){
+			req.session.curRecord = {
+				"table": tableName, "_id" : obj_id, "Name": timesheet.Name
+			}		
 			console.log('timesheet search for:', req.query._id);
 			collection1.find({_id: obj_id},{}, function(e, task){
 				var filter = [];
@@ -26,7 +33,8 @@ exports.record = function(db){
 						"timesheetlist" : timesheet,
 						"tasklist": task,
 						"projectlist": proj,
-						"IsEnabled": false
+						"IsEnabled": false,
+						"currentUser": req.session.currentUser
 					});
 				});
 			});
@@ -83,7 +91,8 @@ exports.callNew = function(db){
 				"tasklist": task,
 				title: "Add a New timesheet",
 				curRecord: (req.session.curRecord != null) 
-					? req.session.curRecord['_id']: undefined
+					? req.session.curRecord['_id']: undefined,
+				"currentUser": req.session.currentUser
 			});
 		});
 	};
@@ -105,8 +114,8 @@ exports.list = function(db){
 							"timesheetlist" : timesheet,
 							"userlist": account,
 							"projectlist": proj,
-							"tasklist": task
-							
+							"tasklist": task,
+							"currentUser": req.session.currentUser
 						});
 					});
 				});
@@ -148,7 +157,6 @@ exports.edit = function(db){
 				}
 			});
 		} else {
-			
 			console.log('exports.edit', req.query._id!=null ? req.query._id: "no value");
 			var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
 				collection1 = db.get('accounts'),
@@ -172,7 +180,8 @@ exports.edit = function(db){
 								"timesheetlist" : timesheet,
 								"userlist": account,
 								"projectlist": proj,
-								"tasklist": task
+								"tasklist": task,
+								"currentUser": req.session.currentUser
 							});
 						});
 					});

@@ -1,7 +1,6 @@
 extends layout
 
 block content
-	a(href='/').btn.btn-warning Home
 	h1= title
 	form#AddUser(role="form", method="post",action="/login")
 		.form-group
@@ -14,5 +13,9 @@ block content
 		.form-group
 			a(href="newuser") Not Registered User?
 			
-				
+
 		button#btnSubmit(type="submit") submit
+		
+		if (reason) 
+			.form-group
+			label #{reason}

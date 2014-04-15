@@ -10,7 +10,8 @@ exports.callNew = function(db){
 				"projectlist": proj,
 				title: "Add a New Task",
 				curRecord: (req.session.curRecord != null) 
-					? req.session.curRecord: undefined
+					? req.session.curRecord: undefined,
+				"currentUser": req.session.currentUser
 			});
 		});
 	};
@@ -24,22 +25,27 @@ exports.add = function(db) {
 		var project = {}
 		if (req.session.curRecord && req.session.curRecord['table']==='Projects'){
 			console.log("getting value from req.session.curRecord", req.session.curRecord);
-			project['_id'] = req.session.curRecord['_id']
-			project['Name'] = req.session.curRecord['Name']
+			project['_id'] = req.session.curRecord.Record[0]._id
+			project['Name'] = req.session.curRecord.Record[0].Name
+			console.log('getting val from curRecord', req.session.curRecord.Record[0].Name);
 		} else {
 			console.log("getting value from req.body.Project", req.body.Project);
 			project['_id'] = req.body.Project;
 			project['Name'] = req.body.Project;
 		}	
 		console.log("here is your project", project);
-		var task = {
+		var userInfo = {
+				username: req.session.currentUser.username, 
+				_id: req.session.currentUser._id
+			},
+		task = {
 			"Name" : taskName,
 			"EstimatedDuration" : projEstDuration,
 			"Status" : Status,
-			"Project" : project['_id'],
+			"Project" : project,
 			"ClockedTime" : 0,
 			"EnteredOn": new Date(),
-			"CreatedBy": req.session.currentUser
+			"CreatedBy": userInfo
 		}
 		console.log("task\n", task);
 		var collection =db.get(tableName);
@@ -61,26 +67,27 @@ exports.record = function(db){
 	return function(req, res){
 		console.log('exports.record');
 		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
-			collection = db.get('Tasks'),
+			collection = db.get(tableName),
 			collection1 = db.get('accounts'),
 			collection2 = db.get('Projects'),
 			collection3 = db.get('Timesheets');
 
 		console.log(req.session.curRecord);
 		collection.find({_id: obj_id},{}, function(e, task){
-			req.session.curRecord = {
-				"table": tableName,
-				"_id" : obj_id,
-				"Name": task[0].Name
-			}
 			collection1.find({},{}, function(e,account){
 				collection2.find({}, {}, function(e, proj) {
 					collection3.find({}, {}, function(e, timesheet) {
+						req.session.curRecord = {
+							"table": tableName, //"_id" : obj_id, "Name": task.Name
+							"Record": task
+						}
+						console.log('curRecord', req.session.curRecord);
 						res.render('viewtask', {
 							"tasklist": task,
 							"userlist": account,
 							"projectlist": proj,
-							"timesheetlist" : timesheet
+							"timesheetlist" : timesheet,
+							"currentUser": req.session.currentUser
 						});
 					});
 				});
@@ -104,7 +111,8 @@ exports.list = function(db){
 							"tasklist": task,
 							"userlist": account,
 							"projectlist": proj,
-							"timesheetlist" : timesheet
+							"timesheetlist" : timesheet,
+							"currentUser": req.session.currentUser
 						});
 					});
 				});
@@ -170,7 +178,8 @@ exports.edit = function(db){
 								"tasklist": task,
 								"userlist": account,
 								"projectlist": proj,
-								"timesheetlist" : timesheet
+								"timesheetlist" : timesheet,
+								"currentUser": req.session.currentUser
 							});
 						});
 					});

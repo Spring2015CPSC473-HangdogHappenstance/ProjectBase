@@ -8,14 +8,24 @@ var BSON = require('mongodb').BSONPure;
 var ImEnabled = false;
 
 exports.index = function(req, res){
-	var id = "53411393969cb15e5f000001";
-	req.session.currentUser = {
-		'_id': BSON.ObjectID.createFromHexString(id),
-		'username': "jhocast" 
-	}
+	//var id = "53411393969cb15e5f000001";
+	//req.session.currentUser = {
+	//	'_id': BSON.ObjectID.createFromHexString(id),
+	//	'username': "jhocast" 
+	//}
 	req.session.curRecord = {};
 	console.log(req.session.currentUser);
-  	res.render('index', { title: 'Express' });
+	if (req.session.currentUser!=undefined) {
+  		res.render('buttons', 
+  			{ 
+  				title: req.session.currentUser.username, 
+  				currentUser : req.session.currentUser
+  			}
+  		);
+  	} else {
+  		req.session.currentUser = {};
+  		res.render('login', { title: 'Welcome to the Project Manager' });
+  	}
 };
 
 exports.dashboard = function(db){
@@ -34,7 +44,8 @@ exports.dashboard = function(db){
 							"dashboard": docs,
 							"projectlist": proj,
 							"tasklist": task,
-							"timesheetlist" : timesheet
+							"timesheetlist" : timesheet,
+							currentUser : req.session.currentUser
 						});
 					});
 				});

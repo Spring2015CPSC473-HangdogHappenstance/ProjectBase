@@ -20,7 +20,8 @@ exports.list = function(db){
 							"users": account,
 							"tasklist": task,
 							"projectlist": proj,
-							"timesheetlist" : timesheet
+							"timesheetlist" : timesheet,
+							"currentUser": req.session.currentUser
 						});
 					});
 				});
@@ -55,7 +56,8 @@ exports.record = function(db){
 							"timesheetlist" : timesheet,
 							"tasklist": task,
 							"projectlist": proj,
-							"IsEnabled": false
+							"IsEnabled": false,
+							"currentUser": req.session.currentUser
 						});
 					});
 				});
@@ -82,14 +84,13 @@ exports.add = function(db){
 			userEmail = req.body.useremail,
 			userPassword = req.body.userpassword,
 			status = {"Level": req.body.status.key, "Name": req.body.status.value},
-			role = {"Level": req.body.role, "Name": req.body.selected},
 			collection =db.get(tableName);
 			var record = {
 				"username": userName,
 				"email": userEmail,
 				"password": userPassword,
 				"status" : "Initialized",
-				"Role" : role,
+				"Role" : req.body.role,
 				"EnteredOn": new Date(),
 				"CreatedBy": req.session.currentUser
 			}
@@ -99,8 +100,7 @@ exports.add = function(db){
 				res.send("Psh what database");
 			}
 			else {
-				res.location("users");
-				res.redirect("users");
+				res.render('login', { title: 'Welcome to the Project Manager' });
 			}
 		});
 		//} else {
@@ -172,7 +172,8 @@ exports.edit = function(db){
 								"timesheetlist" : timesheet,
 								"tasklist": task,
 								"projectlist": proj,
-								"IsEnabled": IsEnabled
+								"IsEnabled": IsEnabled,
+								"currentUser": req.session.currentUser
 							});
 						});
 					});
@@ -182,39 +183,50 @@ exports.edit = function(db){
 	};
 };
 exports.callNew = function(req, res){
-	res.render('newuser', {title: "Add a New User"});
+	res.render('newuser', 
+		{
+			title: "Add a New User",
+			"currentUser": req.session.currentUser
+		}
+	);
 };
 
 exports.login=function(req,res){
-	res.render('login',{title:"New User Registration"});
+	res.render('login',{title:"User Login"});
 };
 
-//this is broken cannot get it to proceed;
 exports.checklogin = function(db, next){
 	return function(req, res, next){
 		
 		var userName = req.body.username;
 		var userPassword = req.body.userpassword;
 		var collection =db.get(tableName);
-		//console.log(collection.find({},{},function(e, accounts){console.log(accounts)}));
 		console.log(collection);
-		collection.findOne({
+		var currentUser = {
 			"username": userName,
-			"password": userPassword,
-			}, function(err, doc) {
+			"password": userPassword
+		}
+		collection.findOne(currentUser, function(err, doc) {
 			if(err){
 				console.log(err);
 				res.send("Psh what database");
-			}
-			if(doc === null){
-				console.log("No account pass match");
-				res.location("login");
-				res.redirect("login");
-			}
-			else {
+			} else if(doc === null){
+				console.log("User name and password not found");
+				//res.location("login");
+				//res.redirect("login");
+				res.render("login", {
+					title: "Incorrect Login",
+					reason: "No account matched credentials entered.  Try again."
+					}
+				);
+			} else {
 				console.log("inside checklogin");
 				console.log(doc);
-				return next();
+				//res.redirect("dashboard");
+				req.session.currentUser = doc
+				res.render('buttons', 
+					{ title: currentUser.username, 'currentUser' : req.session.currentUser}
+				);
 			}
 			
 		});

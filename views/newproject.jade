@@ -1,7 +1,12 @@
 extends layout
 
 block content
-	a(href='/').btn.btn-warning Home
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
 	h1= title
 	form#AddProject(role="form", method="post", action="/addproject")
 		.form-group

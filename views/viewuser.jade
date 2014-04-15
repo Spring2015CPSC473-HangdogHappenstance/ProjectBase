@@ -1,7 +1,12 @@
 extends layout
 
 block content
-	a(href='/').btn.btn-warning Home
+	.right.dash
+		a(href='/logout').btn.btn-danger Logout
+		a.btn(href='/').btn-warning Home
+	label User: #{currentUser.username}
+	label    |    
+	label Role: #{currentUser.Role}
 	h1= title
 	each user, i in userlist
 		form#AddUser(role="form", method="post",action="/edituser?_id=#{user._id}")
@@ -64,7 +69,7 @@ block content
 	label Related Lists:
 	.container
 		.right.dash
-			h2 
+			h3 
 					a(href="newtimesheet") +Timesheets
 			if timesheetlist && timesheetlist.length > 0
 				ul
@@ -72,7 +77,7 @@ block content
 						li
 							a(href="/viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
 		.right.dash
-			h2 
+			h3 
 				a(href="newtask") +Tasks
 			if tasklist && tasklist.length > 0		
 				ul
@@ -80,7 +85,7 @@ block content
 						li
 							a(href="viewtask?_id=#{task._id}") #{task.Name}
 		.right.dash
-			h2 
+			h3 
 				a(href="newproject") +Projects
 			if projectlist && projectlist.length > 0
 				ul
