@@ -41,19 +41,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-///Authentication
-/*
-var auth = express.basicAuth(function(user, pass) {
-	var actCollection = db.accounts;
-	console.log(actCollection);
-	
- return user === 'testUser' && pass === 'testPass';
-});
-*/
 // Asynchronous
 var auth = express.basicAuth(function(user, pass, callback) {
-	//var actCollection = db.accounts;
-	//console.log(db.accounts);
 	
  var result = (user === 'testUser' && pass === 'testPass');
  callback(null /* error */, result);
@@ -86,8 +75,6 @@ app.get('/logout', function (req, res) {
     '<a href="./login">Return to the login page. You will have to log in again.</a>',
   ].join(''));
 });
-//app.get(/^\/submit/,routes.checkAuth);
-
 
 app.post('/adduser', user.add(db));
 app.post('/login', user.checklogin(db));
@@ -98,10 +85,6 @@ app.post('/editproject', project.edit(db));
 app.post('/edituser', user.edit(db));
 app.post('/edittask', task.edit(db));
 app.post('/edittimesheet', timesheet.edit(db));
-//app.post('/login', user.checklogin(db));
-
-
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

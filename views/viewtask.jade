@@ -13,19 +13,20 @@ block content
 			.form-group
 				label Task Name
 				if IsEnabled===true
-					input.form-control(type="text", placeholder="Name", name="Name"
+					input.form-control(type="text", placeholder="Name", name="Name",
 						value="#{task.Name}")
 				else
-					input.form-control(type="text", placeholder="Name", name="Name"
+					input.form-control(type="text", placeholder="Name", name="Name",
 						value="#{task.Name}" Disabled)				
 			.form-group
 				label(for="project") Associated Project
+				br
 				if IsEnabled===true
-					input.form-control#inputTask(type="text", placeholder="Task"
-						, name="project", value="#{task.Project}")
+					select(name="Project")
+						each proj, i in projectlist
+							option(value=proj._id selected=task.Project._id==proj._id) #{task.Project.Name}
 				else
-					input.form-control#inputstartdate(type="text", placeholder="Task"
-						, name="project", value="#{task.Project}" Disabled)
+					a(href="/viewproject?_id=#{task.Project._id}")= task.Project.Name
 					
 			.form-group
 				label(for="duration") Enter estimated duration
@@ -33,33 +34,29 @@ block content
 					input.form-control#inputduration(type="text", placeholder="duration"
 						, name="duration", value="#{task.EstimatedDuration}")
 				else
-					input.form-control#inputduration(type="text", placeholder="duration"
-						, name="duration", value="#{task.EstimatedDuration}" Disabled)				
+					input.form-control#inputduration(type="text", placeholder="duration", 
+						name="duration", value="#{task.EstimatedDuration}" Disabled)				
 			.form-group
 				label(for="clockedTime") Clocked Time
 				if IsEnabled===true
 					input.form-control#inputclockedTime(type="text", placeholder="Clocked Time"
 						, name="clockedTime", value="#{task.ClockedTime}")
 				else
-					input.form-control#inputclockedTime(type="text", placeholder="Clocked Time"
-						, name="clockedTime", value="#{task.ClockedTime}" Disabled)				
+					input.form-control#inputclockedTime(type="text", placeholder="Clocked Time", 
+						name="clockedTime", value="#{task.ClockedTime}" Disabled)				
 			.form-group
 				label(for="status") Enter Status
 				if IsEnabled===true
 					select(name="status", value="#{task.Status}")
-						option(value="Initialized") Initialized
-						option(value="Approved") Approved
-						option(value="In Progress") In Progress
-						option(value="Completed") Completed
-						option(value="Inactive") Inactive
+						option(value="Initialized", selected=task.Status=="Initialized") Initialized
+						option(value="Approved", selected=task.Status=="Approved") Approved
+						option(value="In Progress", selected=task.Status=="In Progress") In Progress
+						option(value="Completed", selected=task.Status=="Completed") Completed
+						option(value="Inactive", selected=task.Status=="Inactive") Inactive
 				else
 					label(for="status") Enter Status
-					select(name="status", value="#{task.Status}" Disabled)
-						option(value="Initialized") Initialized
-						option(value="Approved") Approved
-						option(value="In Progress") In Progress
-						option(value="Completed") Completed
-						option(value="Inactive") Inactive				
+					input.form-control#inputStatus(type="text"
+						, name="status", value="#{task.Status}" Disabled)			
 			.form-group
 				if IsEnabled===true
 					button#btnSubmit(type="submit", name="edit") Edit Record

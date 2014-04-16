@@ -22,8 +22,9 @@ block content
 				label(for="useremail") Enter Email Address
 				if IsEnabled===true
 					input.form-control#inputUserEmail(type="text", placeholder="email", name="useremail", value="#{user.email}")			
-				else
-					input.form-control#inputUserEmail(type="text", placeholder="email", name="useremail", value="#{user.email}", Disabled)				
+				else 
+					input.form-control#inputUserEmail(type="text", placeholder="email", 
+						name="useremail", value="#{user.email}", Disabled)				
 				
 				label(for="userpassword") Enter Password
 				if IsEnabled===true
@@ -34,29 +35,25 @@ block content
 						, placeholder="userpassword", name="userpassword", Disabled)
 										
 			.form-group
-				label(for="status") Enter Status
 				if IsEnabled===true
+					label(for="status") Enter Status:
 					select(name="status", value="#{user.status}")
-						option(value="1") Initialized
-						option(value="2") Active
-						option(value="3") Locked Out
-				else
-					select(name="status", value="#{user.status}" Disabled)
-						option(value="1") Initialized
-						option(value="2") Active
-						option(value="3") Locked Out					
-			.form-group
-				label(for="role") Enter Role
-				if IsEnabled===true
+						option(value="Initialized", selected=user.status=="Initialized") Initialized
+						option(value="Active", selected=user.status=="Active") Active
+						option(value="Locket Out", selected=user.status=="Locked Out") Locked Out
+						
+					label(for="role") Enter Role:
 					select(name="role", value="#{user.Role}")
-						option(value="1") Admin
-						option(value="2") Supervisor
-						option(value="3") Contractor
+						option(value="Admin", selected=(user.Role=="Admin")) Admin
+						option(value="Supervisor", selected=(user.Role=="Supervisor")) Supervisor
+						option(value="Contractor", selected=(user.Role=="Contractor")) Contractor
 				else
-					select(name="role", value="#{user.Role}" Disabled)
-						option(value="1") Admin
-						option(value="2") Supervisor
-						option(value="3") Contractor
+					label(for="status") Status
+					input.form-control#inputUserStatus(type="text", value="#{user.status}"
+						, name="status" Disabled)
+					label(for="role") Role
+					input.form-control#inputUserStatus(type="text", value="#{user.Role}"
+						, name="role" Disabled)										
 			.form-group
 				if IsEnabled===true
 					button#btnSubmit(type="submit", name="edit") Edit User

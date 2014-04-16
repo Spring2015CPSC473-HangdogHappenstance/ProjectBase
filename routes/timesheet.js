@@ -2,6 +2,7 @@ var BSON = require('mongodb').BSONPure,
 	tableName = 'Timesheets';
 	
 exports.newtimesheet = function(req, res){
+	console.log("calling newtimesheet");
 	res.render("newtimesheet", 
 		{
 			title: "Add a New Timesheet",
@@ -46,25 +47,36 @@ exports.add = function(db) {
 	return function(req, res){
 		console.log('req.body\n', req.body);
 			var start = req.body.starttime,
-			end = req.body.endtime,
-			workDescription = req.body.description,
-			Status = req.body.status,
-			task = {
-				"_id": req.body.Task,
-				"Name": req.body.Task.value
+				end = req.body.endtime,
+				workDescription = req.body.description,
+				Status = req.body.status,
+				task = {};
+			if (req.session.curRecord && req.session.curRecord['table']==='Tasks'){
+				console.log("getting value from req.session.curRecord", req.session.curRecord);
+				task['_id'] = req.session.curRecord.Record[0]._id
+				task['Name'] = req.session.curRecord.Record[0].Name
+				console.log('getting val from curRecord', req.session.curRecord.Record[0].Name);
+			} else {
+				console.log("getting value from req.body.Task", req.body.Task);
+				task['_id'] = req.body.Task;
+				task['Name'] = 'Not Acquired';
+			}	
+			console.log(req.session.currentUser);
+			var thisuser = {
+				_id: req.session.currentUser._id,
+				username: req.session.currentUser.username
 			},
-			user = req.session.currentUser,
-			timesheet = {
-				"Name" : req.body.timesheetname,
-				"Work Description" : workDescription,
-				"Start Time" : start,
-				"End Time" : end,
-				"Status" : "Initialized",
-				"Task" : task,
-				"user" : user,
-				"EnteredOn": new Date(),
-				"CreatedBy": user
-			}
+				timesheet = {
+					"Name" : req.body.timesheetname,
+					"Work Description" : workDescription,
+					"Start Time" : start,
+					"End Time" : end,
+					"Status" : "Initialized",
+					"Task" : task,
+					"user" : thisuser,
+					"EnteredOn": new Date(),
+					"CreatedBy": thisuser
+				}
 		console.log("timesheet\n", timesheet);
 		var collection =db.get(tableName);
 		collection.insert(timesheet, function(err, doc) {
@@ -83,15 +95,16 @@ exports.add = function(db) {
 
 exports.callNew = function(db){
 	return function(req, res){
-		console.log('exports.Newest');
+		console.log('timesheet.callNew');
 		console.log('currentUser', req.session.currentUser);
+		console.log('req.session.curRecord\n', req.session.curRecord);
 		var collection = db.get('Tasks')
 		collection.find({},{}, function(e, task){
 			res.render('newtimesheet', {
 				"tasklist": task,
 				title: "Add a New timesheet",
 				curRecord: (req.session.curRecord != null) 
-					? req.session.curRecord['_id']: undefined,
+					? req.session.curRecord: undefined,
 				"currentUser": req.session.currentUser
 			});
 		});
@@ -110,6 +123,7 @@ exports.list = function(db){
 			collection1.find({},{}, function(e,account){
 				collection2.find({}, {}, function(e, proj) {
 				collection3.find({}, {}, function(e, task) {
+						console.log('dataset to display\n', timesheet);
 						res.render('timesheets', {
 							"timesheetlist" : timesheet,
 							"userlist": account,
@@ -146,12 +160,36 @@ exports.edit = function(db){
 			console.log('req.sessions.oldValues\n', req.session.oldValues);
 			console.log('req.session.req.body\n', req.body);
 			var updateList = {}
+			
+			var oldRecord = req.session.oldValues[0],
+				updateList = {};
+			if (oldRecord.Name!=req.body.timesheetname)
+			{
+				updateList['Name'] = req.body.timesheetname;
+			}
+			if (oldRecord['Work Description']!=req.body.description)
+			{
+				updateList['Work Description'] = req.body.description;
+			}	
+			if (oldRecord['Start Time']!=req.body.start)
+			{
+				updateList['Start Time'] = req.body.start;
+			}				
+			if (oldRecord['End Time']!=req.body.end)
+			{
+				updateList['End Time'] = req.body.end;
+			}				
+			if (oldRecord.Status!=req.body.status)
+			{
+				updateList['Status'] = req.body.status;
+			}			
+			console.log("updateList\n", updateList);
 			collection.update(filter, {$set: updateList}, {}, function(err, doc) {
 				if(err){
 					res.send("Psh what database");
 				}
 				else {
-					console.log("Record deleted successful");
+					console.log("Record updated successful");
 					res.location("dashboard");
 					res.redirect("dashboard");
 				}

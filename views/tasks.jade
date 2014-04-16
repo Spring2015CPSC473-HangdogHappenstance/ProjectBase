@@ -28,6 +28,6 @@ block content
 							td #{task.EstimatedDuration}
 							td #{task.Status}
 							td 
-								a(href="/viewproject?_id=#{task.Project}") #{task.Project}
+								a(href="/viewproject?_id=#{task.Project._id}") #{task.Project.Name}
 		else
 			label Unable to display any tasks

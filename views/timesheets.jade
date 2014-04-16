@@ -21,7 +21,7 @@ block content
 						th End Time
 						th Status
 						th Associated Task
-						th Assoicated User
+						th Associated User
 				tbody
 					each timesheet, i in timesheetlist
 						tr
@@ -32,7 +32,7 @@ block content
 							td #{timesheet["End Time"]}
 							td #{timesheet.Status}
 							td
-								a(href="/viewtask?_id=#{timesheet._id}") #{timesheet.Task._id}
+								a(href="/viewtask?_id=#{timesheet.Task._id}") #{timesheet.Task.Name}
 							td
 								a(href="/viewuser?_id=#{timesheet.user._id}") #{timesheet.user.username}
 		else

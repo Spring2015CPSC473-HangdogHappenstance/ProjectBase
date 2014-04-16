@@ -35,7 +35,7 @@ block content
 					input.form-control#inputStart(type="text", value="#{timesheet['Start Time']}"
 						, placeholder="Start Time", name="start" Disabled)
 		
-				label(for="end") Enter Start Time
+				label(for="end") Enter End Time
 				if IsEnabled===true
 					input.form-control#inputEnd(type="text", value="#{timesheet['End Time']}"
 						, placeholder="End Time", name="end")
@@ -46,20 +46,17 @@ block content
 			.form-group
 				label(for="status") Enter Status
 				if IsEnabled===true
-					select(name="status", value="#{timesheet.status}")
-						option(value="Initialized") Initialized
-						option(value="Completed") Completed
-						option(value="Approved") Approved
-						option(value="Paid Out") Paid Out
+					select(name="status", value="#{timesheet.Status}")
+						option(value="Initialized", selected=timesheet.Status=="Initialized") Initialized
+						option(value="Completed", selected=timesheet.Status=="Completed") Completed
+						option(value="Approved", selected=timesheet.Status=="Approved") Approved
+						option(value="Paid Out", selected=timesheet.Status=="Paid Out") Paid Out
 				else
-					select(name="status", value="#{timesheet.status}" Disabled)
-						option(value="Initialized") Initialized
-						option(value="Completed") Completed
-						option(value="Approved") Approved
-						option(value="Paid Out") Paid Out					
+					input.form-control#inputStatus(type="text", value="#{timesheet.Status}"
+						, name="status" Disabled)					
 			.form-group
 				if IsEnabled===true
-					button#btnSubmit(type="submit", name="edit") Edit User
+					button#btnSubmit(type="submit", name="edit") Edit Record
 				else
 					button#btnEnabler(type="submit", name="enabler") Enable Edit
 				button#btnUnlock(type="submit", name="delete") Delete Account

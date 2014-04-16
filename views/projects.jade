@@ -20,15 +20,20 @@ block content
 						th Project Status
 						th Duration
 						th Project Description
+						th Created By
+						th Created On
 				tbody
 					each projs, i in projectlist
 						tr
-							td(width='50%')
+							td
 								a(href="/viewproject?_id=#{projs._id}") #{projs.Name}
 							td #{projs.StartDate}
 							td #{projs.Status.Name}
 							td #{projs["Estimated Duration"]}
 							td #{projs.Description}
+							td 
+								a(href="/viewuser?_id=#{projs.CreatedBy._id}") #{projs.CreatedBy.username}
+							td #{projs.EnteredOn}
 		else
 			br
 			label Unable to display any Projects

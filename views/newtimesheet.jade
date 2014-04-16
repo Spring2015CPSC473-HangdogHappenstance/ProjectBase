@@ -24,18 +24,22 @@ block content
 			textarea.form-control#inputWorkDescription(type="text", placeholder="Work Description"
 				, name="description")
 		.form-group
-			label(for="Task") Enter task
-			select(name="Task")
-				each task, i in tasklist
-					option(selected="#{task._id}") #{task.Name}		
+			if curRecord.Record && curRecord.Record.length>0 && curRecord.table=='Tasks'
+				label() Selected Task
+				br
+				a(href="/viewtask?_id=#{curRecord.Record[0]._id}") #{curRecord.Record[0].Name}
+			else
+				label(for="Task") Enter task
+				br
+				select(name="Task")
+					each task, i in tasklist
+						option(selected="#{task._id}") #{task.Name}		
 		.form-group
 			label(for="status") Enter Status
-			select(name="status", Disabled)
+			br
+			select(name="status")
 				option(value="Initialized" selected="selected") Initialized
-				option(value="Complete") = Completed
-				option(value="Approved") = Approved
-				option(value="Paid Out") = Paid Out	
-		button#btnSubmit(type="submit") submit
-		if messges
-			each msg, i in messges
-				p #{msg.msg}		
+				option(value="Complete") Completed
+				option(value="Approved") Approved
+				option(value="Paid Out") Paid Out	
+		button#btnSubmit(type="submit") submit	

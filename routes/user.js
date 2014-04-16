@@ -34,13 +34,12 @@ exports.record = function(db){
 	return function(req, res){
 		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
 			collection = db.get(tableName);
-			collection1 = db.get('Timesheets');
-			collection2 = db.get('Tasks');
-			collection3 = db.get('Projects');
-		req.session.curRecord = { "table": tableName, "_id" : obj_id }
-		console.log('req.session.curRecord', req.session.curRecord);
+			collection1 = db.get('Timesheets'),
+			collection2 = db.get('Tasks'),
+			collection3 = db.get('Projects')
 		collection.find({_id: obj_id},{}, function(e, account){
-			console.log('timesheet search for:', req.query._id);
+			console.log('account search for:', req.query._id);
+			req.session.curRecord = { "table": tableName, Record: account }
 			collection1.find({"user": req.query._id},{}, function(e, timesheet){
 				var filter = [];
 				for (var rec in timesheet)
@@ -78,29 +77,35 @@ exports.add = function(db){
 		//var errors = req.validationErrors(); 
 		//console.log(errors);
     	//if( !errors) {   //Display errors to 
-		
-		console.log('req.body\n', req.body);
-		var userName = req.body.username,
-			userEmail = req.body.useremail,
-			userPassword = req.body.userpassword,
-			status = {"Level": req.body.status.key, "Name": req.body.status.value},
-			collection =db.get(tableName);
-			var record = {
-				"username": userName,
-				"email": userEmail,
-				"password": userPassword,
-				"status" : "Initialized",
+		var collection =db.get(tableName),
+			thisUser = {
+				'_id': req.session.currentUser._id,
+				'username': req.session.currentUser.username
+			},
+			record = {
+				"username": req.body.username,
+				"email": req.body.useremail,
+				"password": req.body.userpassword,
+				"status" : req.body.status,
 				"Role" : req.body.role,
 				"EnteredOn": new Date(),
-				"CreatedBy": req.session.currentUser
+				"CreatedBy": thisUser
 			}
-		console.log('req.body.status\n', req.body.status);
 		collection.insert(record, function(err, doc) {
 			if(err){
 				res.send("Psh what database");
 			}
 			else {
-				res.render('login', { title: 'Welcome to the Project Manager' });
+				if (req.session.currentUser && req.session.currentUser.length>0) {
+					res.render('buttons', 
+						{ 
+							title: currentUser.username, 
+							'currentUser' : req.session.currentUser
+						}
+					);
+				} else {
+					res.render('login', { title: 'Welcome to the Project Manager' });
+				}
 			}
 		});
 		//} else {
@@ -131,12 +136,35 @@ exports.edit = function(db){
 			console.log('req.sessions.oldValues\n', req.session.oldValues);
 			console.log('req.session.req.body\n', req.body);
 			var updateList = {}
+			var oldRecord = req.session.oldValues[0],
+				updateList = {};
+			if (oldRecord.username!=req.body.username)
+			{
+				updateList['username'] = req.body.username;
+			}
+			if (oldRecord['email']!=req.body.useremail)
+			{
+				updateList['email'] = req.body.useremail;
+			}	
+			if (oldRecord['password']!=req.body.userpassword)
+			{
+				updateList['password'] = req.body.userpassword;
+			}				
+			if (oldRecord['status']!=req.body.status)
+			{
+				updateList['status'] = req.body.status;
+			}				
+			if (oldRecord.Role!=req.body.role)
+			{
+				updateList['Role'] = req.body.role;
+			}			
+			console.log("updateList\n", updateList);
 			collection.update(filter, {$set: updateList}, {}, function(err, doc) {
 				if(err){
 					res.send("Psh what database");
 				}
 				else {
-					console.log("Record deleted successful");
+					console.log("Record updated successful");
 					res.location("dashboard");
 					res.redirect("dashboard");
 				}
@@ -150,7 +178,6 @@ exports.edit = function(db){
 				collection3 = db.get('Projects');
 			if (req.body['enabler']==='') {
 				console.log("Enabled");
-				console.log(req);
 				IsEnabled = true;
 			} else {
 				console.log("Not Enabled");
@@ -212,20 +239,19 @@ exports.checklogin = function(db, next){
 				res.send("Psh what database");
 			} else if(doc === null){
 				console.log("User name and password not found");
-				//res.location("login");
-				//res.redirect("login");
 				res.render("login", {
 					title: "Incorrect Login",
 					reason: "No account matched credentials entered.  Try again."
 					}
 				);
 			} else {
-				console.log("inside checklogin");
-				console.log(doc);
-				//res.redirect("dashboard");
+				console.log("user record found\n", doc);
 				req.session.currentUser = doc
 				res.render('buttons', 
-					{ title: currentUser.username, 'currentUser' : req.session.currentUser}
+					{ 
+						title: currentUser.username, 
+						'currentUser' : req.session.currentUser
+					}
 				);
 			}
 			

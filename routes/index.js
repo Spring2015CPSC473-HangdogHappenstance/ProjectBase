@@ -8,11 +8,6 @@ var BSON = require('mongodb').BSONPure;
 var ImEnabled = false;
 
 exports.index = function(req, res){
-	//var id = "53411393969cb15e5f000001";
-	//req.session.currentUser = {
-	//	'_id': BSON.ObjectID.createFromHexString(id),
-	//	'username': "jhocast" 
-	//}
 	req.session.curRecord = {};
 	console.log(req.session.currentUser);
 	if (req.session.currentUser!=undefined) {
@@ -54,34 +49,4 @@ exports.dashboard = function(db){
 	};
 };
 
-exports.checkAuth=function(req, res, next) {
-       if (req.url!=null) {
-         console.log("basicAuth");
-           var auth = express.basicAuth(function(username, password,fn) {
-           MongoClient.connect("mongodb://localhost:27017/proj1", function(err, db) {
-             var collection =db.collection("accounts");
-             collection.findOne({username:username}, function(err, doc){
-               if (err) {
-                 throw err;
-               }
-
-               if (doc === null) {
-                 fn(null, null);
-                 db.close();
-       
-               }
-               else {
-                 fn(null, doc.password === password ? doc.username : null);
-                 db.close();
-       
-               }
-           });
-         });
-   });
-   
-           auth(req, res, next);
-       } else {
-           return next();
-       }
- };
 

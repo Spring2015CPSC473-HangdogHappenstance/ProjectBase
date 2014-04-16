@@ -3,9 +3,9 @@ var BSON = require('mongodb').BSONPure,
 
 exports.callNew = function(db){
 	return function(req, res){
-		console.log('exports.Newest');
 		var collection = db.get('Projects')
 		collection.find({},{}, function(e, proj){
+			console.log('req.session.curRecord\n', req.session.curRecord);
 			res.render('newtask', {
 				"projectlist": proj,
 				title: "Add a New Task",
@@ -31,7 +31,6 @@ exports.add = function(db) {
 		} else {
 			console.log("getting value from req.body.Project", req.body.Project);
 			project['_id'] = req.body.Project;
-			project['Name'] = req.body.Project;
 		}	
 		console.log("here is your project", project);
 		var userInfo = {
@@ -48,7 +47,9 @@ exports.add = function(db) {
 			"CreatedBy": userInfo
 		}
 		console.log("task\n", task);
-		var collection =db.get(tableName);
+		var collection =db.get(tableName),
+			searchcollection = db.get('Projects');
+			
 		collection.insert(task, function(err, doc) {
 			if(err){
 				res.send("Psh what database");
@@ -78,15 +79,16 @@ exports.record = function(db){
 				collection2.find({}, {}, function(e, proj) {
 					collection3.find({}, {}, function(e, timesheet) {
 						req.session.curRecord = {
-							"table": tableName, //"_id" : obj_id, "Name": task.Name
-							"Record": task
+							"table": tableName, "Record": task
 						}
-						console.log('curRecord', req.session.curRecord);
+						console.log('curRecord\n', req.session.curRecord);
+						req.session.curRecord = { "table": tableName, "Record": task }
 						res.render('viewtask', {
 							"tasklist": task,
 							"userlist": account,
 							"projectlist": proj,
 							"timesheetlist" : timesheet,
+							"IsEnabled": false,
 							"currentUser": req.session.currentUser
 						});
 					});
@@ -142,13 +144,35 @@ exports.edit = function(db){
 			var filter = { _id : BSON.ObjectID.createFromHexString(req.query._id) };
 			console.log('req.sessions.oldValues\n', req.session.oldValues);
 			console.log('req.session.req.body\n', req.body);
-			var updateList = {}
+			var oldRecord = req.session.oldValues.Record[0],
+				updateList = {};
+			if (oldRecord.Name!=req.body.Name)
+			{
+				updateList['Name'] = req.body.Name;
+			}
+			if (oldRecord.Project._id!=req.body.Project)
+			{
+				updateList['Project'] = req.body.Project;
+			}
+			if (oldRecord.EstimatedDuration!=req.body.duration)
+			{
+				updateList['EstimatedDuration'] = req.body.duration;
+			}			
+			if (oldRecord.Status!=req.body.status)
+			{
+				updateList['Status'] = req.body.status;
+			}				
+			if (oldRecord['ClockedTime']!=req.body.clockedTime)
+			{
+				updateList['ClockedTime'] = req.body.clockedTime;
+			}			
+			console.log('updateList\n', updateList);
 			collection.update(filter, {$set: updateList}, {}, function(err, doc) {
 				if(err){
 					res.send("Psh what database");
 				}
 				else {
-					console.log("Record deleted successful");
+					console.log("Record updated successful");
 					res.location("dashboard");
 					res.redirect("dashboard");
 				}
@@ -162,7 +186,7 @@ exports.edit = function(db){
 				collection3 = db.get('Timesheets');
 			if (req.body['enabler']==='') {
 				console.log("Enabled");
-				console.log(req);
+				req.session.oldValues = req.session.curRecord;
 				IsEnabled = true;
 			} else {
 				console.log("Not Enabled");
