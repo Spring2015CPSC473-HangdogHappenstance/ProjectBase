@@ -73,7 +73,7 @@ block content
 				ul
 				each timesheet, i in timesheetlist
 					li
-						a(href="viewtimesheet#{timesheet.email}")= timesheet.Name
+						a(href="viewtimesheet?_id=#{timesheet._id}")= timesheet.Name
 		.right.dash
 			h3 
 				a(href="/newuser") +Users
