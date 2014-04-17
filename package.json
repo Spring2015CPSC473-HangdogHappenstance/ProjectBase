@@ -1,5 +1,7 @@
 {
   "name": "TheProjectManager",
+  "authors": ["Jhonny Castrillon", "Akash Parekh", "Andrew Hoang", "Radley Obligacion",
+  	"Neha Sudame"],
   "version": "0.0.1",
   "private": true,
   "scripts": {
