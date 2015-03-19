@@ -19,7 +19,7 @@ exports.index = function(req, res){
   		);
   	} else {
   		req.session.currentUser = {};
-  		res.render('login', { title: 'Welcome to the Project Manager' });
+  		res.render('login', { title: 'Group Project Title' });
   	}
 };
 
@@ -32,18 +32,8 @@ exports.dashboard = function(db){
 		var collection3 = db.get('Timesheets');
 		
 		collection.find({},{}, function(e, docs){
-			collection1.find({},{}, function(e,proj){
-				collection2.find({}, {}, function(e, task) {
-				collection3.find({}, {}, function(e, timesheet) {
-						res.render('dashboard', {
-							"dashboard": docs,
-							"projectlist": proj,
-							"tasklist": task,
-							"timesheetlist" : timesheet,
-							currentUser : req.session.currentUser
-						});
-					});
-				});
+			res.render('dashboard', {
+				currentUser : req.session.currentUser
 			});
 		});
 	};

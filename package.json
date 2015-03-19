@@ -1,7 +1,6 @@
 {
-  "name": "TheProjectManager",
-  "authors": ["Jhonny Castrillon", "Akash Parekh", "Andrew Hoang", "Radley Obligacion",
-  	"Neha Sudame"],
+  "name": "GroupProject",
+  "authors": [],
   "version": "0.0.1",
   "private": true,
   "scripts": {
