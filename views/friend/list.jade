@@ -10,14 +10,13 @@ block content
                 ul(class="pagination pull-right")
                     li
                         a(href="#", aria-label="Previous")
-                            span(aria-hidden="true")&laquo;
+                            span(aria-hidden="true") &laquo;
                     each page in [1,2,3,4,5]
                         li
                             a=page
                     li
                         a(href="#", aria-label="Next")
-                            span(aria-hidden="true")&raquo;
-
+                            span(aria-hidden="true") &raquo;
         div(class="row")
             each val in [{"id":1,"name":"UserA","match":{"Movies":90,"TV":70,"Books":10}},{"id":2,"name":"UserB","match":{"Movies":40,"TV":80,"Books":55}},{"id":3,"name":"UserC","match":{"Movies":10,"TV":10,"Books":10}}]
                 div(class="col-md-4")

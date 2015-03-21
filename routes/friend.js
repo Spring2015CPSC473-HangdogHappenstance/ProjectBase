@@ -5,7 +5,7 @@
 /* List user's current friends */
 exports.list = function(req, res){
     console.log(req);
-    res.render('friend/list', { title: 'List of friends'  });
+    res.render('friend/list', { title: 'List of friends', friends: somefriends });
 };
 /* Display the find-people screen */
 exports.find = function(req, res){
