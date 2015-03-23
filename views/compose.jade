@@ -1,0 +1,26 @@
+//Created by Mario
+
+extends friend/layout
+block content
+	div(class='container')
+		ul(class='nav nav-pills',role="tablist")
+			li(role="presentation")
+				a(href="mail") Messages
+					span(class="badge") 5
+			li(role="presentation",class="active")
+				a(href="compose") Compose
+			li(role="presentation")
+				a(href="#") Clear Message List
+
+		div(class='jumbotron')
+			div(class='container')
+					p Chris: 5+5 = 10
+					p Mario: Oh dang. I didn't know that
+				div(class='input-group')
+					span(class='input-group-addon',id='sizing-addon2') To
+					input(type='text',class='form-control',placeholder='Username',aria-describedby='sizing-addon2')
+				div(class='input-group')
+					span(class='input-group-addon',id='sizing-addon2') Message		
+					textarea(class='form-control',rows='5')
+				button(type='button',class='btn btn-default')
+					span(class='glyphicon glyphicon-send' aria-hidden='true') Send

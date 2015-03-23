@@ -1,0 +1,20 @@
+// Created by Mario
+
+extends friend/layout
+block content
+	div(class='container')
+		ul(class='nav nav-pills',role="tablist")
+			li(role="presentation",class="active")
+				a(href="mail") Messages
+					span(class="badge") 5
+			li(role="presentation")
+				a(href="compose") Compose
+			li(role="presentation")
+				a(href="#") Clear Message List
+
+		div(class='jumbotron')
+			each message in mail
+				a(href='#', class='list-group-item')
+					h4(class='list-group-item-heading')=message.From
+					h5(class='list-group-item-text')=message.Date
+					p(class='list-group-item-text')=message.Message

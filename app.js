@@ -7,6 +7,7 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var friend = require('./routes/friend');
+var mail = require('./routes/mail');
 
 var http = require('http');
 var path = require('path');
@@ -58,6 +59,9 @@ app.get('/viewuser', user.record(db));
 app.get('/friend/list', friend.list);
 app.get('/friend/find', friend.find);
 app.get('/friend/discover', friend.discover);
+
+app.get('/mail', mail.list);
+app.get('/compose', mail.compose);
 
 app.get('/login', user.login);
 app.get('/logout', function (req, res) {
