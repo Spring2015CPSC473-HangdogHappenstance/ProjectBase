@@ -70,13 +70,12 @@ exports.add = function(db){
 		//req.assert('userName', 'User Name is  required').notEmpty();           
     	//req.assert('userEmail', 'User Email is required').notEmpty();
     	//req.assert('userPassword', 'Password is required').notEmpty();
-		//req.assert('status', 'Status Detail is required').notEmpty();
-		//req.assert('endtime', 'End Date is required').notEmpty(); 	
-	    //req.assert('role', 'Role is required').notEmpty(); 
 		
 		//var errors = req.validationErrors(); 
 		//console.log(errors);
     	//if( !errors) {   //Display errors to 
+    		//	res.render('newuser', { errors: errors, messges:errors });	
+		//} else {
 		var collection =db.get(tableName),
 			thisUser = {
 				'_id': req.session.currentUser._id,
@@ -93,7 +92,7 @@ exports.add = function(db){
 			}
 		collection.insert(record, function(err, doc) {
 			if(err){
-				res.send("Psh what database");
+				res.send("No Database!!");
 			}
 			else {
 				if (req.session.currentUser && req.session.currentUser.length>0) {
@@ -104,12 +103,10 @@ exports.add = function(db){
 						}
 					);
 				} else {
-					res.render('login', { title: 'Welcome to the Project Manager' });
+					res.render('login', { title: 'Hangdog Happenstance' });
 				}
 			}
 		});
-		//} else {
-		//	res.render('newuser', { errors: errors, messges:errors });		
 		//}
 	}
 }
@@ -224,7 +221,7 @@ exports.login=function(req,res){
 
 exports.checklogin = function(db, next){
 	return function(req, res, next){
-		
+		console.log("checklogin");
 		var userName = req.body.username;
 		var userPassword = req.body.userpassword;
 		var collection =db.get(tableName);
@@ -236,7 +233,7 @@ exports.checklogin = function(db, next){
 		collection.findOne(currentUser, function(err, doc) {
 			if(err){
 				console.log(err);
-				res.send("Psh what database");
+				res.send("No database!");
 			} else if(doc === null){
 				console.log("User name and password not found");
 				res.render("login", {
@@ -247,7 +244,7 @@ exports.checklogin = function(db, next){
 			} else {
 				console.log("user record found\n", doc);
 				req.session.currentUser = doc
-				res.render('buttons', 
+				res.render('home', 
 					{ 
 						title: currentUser.username, 
 						'currentUser' : req.session.currentUser
