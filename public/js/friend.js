@@ -28,11 +28,22 @@ var friend = function () {
 
     /* Buttons/action functions */
     var action = {
-        sendmail: function () {
+        /* Forwards to the sendmail url */
+        sendmail: function (userid) {
+            window.location.href = "/mail/"+userid;
         },
-        addfriend: function () {
+        /* Runs API call to add userid to friends list */
+        addfriend: function (userid) {
         },
-        deletefriend: function () {
+        /* Runs API call to remove userid from friends list */
+        deletefriend: function (userid) {
+        },
+        /* Runs API calls to get next set of users, and pass that data back to the output functions */
+        next: function(){
+
+        },
+        prev: function(){
+
         }
     };
 
@@ -172,24 +183,27 @@ var friend = function () {
         }
     };
 
-    /* Page specific logic */
-    var mainElement = $("div.existingfriends, div.discoverfriends, div.findfriends");
-    console.log(mainElement);
-    if (mainElement.length) {
-        mainElement = mainElement[0].classList[1];
-        switch (mainElement) {
-            case 'discoverfriends':
-            case 'findfriends':
-            case 'existingfriends':
-                $.getJSON('/friend/api/' + mainElement, function (data) {
-                    output[mainElement](data);
-                    registerClickhooks();
-                });
-                break;
-            default:
-                break;
+    /* Page specific logic on pageload */
+    var loadData = function(offset,limit) {
+        var mainElement = $("div.existingfriends, div.discoverfriends, div.findfriends");
+        console.log(mainElement);
+        if (mainElement.length) {
+            mainElement = mainElement[0].classList[1];
+            switch (mainElement) {
+                case 'discoverfriends':
+                case 'findfriends':
+                case 'existingfriends':
+                    var payload = {offest:offset,limit:limit};
+                    $.post('/friend/api/' + mainElement,payload,function(response){
+                        output[mainElement](response);
+                        registerClickhooks();
+                    },"json");
+                    break;
+                default:
+                    break;
+            }
         }
-    }
-
+    };
+    loadData(0,4);
 };
 $(document).ready(friend);
