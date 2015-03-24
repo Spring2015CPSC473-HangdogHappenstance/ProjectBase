@@ -1,7 +1,9 @@
 body {background-color:#252627;}
 
+//body {background-color:lightgray;}
+
 .btn
 {
-padding:5px;
-margin-right: 4px;
+	padding:2px;
+	margin-right: 1px;
 }
