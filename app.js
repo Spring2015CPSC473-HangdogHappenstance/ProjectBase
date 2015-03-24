@@ -7,6 +7,7 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 
+
 var http = require('http');
 var path = require('path');
 var BSON = require('mongodb').BSONPure;
@@ -52,9 +53,17 @@ app.get('/users', user.list(db));
 app.get('/newuser', user.callNew);   //trying to get autehntication working
 app.get('/viewuser', user.record(db));
 
+
+app.get('/likeStuff', routes.dashboard(db));
+app.get('/help', routes.help(db));
+app.get('/aboutUs', routes.aboutUs(db));
+app.get('/mail', routes.mail(db));
+app.get('/friends', routes.friends(db));
+
 app.get('/login', user.login);
 app.get('/logout', function (req, res) {
   delete req.session.authStatus;
+  delete req.session.currentUser
   res.send([
     'You are now logged out.',
     '&lt;br/>',

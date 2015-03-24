@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  #container.container
+    div("content"='').box
+      a(href="/newuser") +Add Users
+      ul Users
+        each user, i in dashboard
+          li
+            a(href="/viewuser?_id=#{user._id}")= user.username
+
+    div("content"='').box  
+      a(href="/newproject") +Add Books
+      ul Books-------------
+        each projs, i in projectlist
+          li
+            a(href="/viewproject?_id=#{projs._id}")= projs.Name
+
+    div("content"='').box  
+      a(href="/newproject") +Add Movies
+      ul Movies
+        each projs, i in tasklist
+          li
+            a(href="/viewproject?_id=#{projs._id}")= projs.Name
+
+    div("content"='').box  
+      a(href="/newproject") +Searches
+      ul
+        each projs, i in timesheetlist
+          li
+            a(href="/viewproject?_id=#{projs._id}")= projs.Name
