@@ -87,42 +87,63 @@ exports.compose = function(req, res) {
 
 exports.add = function(db) {
 	return function(req, res){
-		if (req.body['respond']===''){
-			var obj_id = BSON.ObjectID.createFromHexString(req.query._id)
-		} else {
-			var obj_id = '';
-		}
 		var userInfo = {
-				username: req.session.currentUser.username, 
-				_id: req.session.currentUser._id
-			},
-			message = {
-				"From": userInfo.username,
-	 			"Friend_id" : "2222", 
-	 			"To": req.body.Username,  
-	 			"Date": new Date(),
-	 			"Subject" : req.body.Subject,
-	 			"Time" : "5:00:00 PM",
-	 			"Body": [
-	 				{ "friend_username" : req.body.Message}
-	 			],
-	 			"Read" : false,
-	 			"ParentMessage": obj_id
-			}
-
-		console.log("message\n", message);
+			username: req.session.currentUser.username, 
+			_id: req.session.currentUser._id
+		},		
+		message = {
+			"From": userInfo.username,
+		 	"Friend_id" : "2222", 
+		 	"To": req.body.Username,  
+		 	"Date": new Date(),
+		 	"Subject" : req.body.Subject,
+		 	"Time" : "5:00:00 PM",
+		 	"Body": [
+		 		{ "friend_username" : req.body.Message}
+		 	],
+		 	"Read" : false,
+		 	"ParentMessage": ''
+		}
 		var collection =db.get(tableName);
-		collection.insert(message, function(err, doc) {
-			if(err){
-				res.send("There is no database!");
-			}
-			else {
-				console.log("Project inserted successful");
-				res.location("mail");
-				res.redirect("mail");
-			}
-			
-		});
+		var collection2 =db.get(tableName);
+		if (req.body['respond']===''){
+			var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
+				filter = { _id : BSON.ObjectID.createFromHexString(req.query._id) },
+				//oldRecord = req.session.oldValues[0],
+				updateList = {};
+			updateList['Read'] = true; 
+			message['ParentMessage'] = obj_id
+			collection.insert(message, function(err, doc) {
+				if(err){
+					res.send("There is no database!");
+				}
+				else {
+					console.log("Project inserted successful");
+					collection2.update(filter, {$set: updateList}, {}, function(err, upd) {
+						if(err){
+							res.send("Psh what database");
+						} else {
+							console.log("Parent Record updated successful");
+							res.location("mail");
+							res.redirect("mail");
+						}
+					});
+				}
+			});	
+		} else {
+			console.log("message\n", message);
+			collection.insert(message, function(err, doc) {
+				if(err){
+					res.send("There is no database!");
+				}
+				else {
+					console.log("Project inserted successful");
+					res.location("mail");
+					res.redirect("mail");
+				}
+			});	
+		}
+		
 	}
 }
 
