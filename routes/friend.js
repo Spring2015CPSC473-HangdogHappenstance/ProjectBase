@@ -85,14 +85,8 @@ exports.find = function (req, res) {
     if (typeof req.session.currentUser == "undefined") {
         res.redirect(307, "/login");
     } else {
-        var somePeople = [{"id": 1, "name": "UserA", "match": {"Movies": 100, "TV": 95, "Books": 80}}, {
-            "id": 2,
-            "name": "UserB",
-            "match": {"Movies": 90, "TV": 80, "Books": 10}
-        }, {"id": 3, "name": "UserC", "match": {"Movies": 80, "TV": 10, "Books": 1}}];
         res.render('friend/find', {
             title: 'Friend search prompt and results',
-            results: somePeople,
             currentUser: req.session.currentUser
         });
     }
@@ -102,14 +96,8 @@ exports.discover = function (req, res) {
     if (typeof req.session.currentUser == "undefined") {
         res.redirect(307, "/login");
     } else {
-        var somePeople = [{"id": 1, "name": "UserA", "match": {"Movies": 100, "TV": 95, "Books": 80}}, {
-            "id": 2,
-            "name": "UserB",
-            "match": {"Movies": 90, "TV": 80, "Books": 10}
-        }, {"id": 3, "name": "UserC", "match": {"Movies": 80, "TV": 10, "Books": 1}}];
-        res.render('friend/discover', {
+          res.render('friend/discover', {
             title: 'Recommended friends/Discover friends',
-            results: somePeople,
             currentUser: req.session.currentUser
         });
     }
