@@ -33,6 +33,12 @@ exports.api = function (req, res) {
             // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
             var temp = users;
             return temp;
+        },
+        deletefriend: function(friendid){
+            return {result:"deleted",error:"none"};
+        },
+        addfriend: function(friendid){
+            return {result:"added",error:"none"};
         }
     };
 
@@ -45,7 +51,13 @@ exports.api = function (req, res) {
             /* for existingfriends and discoverfriends, extra should not be set, but for searches in findfriends, extra should be set */
             extra = req.body.extra;
         }
-        res.json(reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit, 'default'));
+        if(reply[req.params.action.toLowerCase()].length == 4){
+            res.json(reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit, 'default'));
+        } else if(reply[req.params.action.toLowerCase()].length == 1) {
+            res.json(reply[req.params.action.toLowerCase()](extra));
+        } else {
+            res.json({error: "Invalid request"});
+        }
     } else { // api function doesn't exist
         res.json({error: "Invalid request"});
     }
