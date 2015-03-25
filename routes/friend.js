@@ -4,25 +4,45 @@
 
 var BSON = require('mongodb').BSONPure;
 var ImEnabled = false;
+var _ = require('underscore');
 
 /* The ServerSide API connection to get appropriate data for all the below chunks */
 exports.api = function (db) {
     return function (req, res) {
         var users = db.get("accounts");
+        var likes = db.get("likes");
 
         var reply = {
             existingfriends: function (userid, offset, limit, sort) {
                 // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
                 //var temp = users.slice(offset, offset + limit);
-                users.find({}, '-password', function (err, data) {
-                    res.json(data.slice(offset, offset + limit));
+                var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+                users.find({"_id": {$nin: [p_id]}}, '-password', function (err, data) {
+                    var output = [];
+                    for (i = 0; i < data.length; i++) {
+                        var otherUser = data[i];
+                        likes.find({"userRec._id": userid}, '-userRec -CreatedBy -EnteredOn -_id', function (err, userlikes) { // First get logged in user's data
+                            likes.find({"userRec._id": otherUser._id.toString()}, '-userRec -CreatedBy -EnteredOn -_id', function (err, otherlikes) { // Find other users data
+                                output[i] = {
+                                    _id: otherUser._id,
+                                    username: otherUser.username,
+                                    matches: utility.compareLikes(userlikes, otherlikes)
+                                };
+                            });
+                        });
+                    };
+                    res.json(output.slice(offset, offset + limit));
                 });
             },
 
             findfriends: function (username, offset, limit, sort) {
                 // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
                 //var temp = users.slice(offset, offset + limit);
-                users.find({username: {$regex: new RegExp("^" + username.toLowerCase(), "i")}}, '-password', function (err, data) {
+                var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+                users.find({
+                    "_id": {$nin: [p_id]},
+                    username: {$regex: new RegExp(username.toLowerCase(), "i")}
+                }, '-password', function (err, data) {
                     res.json(data.slice(offset, offset + limit));
                 });
             },
@@ -30,7 +50,8 @@ exports.api = function (db) {
             discoverfriends: function (userid, offset, limit, sort) {
                 // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
                 // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
-                users.find({}, '-password', function (err, data) {
+                var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+                users.find({"_id": {$nin: [p_id]}}, '-password', function (err, data) {
                     res.json(data.slice(offset, offset + limit));
                 });
             },
@@ -41,6 +62,45 @@ exports.api = function (db) {
             addfriend: function (friendid) {
                 // Create relationship between logged in user and the friendid
                 return {result: "added", error: "none"};
+            }
+        };
+
+        var utility = {
+            compareLikes: function (data, data2) {
+                var allCommon = _.uniq(data, data2);
+                if (data.length > 0 && data2.length > 0) {
+                    var all = Math.floor((allCommon.length / data.length) * 100);
+                } else {
+                    var all = 0;
+                }
+
+                var moviesA = _.where(data, {category: "Movies"});
+                var moviesB = _.where(data2, {category: "Movies"});
+                var moviesCommon = _.uniq(moviesA, moviesB);
+                var movies = Math.floor((moviesCommon.length / moviesA.length) * 100);
+                if (_.isNaN(movies)) {
+                    movies = 0;
+                }
+
+                var booksA = _.where(data, {category: "Books"});
+                var booksB = _.where(data2, {category: "Books"});
+                var booksCommon = _.uniq(booksA, booksB);
+                var books = Math.floor((booksCommon.length / booksA.length) * 100);
+                if (_.isNaN(books)) {
+                    books = 0;
+                }
+
+                var friendsA = _.where(data, {category: "Friends"});
+                var friendsB = _.where(data2, {category: "Friends"});
+                var friendsCommon = _.uniq(friendsA, friendsB);
+                var friends = Math.floor((friendsCommon.length / friendsA.length) * 100);
+                if (_.isNaN(friends)) {
+                    friends = 0;
+                }
+
+                matches = [{"All": all}, {"Movies": movies}, {"Books": books}, {"Friends": friends}, {"Searches": 0}]
+                //console.log(matches);
+                return matches;
             }
         };
 
@@ -96,7 +156,7 @@ exports.discover = function (req, res) {
     if (typeof req.session.currentUser == "undefined") {
         res.redirect(307, "/login");
     } else {
-          res.render('friend/discover', {
+        res.render('friend/discover', {
             title: 'Recommended friends/Discover friends',
             currentUser: req.session.currentUser
         });

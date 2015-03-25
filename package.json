@@ -11,7 +11,8 @@
     "jade": "*",
     "mongodb": "*",
     "monk": "*",
-    "express-validator":"*",
-	"express-breadcrumbs":"*"
+    "express-validator": "*",
+    "express-breadcrumbs": "*",
+    "underscore": "~1.8.2"
   }
 }

@@ -63,7 +63,7 @@ var friend = function () {
     };
 
     /* Misc functions */
-    var renderMatches = function (data) {
+    var renderMatches = function (data) { // Expected match: [{Key:Val}]
         var progressCluster = $("<div/>", {class: "match"});
         if (typeof data.match != "undefined") {
             $.each(data.match, function (key, val) {
