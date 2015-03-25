@@ -12,38 +12,39 @@ exports.api = function(req,res){
     ];
     var categories = ["Movies","TV","Books"];
 
-    function getFriends(userid,offest,limit,sort){
-        // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
-        var temp = users;
-        return temp;
-    }
+    var reply = {
+        existingfriends: function (userid, offset, limit, sort) {
+            // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
+            var temp = users;
+            return temp;
+        },
 
-    function findFriends(username,offset,limit,sort){
-        // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
-        var temp = users;
-        return temp;
-    }
+        findfriends: function (username, offset, limit, sort) {
+            // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
+            var temp = users;
+            return temp;
+        },
 
-    function discoverFriends(userid,offset,limit,sort){
-        // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
-        // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
-        var temp = users;
-        return temp;
-    }
+        discoverfriends: function (userid, offset, limit, sort) {
+            // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
+            // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
+            var temp = users;
+            return temp;
+        }
+    };
 
-    switch(req.params.action.toLowerCase()){
-        case 'existingfriends':
-            res.json(getFriends());
-            break;
-        case 'findfriends':
-            res.json(findFriends());
-            break;
-        case 'discoverfriends':
-            res.json(discoverFriends());
-            break;
-        default:
-            res.json({error:"Invalid request"});
-            break;
+    var action = req.params.action.toLowerCase();
+    if(typeof reply[action] != "undefined"){
+        console.log(req);
+        // Get logged in user's #id number
+        var extra = 10; // TODO: loggedInUserID, should be pulled from user session somewhere
+        if(typeof req.body.extra !== "undefined"){ // If API passsed an "extra" param, means that we need to search something specific
+            /* for existingfriends and discoverfriends, extra should not be set, but for searches in findfriends, extra should be set */
+            extra = req.body.extra;
+        }
+        res.json(reply[req.params.action.toLowerCase()](extra,req.body.offset,req.body.limit,'default'));
+    } else { // api function doesn't exist
+        res.json({error:"Invalid request"});
     }
 };
 

@@ -40,10 +40,13 @@ var friend = function () {
         },
         /* Runs API calls to get next set of users, and pass that data back to the output functions */
         next: function(){
-
+            var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").last();
+            last = last.attr('id').split('-');
+            console.log((last[1]+1),4);
+            loadData((last[1]+1),4);
         },
         prev: function(){
-
+            loadData(0,4);
         }
     };
 
@@ -57,6 +60,8 @@ var friend = function () {
         });
         $("a#prev,a#next").click(function(event){
             event.preventDefault();
+            var arr = $(this).attr('id');
+            action[arr]();
             // getJSON update screen
         });
     };
@@ -184,9 +189,9 @@ var friend = function () {
     };
 
     /* Page specific logic on pageload */
-    var loadData = function(offset,limit) {
+    var loadData = function(offset,limit,extra) {
         var mainElement = $("div.existingfriends, div.discoverfriends, div.findfriends");
-        console.log(mainElement);
+        //console.log(mainElement);
         if (mainElement.length) {
             mainElement = mainElement[0].classList[1];
             switch (mainElement) {
@@ -194,6 +199,9 @@ var friend = function () {
                 case 'findfriends':
                 case 'existingfriends':
                     var payload = {offest:offset,limit:limit};
+                    if(typeof extra !== "undefined"){
+                        payload.extra = extra;
+                    }
                     $.post('/friend/api/' + mainElement,payload,function(response){
                         output[mainElement](response);
                         registerClickhooks();
