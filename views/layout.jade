@@ -1,0 +1,18 @@
+doctype html
+html
+	head
+		title= title
+		link(href="/css/bootstrap.css", rel="stylesheet")
+		link(rel='stylesheet', type='text/css', href='/css/bootstrap-theme.css', media='screen')
+		link(href='/css/style.css', rel="stylesheet")
+		link(rel='stylesheet', type='text/css', href='/css/justified-nav.css', media='screen')
+		link(rel='stylesheet', type='text/css', href='/css/normal.css', media='all')
+	body
+		block content
+
+		script(src="http://code.jquery.com/jquery-2.0.2.js", type="text/javascript")
+		script(src="/js/bootstrap.js", type="text/javascript")
+			
+		//Added this line to make it load faster but we'll probably put it at the end of mail.jade so not every
+		//file needs to have this line.
+		script(src="/js/chat.js")

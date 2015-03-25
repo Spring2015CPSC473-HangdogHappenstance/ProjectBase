@@ -1,20 +1,34 @@
-// Created by Mario
+// Created by Mario: Badge is based of all the the JSON objects with the Read value as false. Jumbrotron sets up the
+//					 the initial look to it. Note that the client side chat.js takes care of the work from here. We also
+//                   put an id tag on each column, so that we can know who want to chat with. That friend_id value is taken
+//                   the JS file and used to get a JSON.
 
-extends friend/layout
+extends layout
 block content
 	div(class='container')
 		ul(class='nav nav-pills',role="tablist")
 			li(role="presentation",class="active")
 				a(href="mail") Messages
-					span(class="badge") 5
+					-var n = 0;
+					each message in mail
+						if !message.Read
+							- n++;
+					span(class="badge")=n
 			li(role="presentation")
 				a(href="compose") Compose
-			li(role="presentation")
-				a(href="#") Clear Message List
 
 		div(class='jumbotron')
 			each message in mail
-				a(href='#', class='list-group-item')
-					h4(class='list-group-item-heading')=message.From
-					h5(class='list-group-item-text')=message.Date
-					p(class='list-group-item-text')=message.Message
+				a(href="#",class='list-group-item' id=message.From)
+					div(class='container')
+						div(class='col-md-10')
+							h4(class='list-group-item-heading text-left')=message.From
+							h5(class='list-group-item-heading text-left')=message.Subject
+							- var len = message.Body.length - 1;
+							- console.log(message.Body[len].id);
+							p(class='list-group-item-text text-left')=message.Body[len].id
+						div(class='col-md-2')
+							if !message.Read
+								span(class="badge") New
+							h5(class='list-group-item-text text-heading')=message.Date
+							h5(class='list-group-item-text text-heading')=message.Time

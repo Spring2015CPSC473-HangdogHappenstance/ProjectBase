@@ -6,7 +6,6 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
-var friend = require('./routes/friend');
 var mail = require('./routes/mail');
 
 var http = require('http');
@@ -55,11 +54,7 @@ app.get('/users', user.list(db));
 app.get('/newuser', user.callNew);   //trying to get autehntication working
 app.get('/viewuser', user.record(db));
 
-/* Eric Testing */
-app.get('/friend/list', friend.list);
-app.get('/friend/find', friend.find);
-app.get('/friend/discover', friend.discover);
-
+/* Mario's code. /Compose will probably be removed.*/
 app.get('/mail', mail.list);
 app.get('/compose', mail.compose);
 
@@ -76,6 +71,9 @@ app.get('/logout', function (req, res) {
 app.post('/adduser', user.add(db));
 app.post('/login', user.checklogin(db));
 app.post('/edituser', user.edit(db));
+
+//Mario's POST method to get the JSON of the conversation with other person.
+app.post('/query_mail', mail.query);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
