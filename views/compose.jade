@@ -1,0 +1,29 @@
+extends layout
+block content
+	div(class='container')
+		ul(class='nav nav-pills',role="tablist")
+			li(role="presentation")
+				a(href="mail") Messages
+					span(class="badge")
+			li(role="presentation",class="active")
+				a(href="compose") Compose
+			li(role="presentation")
+				a(href="#") Clear Message List
+
+		div(class='jumbotron')
+			div(class='container' id='chat')
+			div(class='col-md-2')
+			div(class='container col-md-8')
+				div(class='input-group')
+					span(class='input-group-addon',id='sizing-addon2') Mail To    
+					input(type='text',class='form-control',placeholder='Username',aria-describedby='sizing-addon2')
+				div(class='input-group')
+					span(class='input-group-addon',id='sizing-addon2') Subject
+					input(type='text',class='form-control',placeholder='Subject',aria-describedby='sizing-addon2')
+				div(class='input-group')
+					span(class='input-group-addon',id='sizing-addon2') Message   		
+					textarea(class='form-control',rows='5',placeholder="Enter your message here...",style="resize:none")
+					span(class="input-group-addon btn btn-primary glyphicon glyphicon-send")
+					//button(type='button',class='btn btn-default')
+					//	span(class='glyphicon glyphicon-send', aria-hidden='true') Send
+			div(class='col-md-2')

@@ -30,18 +30,20 @@ exports.likeStuff = function(db){
 		var collection = db.get('accounts');
 		var collection1 = db.get('likes');
 		var collection2 = db.get('likes');
-		var collection3 = db.get('Timesheets');
-		
-		collection.find({},{}, function(e, usr){
+		var collection3 = db.get('likes');
+		console.log(req.query._id);
+		var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+		console.log(p_id);
+		collection.find({"_id": {$nin:[p_id]}},{}, function(e, usr){
 			collection1.find({"category":"Books"},{}, function(e, book){
 				collection2.find({"category":"Movies"}, {}, function(e, movie) {
-					collection3.find({}, {}, function(e, timesheet) {
+					collection3.find({"category":"Searches"}, {}, function(e, search) {
 						console.log(movie);
 						res.render('likeStuff', {
 							"dashboard": usr,
 							"booklist": book,
 							"movielist": movie,
-							"timesheetlist" : timesheet,
+							"searchlist" : search,
 							currentUser : req.session.currentUser,
 							title: "Like Stuff"
 						});

@@ -8,7 +8,7 @@ block content
       ul App Users
         each user, i in dashboard
           li
-            a(href="/viewuser?_id=#{user._id}")= user.username
+            a(href="/viewotheruser?_id=#{user._id}")= user.username
 
     div("content"='').box  
       a(href="/newlike") +Add Books
@@ -27,6 +27,6 @@ block content
     div("content"='').box  
       a(href="/newlike") +Searches
       ul
-        each projs, i in timesheetlist
+        each search, i in searchlist
           li
-            a(href="/viewproject?_id=#{projs._id}")= projs.Name
+            a(href="/viewlike?_id=#{search._id}")= search.name

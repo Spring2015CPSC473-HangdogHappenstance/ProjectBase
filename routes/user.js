@@ -65,6 +65,23 @@ exports.record = function(db){
 	};
 };
 
+exports.otherrecord = function(db){
+	return function(req, res){
+		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
+			collection = db.get(tableName);
+			collection1 = db.get('Timesheets'),
+			collection2 = db.get('Tasks'),
+			collection3 = db.get('Projects')
+		collection.find({_id: obj_id},{}, function(e, account){
+			res.render('viewotheruser', {
+				"userlist": account, 
+				"IsEnabled": false,
+				"currentUser": req.session.currentUser
+			});
+		});
+	};
+};
+
 exports.add = function(db){
 	return function(req, res){
 		//req.assert('userName', 'User Name is  required').notEmpty();           
@@ -77,19 +94,20 @@ exports.add = function(db){
     		//	res.render('newuser', { errors: errors, messges:errors });	
 		//} else {
 		console.log(req.session.currentUser);
-		var collection =db.get(tableName),
-			thisUser = {
-				'_id': req.session.currentUser._id,
-				'username': req.session.currentUser.username
-			},
-			record = {
+		var collection =db.get(tableName);
+
+		//var thisUser = {
+		//		'_id': req.session.currentUser._id,
+		//		'username': req.session.currentUser.username
+		//	}, 
+		var	record = {
 				"username": req.body.username,
 				"email": req.body.useremail,
 				"password": req.body.userpassword,
 				"status" : req.body.status,
 				"Role" : req.body.role,
 				"EnteredOn": new Date(),
-				"CreatedBy": thisUser
+				//"CreatedBy": thisUser
 			}
 		collection.insert(record, function(err, doc) {
 			if(err){
@@ -104,7 +122,7 @@ exports.add = function(db){
 						}
 					);
 				} else {
-					res.render('login', { title: 'Hangdog Happenstance' });
+					res.render('login', { title: 'Login Successfully created for ' + record.username });
 				}
 			}
 		});
