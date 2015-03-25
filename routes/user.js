@@ -1,6 +1,6 @@
 
 /*
- * GET users listing.
+ * GET users records.
  */
 var BSON = require('mongodb').BSONPure,
 	tableName = 'accounts';
@@ -65,6 +65,23 @@ exports.record = function(db){
 	};
 };
 
+exports.otherrecord = function(db){
+	return function(req, res){
+		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
+			collection = db.get(tableName);
+			collection1 = db.get('Timesheets'),
+			collection2 = db.get('Tasks'),
+			collection3 = db.get('Projects')
+		collection.find({_id: obj_id},{}, function(e, account){
+			res.render('viewotheruser', {
+				"userlist": account, 
+				"IsEnabled": false,
+				"currentUser": req.session.currentUser
+			});
+		});
+	};
+};
+
 exports.add = function(db){
 	return function(req, res){
 		//req.assert('userName', 'User Name is  required').notEmpty();           
@@ -76,19 +93,21 @@ exports.add = function(db){
     	//if( !errors) {   //Display errors to 
     		//	res.render('newuser', { errors: errors, messges:errors });	
 		//} else {
-		var collection =db.get(tableName),
-			thisUser = {
-				'_id': req.session.currentUser._id,
-				'username': req.session.currentUser.username
-			},
-			record = {
+		console.log(req.session.currentUser);
+		var collection =db.get(tableName);
+
+		//var thisUser = {
+		//		'_id': req.session.currentUser._id,
+		//		'username': req.session.currentUser.username
+		//	}, 
+		var	record = {
 				"username": req.body.username,
 				"email": req.body.useremail,
 				"password": req.body.userpassword,
 				"status" : req.body.status,
 				"Role" : req.body.role,
 				"EnteredOn": new Date(),
-				"CreatedBy": thisUser
+				//"CreatedBy": thisUser
 			}
 		collection.insert(record, function(err, doc) {
 			if(err){
@@ -96,14 +115,14 @@ exports.add = function(db){
 			}
 			else {
 				if (req.session.currentUser && req.session.currentUser.length>0) {
-					res.render('buttons', 
+					res.render('home', 
 						{ 
 							title: currentUser.username, 
 							'currentUser' : req.session.currentUser
 						}
 					);
 				} else {
-					res.render('login', { title: 'Hangdog Happenstance' });
+					res.render('login', { title: 'Login Successfully created for ' + record.username });
 				}
 			}
 		});
@@ -120,12 +139,12 @@ exports.edit = function(db){
 			var project = { _id : BSON.ObjectID.createFromHexString(req.query._id) };
 			collection.remove(project, function(err, doc) {
 				if(err){
-					res.send("Psh what database");
+					res.send("There is no database!");
 				}
 				else {
 					console.log("Record deleted successful");
-					res.location("dashboard");
-					res.redirect("dashboard");
+					res.location("/");
+					res.redirect("/");
 				}
 			});
 		} else if (req.body['edit']==='') {
@@ -162,8 +181,8 @@ exports.edit = function(db){
 				}
 				else {
 					console.log("Record updated successful");
-					res.location("dashboard");
-					res.redirect("dashboard");
+					res.location("/");
+					res.redirect("/");
 				}
 			});
 		} else {

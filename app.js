@@ -7,7 +7,8 @@ var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var friend = require('./routes/friend');
-
+var like = require('./routes/likes');
+var mail = require('./routes/mail');
 
 var http = require('http');
 var path = require('path');
@@ -51,9 +52,15 @@ var auth = express.basicAuth(function(user, pass, callback) {
 
 //app.get('/', routes.index);
 app.get('/', routes.index);
+//user pages
 app.get('/users', user.list(db));
 app.get('/newuser', user.callNew);   //trying to get autehntication working
 app.get('/viewuser', user.record(db));
+app.get('/viewotheruser', user.otherrecord(db));
+//like pages
+app.get('/newlike', like.callNew); 
+app.post('/addlike', like.add(db));
+app.get('/viewlike', like.record(db));
 
 /* Eric Testing Start */
 app.all("/friend/api/:action",friend.api(db));
@@ -61,16 +68,19 @@ app.get('/friend/list', friend.list);
 app.get('/friend/find', friend.find);
 app.get('/friend/discover', friend.discover);
 /* Eric Testing End */
-app.get('/likeStuff', routes.dashboard(db));
+app.get('/likeStuff', routes.likeStuff(db));
 app.get('/help', routes.help(db));
 app.get('/aboutUs', routes.aboutUs(db));
-app.get('/mail', routes.mail(db));
+//app.get('/mail', routes.mail(db));
 app.get('/friends', routes.friends(db));
+
+app.get('/mail', mail.list);
+app.get('/compose', mail.compose);
 
 app.get('/login', user.login);
 app.get('/logout', function (req, res) {
   delete req.session.authStatus;
-  delete req.session.currentUser
+  delete req.session.currentUser;
   res.send([
     'You are now logged out.',
     '&lt;br/>',
@@ -81,7 +91,8 @@ app.get('/logout', function (req, res) {
 app.post('/adduser', user.add(db));
 app.post('/login', user.checklogin(db));
 app.post('/edituser', user.edit(db));
-
+app.post('/editlike', like.edit(db));
+app.post('/query_mail', mail.query);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

@@ -13,7 +13,7 @@ exports.index = function(req, res){
 	if (req.session.currentUser!=undefined) {
   		res.render('home', 
   			{ 
-  				title: req.session.currentUser.username, 
+  				title: " Welcome " + req.session.currentUser.username, 
   				currentUser : req.session.currentUser
   			}
   		);
@@ -23,25 +23,29 @@ exports.index = function(req, res){
   	}
 };
 
-exports.dashboard = function(db){
+exports.likeStuff = function(db){
 	return function(req, res){
-		console.log("going into dasboard")
+		console.log("going into likeStuff")
 		req.session.curRecord = {};
 		var collection = db.get('accounts');
-		var collection1 = db.get('Projects');
-		var collection2 = db.get('Tasks');
-		var collection3 = db.get('Timesheets');
-		
-		collection.find({},{}, function(e, docs){
-			collection1.find({},{}, function(e,proj){
-				collection2.find({}, {}, function(e, task) {
-					collection3.find({}, {}, function(e, timesheet) {
+		var collection1 = db.get('likes');
+		var collection2 = db.get('likes');
+		var collection3 = db.get('likes');
+		console.log(req.query._id);
+		var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+		console.log(p_id);
+		collection.find({"_id": {$nin:[p_id]}},{}, function(e, usr){
+			collection1.find({"category":"Books"},{}, function(e, book){
+				collection2.find({"category":"Movies"}, {}, function(e, movie) {
+					collection3.find({"category":"Searches"}, {}, function(e, search) {
+						console.log(movie);
 						res.render('likeStuff', {
-							"dashboard": docs,
-							"projectlist": proj,
-							"tasklist": task,
-							"timesheetlist" : timesheet,
-							currentUser : req.session.currentUser
+							"dashboard": usr,
+							"booklist": book,
+							"movielist": movie,
+							"searchlist" : search,
+							currentUser : req.session.currentUser,
+							title: "Like Stuff"
 						});
 					});
 				});
