@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  padding: 10px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -13,6 +13,10 @@ a {
 }
 
 
+#AddUser{
+	padding-left: 5%;
+	padding-top: 5%
+}
 #AddUser input{
 	width: 200px;
 }
@@ -49,8 +53,63 @@ a {
 th {
 	color: #00b7FF;
 }
+
 .shadow {
    -moz-box-shadow:    inset 0 0 10px #000000;
    -webkit-box-shadow: inset 0 0 10px #000000;
    box-shadow:         inset 0 0 10px #000000;
+}
+
+.box
+{
+	border:2px solid #a1a1a1;
+	padding:0px 5px; 
+	background:white;
+	margin-left:5px;
+	margin-top:5px;
+	margin-bottom:5px;
+	height:200px;
+	width:200px;
+	float:left;
+	border-radius:10px;
+	text-align:left;
+	text-shadow:1px 0px 0px #ffffff;
+	display:inline-block;
+	vertical-align: center;
+}
+.box:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #d1c2d1), color-stop(1, #f9f9f9) );
+	background:-moz-linear-gradient( center top, #d1c2d1 5%, #f9f9f9 50% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d1c2d1', endColorstr='#f9f9f9');
+	background-color:#d1c2d1;
+}.box:active {
+	position:relative;
+	top:1px;
+}
+header {
+  padding: 1px 0 1px 0;
+  //background: white;
+  overflow: auto;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+/*
+h1 {
+  font-family: 'Ubuntu', sans-serif;
+  font-style: italic;
+  font-size: 3em;
+  color: #b33;
+  float: left;
+  width: 570px;
+}
+*/
+header nav#right {
+  float: right;
+  //width: 400px;
+}
+
+header nav#left {
+  float: left;
+  //width: 285px;
 }

@@ -1,15 +1,7 @@
 extends layout
 
 block content
-	if currentUser.Role==='Admin'
-		.right.dash
-			a(href='/logout').btn.btn-danger Logout
-			a.btn(href='/').btn-warning Home
-		label User: #{currentUser.username}
-		label    |    
-		label Role: #{currentUser.Role}
-
-	h1= title
+	//h1= title
 	form#AddUser(role="form", method="post",action="/adduser")
 		.form-group
 			label Enter User Name
@@ -40,7 +32,7 @@ block content
 				option(value="Supervisor") Supervisor
 				option(value="Contractor", selected="selected") Contractor
 				
-		button#btnSubmit(type="submit") submit
+		button#btnSubmit(type="submit").btn.btn-danger submit
 		if messges
 			each msg, i in messges
 				p #{msg.msg}	

@@ -1,21 +1,19 @@
 extends layout
 
 block content
-	h1= title
-	form#AddUser(role="form", method="post",action="/login")
-		.form-group
-			label Enter User Name 
-			input.form-control(type="text", placeholder="username", name="username")
-		.form-group
-			label(for="userpassword") Enter Password
-			input.form-control#inputUserPassword(type="password"
-				, placeholder="userpassword", name="userpassword")
-		.form-group
-			a(href="newuser") Not Registered User?
-			
+  main
+    form#AddUser(role="form", method="post",action="/login")
+      .form-group
+        label Enter User Name 
+        input.form-control(type="text", placeholder="username", name="username")
+      .form-group
+        label(for="userpassword") Enter Password
+        input.form-control#inputUserPassword(type="password", placeholder="userpassword", name="userpassword")
+      .form-group
+        a(href="newuser") Not Registered User?
 
-		button#btnSubmit(type="submit") submit
-		
-		if (reason) 
-			.form-group
-			label #{reason}
+      button#btnSubmit(type="submit").btn.btn-danger submit
+
+      if (reason) 
+        .form-group
+        label #{reason}
