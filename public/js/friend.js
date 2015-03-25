@@ -26,6 +26,11 @@ var friend = function () {
             var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").first();
             last = last.attr('id').split('-');
             loadData(last[1],limit);
+        },
+        search: function(){
+            var limit = 4;
+            var name = $("input#searchName").val();
+            loadData(0,limit,name);
         }
     };
 
@@ -45,6 +50,8 @@ var friend = function () {
         });
         $("form#searchForm button").click(function(event){
             event.preventDefault();
+            action.search();
+            $("input#searchName").val(""); // Resets the search field
         });
     };
 
