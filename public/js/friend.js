@@ -87,6 +87,7 @@ var friend = function () {
     };
 
     /* display/output functions */
+    /* TODO: needs to be reorganized to come up with and maintain some sort of numerical index instead of id numbers. */
     var output = {
         // existingfriends "users" expects : [{id:"#",name:"Name",img:"url?",match:{Category:30}}]
         existingfriends: function (users) {

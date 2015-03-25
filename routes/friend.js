@@ -15,7 +15,7 @@ exports.api = function (db) {
                 // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
                 //var temp = users.slice(offset, offset + limit);
                 users.find({},'-password',function(err,data){
-                    res.json(data);
+                    res.json(data.slice(offset, offset + limit));
                 });
             },
 
@@ -23,7 +23,7 @@ exports.api = function (db) {
                 // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
                 //var temp = users.slice(offset, offset + limit);
                 users.find({username: username},'-password',function(err,data){
-                    res.json(data);
+                    res.json(data.slice(offset, offset + limit));
                 });
             },
 
@@ -31,7 +31,7 @@ exports.api = function (db) {
                 // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
                 // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
                 users.find({},'-password',function(err,data){
-                    res.json(data);
+                    res.json(data.slice(offset, offset + limit));
                 });
             },
             deletefriend: function (friendid) {
