@@ -14,7 +14,7 @@ exports.api = function (db) {
             existingfriends: function (userid, offset, limit, sort) {
                 // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
                 //var temp = users.slice(offset, offset + limit);
-                users.find({},'-password',function(err,data){
+                users.find({}, '-password', function (err, data) {
                     res.json(data.slice(offset, offset + limit));
                 });
             },
@@ -22,7 +22,7 @@ exports.api = function (db) {
             findfriends: function (username, offset, limit, sort) {
                 // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
                 //var temp = users.slice(offset, offset + limit);
-                users.find({username: username},'-password',function(err,data){
+                users.find({username: {$regex: new RegExp("^" + username.toLowerCase(), "i")}}, '-password', function (err, data) {
                     res.json(data.slice(offset, offset + limit));
                 });
             },
@@ -30,7 +30,7 @@ exports.api = function (db) {
             discoverfriends: function (userid, offset, limit, sort) {
                 // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
                 // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
-                users.find({},'-password',function(err,data){
+                users.find({}, '-password', function (err, data) {
                     res.json(data.slice(offset, offset + limit));
                 });
             },
@@ -55,7 +55,7 @@ exports.api = function (db) {
             }
             if (reply[req.params.action.toLowerCase()].length == 4) {
                 var temp = reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit, 'default');
-                if(typeof temp == "object") {
+                if (typeof temp == "object") {
                     res.json(temp);
                 }
             } else if (reply[req.params.action.toLowerCase()].length == 1) {
