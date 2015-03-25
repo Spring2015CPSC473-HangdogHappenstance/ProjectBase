@@ -30,7 +30,7 @@ var friend = function () {
             loadData(last[1],limit);
         },
         prev: function(){
-            var limit = 4;
+            var limit = -4;
             var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").first();
             last = last.attr('id').split('-');
             loadData(last[1],limit);
@@ -46,7 +46,6 @@ var friend = function () {
     var registerClickhooks = function () {
         $("a.sendmail, a.addfriend, a.deletefriend").click(function (event) {
             event.preventDefault();
-            console.log($(this).attr('href'));
             var arr = $(this).attr('href').replace("#", '').split('-');
             action[arr[0]](arr[1]);
         });
@@ -59,7 +58,7 @@ var friend = function () {
         $("form#searchForm button").click(function(event){
             event.preventDefault();
             action.search();
-            $("input#searchName").val(""); // Resets the search field
+            //$("input#searchName").val(""); // Resets the search field
         });
     };
 
@@ -94,28 +93,28 @@ var friend = function () {
             var userData = $("<div/>", {class: "row existingfriends"});
             $.each(users, function (key, val) {
                 userData.append(
-                    $("<div/>", {class: "col-md-3", id: "userid-" + val.id}).append(
+                    $("<div/>", {class: "col-md-3", id: "userid-" + val._id}).append(
                         $("<div/>", {class: "thumbnail"}).append(
                             // TODO:Swap with user image
                             $("<img/>", {src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjQ2ODc1IiB5PSIxMDAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MTFwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj4yNDJ4MjAwPC90ZXh0PjwvZz48L3N2Zz4="})
                         ).append(
                             $("<div/>", {class: "caption"}).append(
                                 // Swap with user profile URL TODO: DOUBLE CHECK THIS
-                                $("<a/>", {href: "/user/" + val.id}).append(
+                                $("<a/>", {href: "/user/" + val._id}).append(
                                     // Replace with user's display name
-                                    $("<h3/>").text(val.name)
+                                    $("<h3/>").text(val.username)
                                 )
                             ).append(
                                 renderMatches(val)
                             ).append(
                                 $("<div/>", {class: "actions"}).append(
-                                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val.id}).append(
+                                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val._id}).append(
                                         $("<span/>", {class: "glyphicon glyphicon-envelope", "aria-hidden": "true"})
                                     )
                                 ).append(
                                     $("<a/>", {
                                         class: "btn btn-default deletefriend",
-                                        href: "#deletefriend-" + val.id
+                                        href: "#deletefriend-" + val._id
                                     }).append(
                                         $("<span/>", {class: "glyphicon glyphicon-trash", "aria-hidden": "true"})
                                     )
@@ -131,29 +130,29 @@ var friend = function () {
             var userData = $("<div/>", {class: "row findfriends"});
             $.each(users, function (key, val) {
                 userData.append(
-                    $("<div/>", {class: "col-md-3", id: "userid-" + val.id}).append(
+                    $("<div/>", {class: "col-md-3", id: "userid-" + val._id}).append(
                         $("<div/>", {class: "thumbnail"}).append(
                             // Swap with user image
                             $("<img/>", {src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjQ2ODc1IiB5PSIxMDAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MTFwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj4yNDJ4MjAwPC90ZXh0PjwvZz48L3N2Zz4="})
                         ).append(
                             $("<div/>", {class: "caption"}).append(
                                 // Swap with user profile URL
-                                $("<a/>", {href: "/user/" + val.id}).append(
+                                $("<a/>", {href: "/user/" + val._id}).append(
                                     // Replace with user's display name
-                                    $("<h3/>").text(val.name)
+                                    $("<h3/>").text(val.username)
                                 )
                             ).append(
                                 // Create a progress bar generator here
                                 renderMatches(val)
                             ).append(
                                 $("<div/>", {class: "actions"}).append(
-                                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val.id}).append(
+                                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val._id}).append(
                                         $("<span/>", {class: "glyphicon glyphicon-envelope", "aria-hidden": "true"})
                                     )
                                 ).append(
                                     $("<a/>", {
                                         class: "btn btn-default addfriend",
-                                        href: "#addfriend-" + val.id
+                                        href: "#addfriend-" + val._id
                                     }).append(
                                         $("<span/>", {class: "glyphicon glyphicon-plus", "aria-hidden": "true"})
                                     ).append(
@@ -171,29 +170,29 @@ var friend = function () {
             var userData = $("<div/>", {class: "row discoverfriends"});
             $.each(users, function (key, val) {
                 userData.append(
-                    $("<div/>", {class: "col-md-3", id: "userid-" + val.id}).append(
+                    $("<div/>", {class: "col-md-3", id: "userid-" + val._id}).append(
                         $("<div/>", {class: "thumbnail"}).append(
                             // Swap with user image
                             $("<img/>", {src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjQ2ODc1IiB5PSIxMDAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MTFwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj4yNDJ4MjAwPC90ZXh0PjwvZz48L3N2Zz4="})
                         ).append(
                             $("<div/>", {class: "caption"}).append(
                                 // Swap with user profile URL
-                                $("<a/>", {href: "/user/" + val.id}).append(
+                                $("<a/>", {href: "/user/" + val._id}).append(
                                     // Replace with user's display name
-                                    $("<h3/>").text(val.name)
+                                    $("<h3/>").text(val.username)
                                 )
                             ).append(
                                 // Create a progress bar generator here
                                 renderMatches(val)
                             ).append(
                                 $("<div/>", {class: "actions"}).append(
-                                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val.id}).append(
+                                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val._id}).append(
                                         $("<span/>", {class: "glyphicon glyphicon-envelope", "aria-hidden": "true"})
                                     )
                                 ).append(
                                     $("<a/>", {
                                         class: "btn btn-default addfriend",
-                                        href: "#addfriend-" + val.id
+                                        href: "#addfriend-" + val._id
                                     }).append(
                                         $("<span/>", {class: "glyphicon glyphicon-plus", "aria-hidden": "true"})
                                     ).append(
@@ -212,14 +211,13 @@ var friend = function () {
     /* Page specific logic on pageload */
     var loadData = function(offset,limit,extra) {
         var mainElement = $("div.existingfriends, div.discoverfriends, div.findfriends");
-        //console.log(mainElement);
         if (mainElement.length) {
             mainElement = mainElement[0].classList[1];
             switch (mainElement) {
                 case 'discoverfriends':
                 case 'findfriends':
                 case 'existingfriends':
-                    var payload = {offest:offset,limit:limit};
+                    var payload = {offset:offset,limit:limit};
                     if(typeof extra !== "undefined"){
                         payload.extra = extra;
                     }

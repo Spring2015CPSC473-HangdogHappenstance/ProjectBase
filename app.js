@@ -56,7 +56,7 @@ app.get('/newuser', user.callNew);   //trying to get autehntication working
 app.get('/viewuser', user.record(db));
 
 /* Eric Testing Start */
-app.all("/friend/api/:action",friend.api);
+app.all("/friend/api/:action",friend.api(db));
 app.get('/friend/list', friend.list);
 app.get('/friend/find', friend.find);
 app.get('/friend/discover', friend.discover);
