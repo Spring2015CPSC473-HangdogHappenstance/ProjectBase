@@ -1,8 +1,7 @@
 extends layout
 
 block content
-  Welcome #{currentUser.username}
-  a(href='/viewuser?_id=#{currentUser._id}').btn.btn-primary View My Account info
+  h1 Welcome #{currentUser.username}
   a(href='/tasks').btn.btn-primary View My Tasks
   a(href='/timesheets').btn.btn-primary View My Timesheets
   br

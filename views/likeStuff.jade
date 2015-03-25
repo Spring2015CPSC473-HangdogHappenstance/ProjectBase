@@ -1,30 +1,31 @@
 extends layout
 
 block content
+  h1= title
   #container.container
     div("content"='').box
-      a(href="/newuser") +Add Users
-      ul Users
+      //a(href="/newuser") +Add Users
+      ul App Users
         each user, i in dashboard
           li
             a(href="/viewuser?_id=#{user._id}")= user.username
 
     div("content"='').box  
-      a(href="/newproject") +Add Books
-      ul Books-------------
-        each projs, i in projectlist
+      a(href="/newlike") +Add Books
+      ul Books
+        each book, i in booklist
           li
-            a(href="/viewproject?_id=#{projs._id}")= projs.Name
+            a(href="/viewlike?_id=#{book._id}")= book.name
 
     div("content"='').box  
-      a(href="/newproject") +Add Movies
+      a(href="/newlike") +Add Movies
       ul Movies
-        each projs, i in tasklist
+        each movie, i in movielist
           li
-            a(href="/viewproject?_id=#{projs._id}")= projs.Name
+            a(href="/viewlike?_id=#{movie._id}")= movie.name
 
     div("content"='').box  
-      a(href="/newproject") +Searches
+      a(href="/newlike") +Searches
       ul
         each projs, i in timesheetlist
           li

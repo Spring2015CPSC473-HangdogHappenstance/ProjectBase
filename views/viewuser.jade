@@ -1,12 +1,6 @@
 extends layout
 
 block content
-	.right.dash
-		a(href='/logout').btn.btn-danger Logout
-		a.btn(href='/').btn-warning Home
-	label User: #{currentUser.username}
-	label    |    
-	label Role: #{currentUser.Role}
 	h1= title
 	each user, i in userlist
 		form#AddUser(role="form", method="post",action="/edituser?_id=#{user._id}")
@@ -44,9 +38,9 @@ block content
 						
 					label(for="role") Enter Role:
 					select(name="role", value="#{user.Role}")
-						option(value="Admin", selected=(user.Role=="Admin")) Admin
-						option(value="Supervisor", selected=(user.Role=="Supervisor")) Supervisor
-						option(value="Contractor", selected=(user.Role=="Contractor")) Contractor
+						option(value="Free", selected=(user.Role=="Free")) Free Account
+						option(value="Basic", selected=(user.Role=="Basic")) Basic Account
+						option(value="Premium", selected=(user.Role=="Premium")) Premium Account
 				else
 					label(for="status") Status
 					input.form-control#inputUserStatus(type="text", value="#{user.status}"
@@ -56,9 +50,7 @@ block content
 						, name="role" Disabled)										
 			.form-group
 				if IsEnabled===true
-					button#btnSubmit(type="submit", name="edit") Edit User
+					button#btnSubmit(type="submit", name="edit").btn.btn-success Edit Record
 				else
-					button#btnEnabler(type="submit", name="enabler") Enable Edit
-				//button#btnChangePass(type="submit", name="changepass") Change password
-				//button#btnUnlock(type="submit", name="unlock") Unlock Account
-				button#btnUnlock(type="submit", name="delete") Delete Account
+					button#btnEnabler(type="submit", name="enabler").btn.btn-warning Enable Edit
+				button#btnUnlock(type="submit", name="delete").btn.btn-danger Delete Account

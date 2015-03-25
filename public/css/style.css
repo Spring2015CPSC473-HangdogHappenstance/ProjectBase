@@ -30,11 +30,14 @@ a {
 }
 #AddProject input{
 	width: 200px;
+		padding-left: 5%;
+	padding-top: 5%
 }
 
 #AddProject textarea{
 	resize: none; 
 	width: 200px;
+
 }
 
 #AddTask input{
@@ -88,7 +91,7 @@ th {
 }
 header {
   padding: 1px 0 1px 0;
-  //background: white;
+  background: black;
   overflow: auto;
   text-align: center;
   border-bottom: 1px solid #ddd;
@@ -112,4 +115,9 @@ header nav#right {
 header nav#left {
   float: left;
   //width: 285px;
+}
+
+#thisUser {
+	text-align:center;
+	float: center;
 }
