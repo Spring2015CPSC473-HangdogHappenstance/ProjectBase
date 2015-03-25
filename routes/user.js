@@ -1,6 +1,6 @@
 
 /*
- * GET users listing.
+ * GET users records.
  */
 var BSON = require('mongodb').BSONPure,
 	tableName = 'accounts';
