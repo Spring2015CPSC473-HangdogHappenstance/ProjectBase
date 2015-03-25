@@ -6,6 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
+var friend = require('./routes/friend');
 var like = require('./routes/likes');
 var mail = require('./routes/mail');
 
@@ -37,7 +38,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
+    app.locals.pretty = true;
 }
 
 // Asynchronous
@@ -58,6 +60,12 @@ app.get('/newlike', like.callNew);
 app.post('/addlike', like.add(db));
 app.get('/viewlike', like.record(db));
 
+/* Eric Testing Start */
+app.all("/friend/api/:action",friend.api(db));
+app.get('/friend/list', friend.list);
+app.get('/friend/find', friend.find);
+app.get('/friend/discover', friend.discover);
+/* Eric Testing End */
 app.get('/likeStuff', routes.likeStuff(db));
 app.get('/help', routes.help(db));
 app.get('/aboutUs', routes.aboutUs(db));
