@@ -1,11 +1,11 @@
 //
    Created by zaephor on 3/21/15.
 
-extends layout
+extends ../layout
 block content
     div(class="container")
         div(class="row")
-            h1(class="col-md-2") Friends
+            h1(class="col-md-6") Friends
             nav(class="col-md-3 pull-right")
                 ul(class="pagination pull-right")
                     li
@@ -13,3 +13,5 @@ block content
                     li
                         a(href="#",id="next") Next
         div(class="row existingfriends")
+block footer
+  script(src="/js/friend.js")

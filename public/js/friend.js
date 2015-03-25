@@ -40,13 +40,21 @@ var friend = function () {
         },
         /* Runs API calls to get next set of users, and pass that data back to the output functions */
         next: function(){
+            var limit = 4;
             var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").last();
             last = last.attr('id').split('-');
-            console.log((last[1]+1),4);
-            loadData((last[1]+1),4);
+            var offset = (parseInt(last[1])+1);
+            loadData(offset,limit);
         },
         prev: function(){
-            loadData(0,4);
+            var limit = 4;
+            var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").first();
+            last = last.attr('id').split('-');
+            var offset = (parseInt(last[1])-parseInt(limit));
+            if (offset < 0 ){
+                offset = 0;
+            }
+            loadData(offset,limit);
         }
     };
 
