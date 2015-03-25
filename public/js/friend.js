@@ -2,6 +2,52 @@
 var friend = function () {
     "use strict";
 
+    /* Buttons/action functions */
+    var action = {
+        /* Forwards to the sendmail url */
+        sendmail: function (userid) {
+            window.location.href = "/mail/"+userid;
+        },
+        /* Runs API call to add userid to friends list */
+        addfriend: function (userid) {
+        },
+        /* Runs API call to remove userid from friends list */
+        deletefriend: function (userid) {
+        },
+        /* Runs API calls to get next set of users, and pass that data back to the output functions */
+        next: function(){
+            var limit = 4;
+            var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").last();
+            last = last.attr('id').split('-');
+            loadData(last[1],limit);
+        },
+        prev: function(){
+            var limit = 4;
+            var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").first();
+            last = last.attr('id').split('-');
+            loadData(last[1],limit);
+        }
+    };
+
+    /* Click hooks */
+    var registerClickhooks = function () {
+        $("a.sendmail, a.addfriend, a.deletefriend").click(function (event) {
+            event.preventDefault();
+            console.log($(this).attr('href'));
+            var arr = $(this).attr('href').replace("#", '').split('-');
+            action[arr[0]](arr[1]);
+        });
+        $("a#prev,a#next").click(function(event){
+            event.preventDefault();
+            var arr = $(this).attr('id');
+            action[arr]();
+            // getJSON update screen
+        });
+        $("form#searchForm button").click(function(event){
+            event.preventDefault();
+        });
+    };
+
     /* Misc functions */
     var renderMatches = function (data) {
         var progressCluster = $("<div/>", {class: "match"});
@@ -24,54 +70,6 @@ var friend = function () {
             });
         }
         return progressCluster;
-    };
-
-    /* Buttons/action functions */
-    var action = {
-        /* Forwards to the sendmail url */
-        sendmail: function (userid) {
-            window.location.href = "/mail/"+userid;
-        },
-        /* Runs API call to add userid to friends list */
-        addfriend: function (userid) {
-        },
-        /* Runs API call to remove userid from friends list */
-        deletefriend: function (userid) {
-        },
-        /* Runs API calls to get next set of users, and pass that data back to the output functions */
-        next: function(){
-            var limit = 4;
-            var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").last();
-            last = last.attr('id').split('-');
-            var offset = (parseInt(last[1])+1);
-            loadData(offset,limit);
-        },
-        prev: function(){
-            var limit = 4;
-            var last = $("div.existingfriends .col-md-3, div.discoverfriends .col-md-3, div.findfriends .col-md-3").first();
-            last = last.attr('id').split('-');
-            var offset = (parseInt(last[1])-parseInt(limit));
-            if (offset < 0 ){
-                offset = 0;
-            }
-            loadData(offset,limit);
-        }
-    };
-
-    /* Click hooks */
-    var registerClickhooks = function () {
-        $("a.sendmail, a.addfriend, a.deletefriend").click(function (event) {
-            event.preventDefault();
-            console.log($(this).attr('href'));
-            var arr = $(this).attr('href').replace("#", '').split('-');
-            action[arr[0]](arr[1]);
-        });
-        $("a#prev,a#next").click(function(event){
-            event.preventDefault();
-            var arr = $(this).attr('id');
-            action[arr]();
-            // getJSON update screen
-        });
     };
 
     /* display/output functions */
