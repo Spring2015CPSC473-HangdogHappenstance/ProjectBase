@@ -47,8 +47,6 @@ var auth = express.basicAuth(function(user, pass, callback) {
  callback(null /* error */, result);
 });
 
-
-//app.get('/', routes.index);
 app.get('/', routes.index);
 //user pages
 app.get('/users', user.list(db));
@@ -63,11 +61,11 @@ app.get('/viewlike', like.record(db));
 app.get('/likeStuff', routes.likeStuff(db));
 app.get('/help', routes.help(db));
 app.get('/aboutUs', routes.aboutUs(db));
-//app.get('/mail', routes.mail(db));
 app.get('/friends', routes.friends(db));
 
 app.get('/mail', mail.list(db));
 app.get('/compose', mail.compose);
+app.get('/respond', mail.record(db));
 
 app.get('/login', user.login);
 app.get('/logout', function (req, res) {

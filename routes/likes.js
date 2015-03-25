@@ -165,7 +165,7 @@ exports.callNew = function(req, res){
 
 exports.record = function(db){
 	return function(req, res){
-		console.log('project.record', req.query._id);
+		console.log('likes.record', req.query._id);
 		var p_id = BSON.ObjectID.createFromHexString(req.query._id),
 	 		collection = db.get(tableName),
 			collection1 = db.get('Tasks'),

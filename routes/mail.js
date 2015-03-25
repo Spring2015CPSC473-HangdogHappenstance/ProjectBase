@@ -66,7 +66,7 @@ exports.list = function(db) {
 		var collection = db.get(tableName);
 		collection.find({},{}, function(e, message){
 			res.render('mail', {
-				title: 'Mailbox - Show your friends that you exist', 
+				title: 'Mailbox - Responding to message.', 
 				mail: message,
 				currentUser : req.session.currentUser
 			});
@@ -87,7 +87,11 @@ exports.compose = function(req, res) {
 
 exports.add = function(db) {
 	return function(req, res){
-
+		if (req.body['respond']===''){
+			var obj_id = BSON.ObjectID.createFromHexString(req.query._id)
+		} else {
+			var obj_id = '';
+		}
 		var userInfo = {
 				username: req.session.currentUser.username, 
 				_id: req.session.currentUser._id
@@ -102,7 +106,8 @@ exports.add = function(db) {
 	 			"Body": [
 	 				{ "friend_username" : req.body.Message}
 	 			],
-	 			"Read" : false
+	 			"Read" : false,
+	 			"ParentMessage": obj_id
 			}
 
 		console.log("message\n", message);
@@ -120,6 +125,24 @@ exports.add = function(db) {
 		});
 	}
 }
+
+exports.record = function(db){
+	return function(req, res){
+		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
+			collection = db.get(tableName);
+		collection.find({_id: obj_id},{}, function(e, message){
+			console.log(message);
+			for (var t in message)
+				console.log(message[t].Body)
+				res.render('respond', {
+					"mail": message, 
+					"bod": message[t].Body,
+					"IsEnabled": false,
+					"currentUser": req.session.currentUser
+				});
+		});
+	};
+};
 
 exports.query = function(req, res) {
 	console.log(req.body);
