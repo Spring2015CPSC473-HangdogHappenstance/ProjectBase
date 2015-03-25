@@ -9,21 +9,22 @@ block content
 				a(href="compose") Compose
 			li(role="presentation")
 				a(href="#") Clear Message List
-
+    
+	form#AddMail(role="form", method="post",action="/addmail")
 		div(class='jumbotron')
 			div(class='container' id='chat')
 			div(class='col-md-2')
 			div(class='container col-md-8')
 				div(class='input-group')
 					span(class='input-group-addon',id='sizing-addon2') Mail To    
-					input(type='text',class='form-control',placeholder='Username',aria-describedby='sizing-addon2')
+					input(type='text',class='form-control',placeholder='Username', name='Username',aria-describedby='sizing-addon2')
 				div(class='input-group')
 					span(class='input-group-addon',id='sizing-addon2') Subject
-					input(type='text',class='form-control',placeholder='Subject',aria-describedby='sizing-addon2')
+					input(type='text',class='form-control',placeholder='Subject', name='Subject',aria-describedby='sizing-addon2')
 				div(class='input-group')
 					span(class='input-group-addon',id='sizing-addon2') Message   		
-					textarea(class='form-control',rows='5',placeholder="Enter your message here...",style="resize:none")
-					span(class="input-group-addon btn btn-primary glyphicon glyphicon-send")
-					//button(type='button',class='btn btn-default')
+					textarea(class='form-control',rows='5',placeholder="Enter your message here...", name='Message', style="resize:none")
+					//span(class="input-group-addon btn btn-primary glyphicon glyphicon-send", type="submit")
+			button(type='submit',class="input-group-addon btn btn-primary glyphicon glyphicon-send", align='right')
 					//	span(class='glyphicon glyphicon-send', aria-hidden='true') Send
 			div(class='col-md-2')

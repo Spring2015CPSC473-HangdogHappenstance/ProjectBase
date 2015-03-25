@@ -1,3 +1,7 @@
+
+var BSON = require('mongodb').BSONPure,
+	tableName = 'messages';
+
 var someMail = [
 	{"From": "Chris",
 	 "Friend_id" : "1234", 
@@ -15,8 +19,8 @@ var someMail = [
 	{"From": "Sarah", 
 	 "Friend_id" : "5678",
 	 "To": "Mario Andrade", 
-	 "Date": "04/01/15",
 	 "Subject" : "Don't ask!",
+	 "Date": "04/01/15",
 	 "Time" : "6:00:00 PM", 
 	 "Body" : [
 	 			{"friend_username" : "I need a t-t-time machine!"}
@@ -57,14 +61,64 @@ var someMail = [
 	 "Read" : true
 	}];
 
-exports.list = function(req, res){
-	res.render('mail', {title: 'Mailbox - Show your friends that you exist', mail: someMail});
-}
+exports.list = function(db) {
+	return function(req, res){
+		var collection = db.get(tableName);
+		collection.find({},{}, function(e, message){
+			res.render('mail', {
+				title: 'Mailbox - Show your friends that you exist', 
+				mail: message,
+				currentUser : req.session.currentUser
+			});
+		});
+	};
+};
+
 
 exports.compose = function(req, res) {
 	var someFriendsList = [
 	{"Username": "Chris Danan"}];
-	res.render('compose', {title: 'Mailbox - Compose A Message', friends: someFriendsList});
+	res.render('compose', {
+		title: 'Mailbox - Compose A Message', 
+		friends: someFriendsList,
+		currentUser : req.session.currentUser
+	});
+}
+
+exports.add = function(db) {
+	return function(req, res){
+
+		var userInfo = {
+				username: req.session.currentUser.username, 
+				_id: req.session.currentUser._id
+			},
+			message = {
+				"From": userInfo.username,
+	 			"Friend_id" : "2222", 
+	 			"To": req.body.Username,  
+	 			"Date": new Date(),
+	 			"Subject" : req.body.Subject,
+	 			"Time" : "5:00:00 PM",
+	 			"Body": [
+	 				{ "friend_username" : req.body.Message}
+	 			],
+	 			"Read" : false
+			}
+
+		console.log("message\n", message);
+		var collection =db.get(tableName);
+		collection.insert(message, function(err, doc) {
+			if(err){
+				res.send("There is no database!");
+			}
+			else {
+				console.log("Project inserted successful");
+				res.location("mail");
+				res.redirect("mail");
+			}
+			
+		});
+	}
 }
 
 exports.query = function(req, res) {

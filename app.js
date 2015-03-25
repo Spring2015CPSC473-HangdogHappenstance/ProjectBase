@@ -66,7 +66,7 @@ app.get('/aboutUs', routes.aboutUs(db));
 //app.get('/mail', routes.mail(db));
 app.get('/friends', routes.friends(db));
 
-app.get('/mail', mail.list);
+app.get('/mail', mail.list(db));
 app.get('/compose', mail.compose);
 
 app.get('/login', user.login);
@@ -85,6 +85,7 @@ app.post('/login', user.checklogin(db));
 app.post('/edituser', user.edit(db));
 app.post('/editlike', like.edit(db));
 app.post('/query_mail', mail.query);
+app.post('/addmail', mail.add(db));
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

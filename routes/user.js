@@ -69,9 +69,6 @@ exports.otherrecord = function(db){
 	return function(req, res){
 		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
 			collection = db.get(tableName);
-			collection1 = db.get('Timesheets'),
-			collection2 = db.get('Tasks'),
-			collection3 = db.get('Projects')
 		collection.find({_id: obj_id},{}, function(e, account){
 			res.render('viewotheruser', {
 				"userlist": account, 
