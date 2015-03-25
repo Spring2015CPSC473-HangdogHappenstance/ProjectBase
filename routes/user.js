@@ -76,6 +76,7 @@ exports.add = function(db){
     	//if( !errors) {   //Display errors to 
     		//	res.render('newuser', { errors: errors, messges:errors });	
 		//} else {
+		console.log(req.session.currentUser);
 		var collection =db.get(tableName),
 			thisUser = {
 				'_id': req.session.currentUser._id,
@@ -96,7 +97,7 @@ exports.add = function(db){
 			}
 			else {
 				if (req.session.currentUser && req.session.currentUser.length>0) {
-					res.render('buttons', 
+					res.render('home', 
 						{ 
 							title: currentUser.username, 
 							'currentUser' : req.session.currentUser
@@ -120,12 +121,12 @@ exports.edit = function(db){
 			var project = { _id : BSON.ObjectID.createFromHexString(req.query._id) };
 			collection.remove(project, function(err, doc) {
 				if(err){
-					res.send("Psh what database");
+					res.send("There is no database!");
 				}
 				else {
 					console.log("Record deleted successful");
-					res.location("dashboard");
-					res.redirect("dashboard");
+					res.location("/");
+					res.redirect("/");
 				}
 			});
 		} else if (req.body['edit']==='') {
@@ -162,8 +163,8 @@ exports.edit = function(db){
 				}
 				else {
 					console.log("Record updated successful");
-					res.location("dashboard");
-					res.redirect("dashboard");
+					res.location("/");
+					res.redirect("/");
 				}
 			});
 		} else {
