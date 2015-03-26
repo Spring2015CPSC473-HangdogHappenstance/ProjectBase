@@ -69,7 +69,7 @@ var friend = function () {
             $.each(data.match, function (key, val) {
                 progressCluster.append(
 //                    $("<a/>", {href: "/user/" + data.id + "/" + key.toLocaleLowerCase()}).text(key)
-                    $("<a/>", {href: "/user/" + data.id + "/" + key.toLocaleLowerCase()}).text(key)
+                    $("<a/>", {href: "#"}).text(key)
                 ).append(
                     $("<div/>", {class: "progress"}).append(
                         $("<div/>", {
@@ -139,7 +139,8 @@ var friend = function () {
                         ).append(
                             $("<div/>", {class: "caption"}).append(
                                 // Swap with user profile URL
-                                $("<a/>", {href: "/user/" + val._id}).append(
+                                //$("<a/>", {href: "/user/" + val._id}).append(
+                                $("<a/>", {href: "/viewotheruser?_id=" + val._id}).append(
                                     // Replace with user's display name
                                     $("<h3/>").text(val.username)
                                 )
@@ -179,7 +180,8 @@ var friend = function () {
                         ).append(
                             $("<div/>", {class: "caption"}).append(
                                 // Swap with user profile URL
-                                $("<a/>", {href: "/user/" + val._id}).append(
+                                //$("<a/>", {href: "/user/" + val._id}).append(
+                                $("<a/>", {href: "/viewotheruser?_id=" + val._id}).append(
                                     // Replace with user's display name
                                     $("<h3/>").text(val.username)
                                 )
