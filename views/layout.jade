@@ -18,31 +18,20 @@ html
         nav#right
           if (currentUser)
             label#thisUser User: #{currentUser.username}
-<<<<<<< HEAD
-            a(href='http://localhost:2200/logout').btn.btn-danger Logout
-            a(href='http://localhost:2200/friend/discover').btn.btn-success Friends
-            a(href='http://localhost:2200/likeStuff').btn.btn-success Like Stuff
-            a(href='http://localhost:2200/mail').btn.btn-success Mail
-=======
             a(href='/logout').btn.btn-danger Logout
-            a(href='/friend').btn.btn-success Friends
+            a(href='/friend/discover').btn.btn-success Friends
             a(href='/likeStuff').btn.btn-success Like Stuff
             a(href='/mail').btn.btn-success Mail
->>>>>>> 38fd1d58d04eb7083627097fa6bb5dabbd6af882
             a(href='/viewuser?_id=#{currentUser._id}').btn.btn-success Account info
           else
             a(href='http://localhost:2200/Login').btn.btn-warning Log In
             a(href='http://localhost:2200/newuser').btn.btn-warning Register
 
         nav#left
-<<<<<<< HEAD
-          a(href='http://localhost:2200/aboutUs').btn.btn-primary About Us
-          a(href='http://localhost:2200/help').btn.btn-primary Help
-=======
           a(href='/aboutUs').btn.btn-primary About Us
           a(href='/help').btn.btn-primary Help
->>>>>>> 38fd1d58d04eb7083627097fa6bb5dabbd6af882
           if (currentUser)
             a(href='/').btn.btn-primary Hangdog Happenstance
 
     block content
+    block footer
