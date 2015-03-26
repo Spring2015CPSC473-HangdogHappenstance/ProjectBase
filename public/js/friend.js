@@ -6,7 +6,7 @@ var friend = function () {
     var action = {
         /* Forwards to the sendmail url */
         sendmail: function (userid) {
-            window.location.href = "/compose"+userid;
+            window.location.href = "/compose?_id="+userid;
         },
         /* Runs API call to add userid to friends list */
         addfriend: function (userid) {
