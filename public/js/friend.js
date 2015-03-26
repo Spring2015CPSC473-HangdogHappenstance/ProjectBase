@@ -6,7 +6,7 @@ var friend = function () {
     var action = {
         /* Forwards to the sendmail url */
         sendmail: function (userid) {
-            window.location.href = "/mail/"+userid;
+            window.location.href = "/compose"+userid;
         },
         /* Runs API call to add userid to friends list */
         addfriend: function (userid) {
@@ -68,6 +68,7 @@ var friend = function () {
         if (typeof data.match != "undefined") {
             $.each(data.match, function (key, val) {
                 progressCluster.append(
+//                    $("<a/>", {href: "/user/" + data.id + "/" + key.toLocaleLowerCase()}).text(key)
                     $("<a/>", {href: "/user/" + data.id + "/" + key.toLocaleLowerCase()}).text(key)
                 ).append(
                     $("<div/>", {class: "progress"}).append(
@@ -101,7 +102,7 @@ var friend = function () {
                         ).append(
                             $("<div/>", {class: "caption"}).append(
                                 // Swap with user profile URL TODO: DOUBLE CHECK THIS
-                                $("<a/>", {href: "/user/" + val._id}).append(
+                                $("<a/>", {href: "/viewotheruser?_id=" + val._id}).append(
                                     // Replace with user's display name
                                     $("<h3/>").text(val.username)
                                 )
