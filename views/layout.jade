@@ -19,17 +19,17 @@ html
           if (currentUser)
             label#thisUser User: #{currentUser.username}
             a(href='/logout').btn.btn-danger Logout
-            a(href='friends').btn.btn-success Friends
-            a(href='likeStuff').btn.btn-success Like Stuff
-            a(href='mail').btn.btn-success Mail
+            a(href='/friend').btn.btn-success Friends
+            a(href='/likeStuff').btn.btn-success Like Stuff
+            a(href='/mail').btn.btn-success Mail
             a(href='/viewuser?_id=#{currentUser._id}').btn.btn-success Account info
           else
             a(href='/Login').btn.btn-warning Log In
             a(href='/newuser').btn.btn-warning Register
 
         nav#left
-          a(href='aboutUs').btn.btn-primary About Us
-          a(href='help').btn.btn-primary Help
+          a(href='/aboutUs').btn.btn-primary About Us
+          a(href='/help').btn.btn-primary Help
           if (currentUser)
             a(href='/').btn.btn-primary Hangdog Happenstance
 
