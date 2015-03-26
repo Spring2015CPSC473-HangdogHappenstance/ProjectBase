@@ -77,7 +77,7 @@ exports.aboutUs = function(db) {
 exports.mail = function(db) {
 	return function(req, res){
 		console.log("going into Mail")
-		res.render('aboutUs', {
+		res.render('mail', {
 			currentUser : req.session.currentUser,
 			title: 'Hangdog Mail' 
 		});
@@ -86,7 +86,7 @@ exports.mail = function(db) {
 exports.friends = function(db) {
 	return function(req, res){
 		console.log("going into friends")
-		res.render('aboutUs', {
+		res.render('friends', {
 			currentUser : req.session.currentUser,
 			title: 'Hangdog friends' 
 		});

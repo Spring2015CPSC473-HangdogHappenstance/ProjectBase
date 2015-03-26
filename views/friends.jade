@@ -1,4 +1,11 @@
 extends layout
 
 block content
-  h1 Welcome To the Friends page
+	div(class='container')
+		ul(class='nav nav-pills',role="tablist")
+			li(role="presentation",class="active")
+				a(href="/friend/discover") Discover Friends
+			li(role="presentation")
+				a(href="/friend/find") find Friends
+			li(role="presentation")
+				a(href="/friend/list") Friends list
