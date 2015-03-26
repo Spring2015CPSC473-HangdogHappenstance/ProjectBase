@@ -11,6 +11,7 @@ exports.api = function (db) {
     return function (req, res) {
         var users = db.get("accounts");
         var likes = db.get("likes");
+        var categories = ["Friends","Books","Movies","Searches"];
 
         var reply = {
             existingfriends: function (userid, offset, limit, sort) {
@@ -18,20 +19,37 @@ exports.api = function (db) {
                 //var temp = users.slice(offset, offset + limit);
                 var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
                 users.find({"_id": {$nin: [p_id]}}, '-password', function (err, data) {
-                    var output = [];
-                    for (i = 0; i < data.length; i++) {
-                        var otherUser = data[i];
-                        likes.find({"userRec._id": userid}, '-userRec -CreatedBy -EnteredOn -_id', function (err, userlikes) { // First get logged in user's data
-                            likes.find({"userRec._id": otherUser._id.toString()}, '-userRec -CreatedBy -EnteredOn -_id', function (err, otherlikes) { // Find other users data
+                    var userIDList = _.pluck(data, '_id');
+                    userIDList = _.map(userIDList,function(value){return value.toString()});
+                    console.log(userIDList);
+                    likes.find({"userRec._id": userid}, '-userRec -CreatedBy -EnteredOn -_id', function (err, userlikes) { // First get logged in user's data
+                        likes.find({"userRec._id": {$in: userIDList}}, '-CreatedBy -EnteredOn -_id', function (err, allLikes) { // Find other users data
+                            var output = [];
+                            for (i = 0; i < userIDList.length; i++) {
+/*
+                                console.log({allLikes:allLikes});
+                                console.log(_.filter(allLikes,function(item){return item.userRec._id == userIDList[i]._id;}));
+                                var otherlikes = [];
+                                for(j=0;j<allLikes.length;j++){
+                                    if(allLikes[j].userRec._id == userIDList[i]._id){
+                                        otherlikes[j] = allLikes[j];
+                                    }
+                                }
+*/
+                                var fauxMatches = {};
+                                _.each(categories,function(category){
+                                    fauxMatches[category] = Math.floor(Math.random()*100);
+                                });
                                 output[i] = {
-                                    _id: otherUser._id,
-                                    username: otherUser.username,
-                                    matches: utility.compareLikes(userlikes, otherlikes)
+                                    _id: data[i]._id,
+                                    username: data[i].username,
+                                    match: fauxMatches
                                 };
-                            });
+                            }
+                            console.log(output);
+                            res.json(output.slice(offset, offset + limit));
                         });
-                    };
-                    res.json(output.slice(offset, offset + limit));
+                    });
                 });
             },
 
@@ -43,7 +61,19 @@ exports.api = function (db) {
                     "_id": {$nin: [p_id]},
                     username: {$regex: new RegExp(username.toLowerCase(), "i")}
                 }, '-password', function (err, data) {
-                    res.json(data.slice(offset, offset + limit));
+                    var output = [];
+                    for (i = 0; i < data.length; i++) {
+                        var fauxMatches = {};
+                        _.each(categories,function(category){
+                            fauxMatches[category] = Math.floor(Math.random()*100);
+                        });
+                        output[i] = {
+                            _id: data[i]._id,
+                            username: data[i].username,
+                            match: fauxMatches
+                        };
+                    }
+                    res.json(output.slice(offset, offset + limit));
                 });
             },
 
@@ -52,11 +82,24 @@ exports.api = function (db) {
                 // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
                 var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
                 users.find({"_id": {$nin: [p_id]}}, '-password', function (err, data) {
-                    res.json(data.slice(offset, offset + limit));
+                    var output = [];
+                    for (i = 0; i < data.length; i++) {
+                        var fauxMatches = {};
+                        _.each(categories,function(category){
+                            fauxMatches[category] = Math.floor(Math.random()*100);
+                        });
+                        output[i] = {
+                            _id: data[i]._id,
+                            username: data[i].username,
+                            match: fauxMatches
+                        };
+                    }
+                    res.json(output.slice(offset, offset + limit));
                 });
             },
             deletefriend: function (friendid) {
                 // remove relationship between logged in user and the friendid
+//                likes.update();
                 return {result: "deleted", error: "none"};
             },
             addfriend: function (friendid) {
@@ -67,6 +110,10 @@ exports.api = function (db) {
 
         var utility = {
             compareLikes: function (data, data2) {
+                console.log({data:data,data2:data2});
+                data = _.pick(data,{});
+                data2 = _.pick(data2,{});
+                // Not sure why, but uniq seems to be doing unions/intersections for some reason...
                 var allCommon = _.uniq(data, data2);
                 if (data.length > 0 && data2.length > 0) {
                     var all = Math.floor((allCommon.length / data.length) * 100);
