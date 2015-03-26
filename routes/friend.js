@@ -99,7 +99,7 @@ exports.api = function (db) {
             },
             deletefriend: function (friendid) {
                 // remove relationship between logged in user and the friendid
-                likes.update();
+//                likes.update();
                 return {result: "deleted", error: "none"};
             },
             addfriend: function (friendid) {
