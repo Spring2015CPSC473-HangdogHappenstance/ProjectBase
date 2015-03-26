@@ -6,9 +6,9 @@
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
-var friend = require('./routes/friend');
 var like = require('./routes/likes');
 var mail = require('./routes/mail');
+var friend = require('./routes/friend');
 
 var http = require('http');
 var path = require('path');
@@ -38,8 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-    app.use(express.errorHandler());
-    app.locals.pretty = true;
+  app.use(express.errorHandler());
 }
 
 // Asynchronous
@@ -60,16 +59,17 @@ app.get('/newlike', like.callNew);
 app.post('/addlike', like.add(db));
 app.get('/viewlike', like.record(db));
 
+app.get('/likeStuff', routes.likeStuff(db));
+app.get('/help', routes.help(db));
+app.get('/aboutUs', routes.aboutUs(db));
+app.get('/friends', routes.friends(db));
+
 /* Eric Testing Start */
 app.all("/friend/api/:action",friend.api(db));
 app.get('/friend/list', friend.list);
 app.get('/friend/find', friend.find);
 app.get('/friend/discover', friend.discover);
 /* Eric Testing End */
-app.get('/likeStuff', routes.likeStuff(db));
-app.get('/help', routes.help(db));
-app.get('/aboutUs', routes.aboutUs(db));
-app.get('/friends', routes.friends(db));
 
 app.get('/mail', mail.list(db));
 app.get('/compose', mail.compose);
