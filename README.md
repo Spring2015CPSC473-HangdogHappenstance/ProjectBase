@@ -7,4 +7,4 @@ __Status:__ Under construction
 
 __Run:__
 
-    $node app.js
+    $ node app.js
