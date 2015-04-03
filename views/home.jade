@@ -1,8 +1,11 @@
 extends layout
 
 block content
-  h1 Welcome #{currentUser.username}
+  h1 Hey, #{currentUser.username}. You've reached the homepage.
+
   //a(href='/timesheets').btn.btn-primary View My Timesheets
+
   br
   br
-  a(href='/likeStuff').btn.btn-warning See Dashboard
+
+  a(href='/likeStuff').btn.btn-warning View Dashboard
