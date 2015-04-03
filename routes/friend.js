@@ -187,7 +187,7 @@ exports.list = function (req, res) {
         res.redirect(307, "/login");
     } else {
         res.render('friend/list', {
-            title: 'List of friends',
+            title: 'Friend List',
             currentUser: req.session.currentUser
         });
     }
@@ -198,7 +198,7 @@ exports.find = function (req, res) {
         res.redirect(307, "/login");
     } else {
         res.render('friend/find', {
-            title: 'Friend search prompt and results',
+            title: 'Friend Search Prompt and Results',
             currentUser: req.session.currentUser
         });
     }
@@ -209,7 +209,7 @@ exports.discover = function (req, res) {
         res.redirect(307, "/login");
     } else {
         res.render('friend/discover', {
-            title: 'Recommended friends/Discover friends',
+            title: 'Recommended Friends/Discover Friends',
             currentUser: req.session.currentUser
         });
     }
