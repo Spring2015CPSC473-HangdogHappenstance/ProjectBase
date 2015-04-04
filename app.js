@@ -64,12 +64,13 @@ app.get('/help', routes.help(db));
 app.get('/aboutUs', routes.aboutUs(db));
 app.get('/friends', routes.friends(db));
 
-/* Eric Testing Start */
+/* Eric Start */
 app.all("/friend/api/:action",friend.api(db));
 app.get('/friend/list', friend.list);
 app.get('/friend/find', friend.find);
 app.get('/friend/discover', friend.discover);
-/* Eric Testing End */
+app.get('/friend/pending', friend.pending);
+/* Eric End */
 
 app.get('/mail', mail.list(db));
 app.get('/compose', mail.compose);

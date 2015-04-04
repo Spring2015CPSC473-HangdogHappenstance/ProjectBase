@@ -128,6 +128,54 @@ var friend = function () {
             });
             $("div.existingfriends").replaceWith(userData);
         },
+      friendspending: function (users) {
+        var userData = $("<div/>", {class: "row friendspending"});
+        $.each(users, function (key, val) {
+          userData.append(
+            $("<div/>", {class: "col-md-3", id: "userid-" + val._id}).append(
+              $("<div/>", {class: "thumbnail"}).append(
+                // TODO:Swap with user image
+                $("<img/>", {src: "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MiAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMjQyIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjkyLjQ2ODc1IiB5PSIxMDAiIHN0eWxlPSJmaWxsOiNBQUFBQUE7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LWZhbWlseTpBcmlhbCwgSGVsdmV0aWNhLCBPcGVuIFNhbnMsIHNhbnMtc2VyaWYsIG1vbm9zcGFjZTtmb250LXNpemU6MTFwdDtkb21pbmFudC1iYXNlbGluZTpjZW50cmFsIj4yNDJ4MjAwPC90ZXh0PjwvZz48L3N2Zz4="})
+              ).append(
+                $("<div/>", {class: "caption"}).append(
+                  // Swap with user profile URL TODO: DOUBLE CHECK THIS
+                  $("<a/>", {href: "/viewotheruser?_id=" + val._id}).append(
+                    // Replace with user's display name
+                    $("<h3/>").text(val.username)
+                  )
+                ).append(
+                  renderMatches(val)
+                ).append(
+                  $("<div/>", {class: "actions"}).append(
+                    $("<a/>", {class: "btn btn-default sendmail", href: "#sendmail-" + val._id}).append(
+                      $("<span/>", {class: "glyphicon glyphicon-envelope", "aria-hidden": "true"})
+                    )
+                  ).append(
+                    $("<a/>", {
+                      class: "btn btn-default addfriend",
+                      href: "#addfriend-" + val._id
+                    }).append(
+                      $("<span/>", {class: "glyphicon glyphicon-plus", "aria-hidden": "true"})
+                    ).append(
+                      $("<span/>", {class: "glyphicon glyphicon-user", "aria-hidden": "true"})
+                    )
+                  ).append(
+                    $("<a/>", {
+                      class: "btn btn-default deletefriend",
+                      href: "#deletefriend-" + val._id
+                    }).append(
+                      $("<span/>", {class: "glyphicon glyphicon-minus", "aria-hidden": "true"})
+                    ).append(
+                      $("<span/>", {class: "glyphicon glyphicon-user", "aria-hidden": "true"})
+                    )
+                  )
+                )
+              )
+            )
+          );
+        });
+        $("div.friendspending").replaceWith(userData);
+      },
         findfriends: function (users) {
             var userData = $("<div/>", {class: "row findfriends"});
             $.each(users, function (key, val) {
@@ -214,12 +262,13 @@ var friend = function () {
 
     /* Page specific logic on pageload */
     var loadData = function(offset,limit,extra) {
-        var mainElement = $("div.existingfriends, div.discoverfriends, div.findfriends");
+        var mainElement = $("div.existingfriends, div.discoverfriends, div.findfriends, div.friendspending");
         if (mainElement.length) {
             mainElement = mainElement[0].classList[1];
             switch (mainElement) {
                 case 'discoverfriends':
                 case 'findfriends':
+                case 'friendspending':
                 case 'existingfriends':
                     var payload = {offset:offset,limit:limit};
                     if(typeof extra !== "undefined"){

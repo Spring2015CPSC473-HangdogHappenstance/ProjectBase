@@ -69,6 +69,58 @@ exports.api = function (db) {
           });
         },
 
+        friendspending: function (userid, offset, limit, sort) {
+          // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
+          //var temp = users.slice(offset, offset + limit);
+          var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+          users.findOne({"_id": {$in: [p_id]}},'friends friendspending',function(err,friendslists){ // Get logged in user's friends
+            var friendspending = [];
+            if(typeof friendslists.friendspending != "undefined"){
+              _.each(friendslists.friendspending, function (friendid) {
+                friendspending.push(BSON.ObjectID.createFromHexString(friendid)); // Convert all friend strings to hex items
+              });
+            }
+            users.find({"_id": {$in: _.uniq(friendspending,false)}}, 'username', function (err, userfriends) { // Now get all friends usernames
+              // Have list of users, plus logged in user. Get all relevent user's likes
+              if(userfriends.length){
+                var everyone = friendslists.friendspending;
+                everyone.push(p_id.toString());// Create object of all friends plus logged in user to search with
+                likes.find( // Get all users likes
+                  {"userRec._id": {$in: everyone}},
+                  'category name userRec._id',
+                  function(err,alllikes){
+                    // Have all matches's likes
+//                    console.log(alllikes);
+                    var organizedLikes = {};
+                    var organizedOutput = [];
+                    _.each(alllikes,function(entry){ // reorganize and filter the likes to be easier to compare
+                      if(typeof organizedLikes[entry.userRec._id] == "undefined"){
+                        organizedLikes[entry.userRec._id] = {};
+                      }
+                      if(typeof organizedLikes[entry.userRec._id][entry.category] == "undefined"){
+                        organizedLikes[entry.userRec._id][entry.category] = [];
+                      }
+                      organizedLikes[entry.userRec._id][entry.category].push(entry.name);
+                    });
+                    _.each(userfriends,function(entry){ // Cycle through the friends to compare their like rankings
+                      console.log(entry);
+                      organizedOutput.push({
+                        _id: entry._id,
+                        username: entry.username,
+                        match: utility.compareLikes(organizedLikes[p_id.toString()],organizedLikes[entry._id])
+                      });
+                    });
+                    res.json(organizedOutput.slice(offset,offset+limit));
+//                    res.json(userfriends.slice(offset,offset+limit));
+                  });
+                // res.json(userfriends.slice(offset,offset+limit));
+              } else {
+                res.json([{_id:"error",username:"This is awkward... Make some friends."}]);
+              }
+            });
+          });
+        },
+
         findfriends: function (username, offset, limit, sort) {
           // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
           //var temp = users.slice(offset, offset + limit);
@@ -293,6 +345,17 @@ exports.list = function (req, res) {
   } else {
     res.render('friend/list', {
       title: 'List of friends',
+      currentUser: req.session.currentUser
+    });
+  }
+};
+/* List friend requests */
+exports.pending = function (req, res) {
+  if (typeof req.session.currentUser == "undefined") {
+    res.redirect(307, "/login");
+  } else {
+    res.render('friend/pending', {
+      title: 'Friend Requests',
       currentUser: req.session.currentUser
     });
   }
