@@ -1,9 +1,16 @@
-//body {background-color:#252627;}
+/* Written by scienceiscool
+   References: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+*/
 
-body {background-color:lightblue;}
+body {
+  color: white;
+  width: auto;
+  background-color: #E62236;
+}
 
-.btn
-{
-	padding:2px;
-	margin-right: 1px;
+.btn {
+  font: 15px/15px white;
+  font-family: "Arial", sans-serif;
+  padding: 6px;
+  margin-left: 1px;
 }

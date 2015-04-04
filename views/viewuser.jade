@@ -5,7 +5,7 @@ block content
 	each user, i in userlist
 		form#AddUser(role="form", method="post",action="/edituser?_id=#{user._id}")
 			.form-group
-				label Enter User Name
+				label Enter Username
 				if IsEnabled===true
 					input.form-control#inputUserName(type="text", placeholder="username"
 						, name="username" value="#{user.username}")
@@ -30,14 +30,14 @@ block content
 										
 			.form-group
 				if IsEnabled===true
-					label(for="status") Enter Status:
-					select(name="status", value="#{user.status}")
+					label(for="status") Choose Status:
+					select#Dropdown(name="status", value="#{user.status}")
 						option(value="Initialized", selected=user.status=="Initialized") Initialized
 						option(value="Active", selected=user.status=="Active") Active
 						option(value="Locket Out", selected=user.status=="Locked Out") Locked Out
 						
-					label(for="role") Enter Role:
-					select(name="role", value="#{user.Role}")
+					label(for="role") Choose Role:
+					select#Dropdown(name="role", value="#{user.Role}")
 						option(value="Free", selected=(user.Role=="Free")) Free Account
 						option(value="Basic", selected=(user.Role=="Basic")) Basic Account
 						option(value="Premium", selected=(user.Role=="Premium")) Premium Account

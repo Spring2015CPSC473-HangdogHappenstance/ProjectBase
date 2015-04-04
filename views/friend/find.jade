@@ -5,13 +5,19 @@ extends ../layout
 block content
   div(class='container')
     ul(class='nav nav-pills',role="tablist")
-      li(role="presentation",class="active")
+      li(class="not-selected", role="presentation")
         a(href="/friend/discover") Discover Friends
-      li(role="presentation")
+        // scienceiscool edited this section,
+        // took the class="active" that was originally above
+        // the "Discover Friends" list item and put it here in
+        // the following line - where it belongs.
+        // This fixed a bug, where no matter which tab was pressed,
+        // only the "Discover Friends" tab would look selected.
+      li(class="active", role="presentation")
         a(href="/friend/find") Find Friends
-      li(role="presentation")
+      li(class="not-selected", role="presentation")
         a(href="/friend/pending") Friend Requests
-      li(role="presentation")
+      li(class="not-selected", role="presentation")
         a(href="/friend/list") Friends list
   div(class="container")
     div(class="row")

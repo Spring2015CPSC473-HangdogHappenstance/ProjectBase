@@ -1,123 +1,68 @@
+/* Written by scienceiscool
+   References:
+     - https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+     - http://stackoverflow.com/questions/9285451/handling-css-id-and-classes-with-spaces
+*/
+
 body {
-  padding: 10px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 15px;
+  font-size: small;
+  font-family: "Arial", sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #141515;
 }
 
-.dash {
-	float: left;
-	width: 30%
+/* Knew how to access the class "nav nav-pills" from
+   http://stackoverflow.com/questions/9285451/handling-css-id-and-classes-with-spaces
+ul .nav.nav-pills {
+  padding: 5px;
+}*/
+
+.form-control { /* This controls the text being typed into a text box on the log in or create account page */
+  color: black;
 }
 
-
-#AddUser{
-	padding-left: 5%;
-	padding-top: 5%
-}
-#AddUser input{
-	width: 200px;
-}
-#AddTimesheet input{
-	width: 200px;
+.row .col-md-6 {
+  font-size: x-large;
+  /*text-align: center;*/
 }
 
-#AddTimesheet textarea{
-	resize: none; 
-	width: 200px;
-}
-#AddProject input{
-	width: 200px;
-		padding-left: 5%;
-	padding-top: 5%
+.row .col-md-4 {
+  font-size: x-large;
+  /*text-align: center;*/
 }
 
-#AddProject textarea{
-	resize: none; 
-	width: 200px;
-
+#AddUser {
+  padding: 6%;
 }
 
-#AddTask input{
-	width: 200px;
+#AddUser input { /* Controls size of text boxes to log in or create account */
+  width: 500px;
 }
 
-#editProject input{
-	width: 500px;
+#Dropdown {
+  margin: 4px;
+  color: #040705;
 }
 
-.table {
-	float:left;
-	width: 1000px;
-}
-
-th {
-	color: #00b7FF;
-}
-
-.shadow {
-   -moz-box-shadow:    inset 0 0 10px #000000;
-   -webkit-box-shadow: inset 0 0 10px #000000;
-   box-shadow:         inset 0 0 10px #000000;
-}
-
-.box
-{
-	border:2px solid #a1a1a1;
-	padding:0px 5px; 
-	background:white;
-	margin-left:5px;
-	margin-top:5px;
-	margin-bottom:5px;
-	height:200px;
-	width:200px;
-	float:left;
-	border-radius:10px;
-	text-align:left;
-	text-shadow:1px 0px 0px #ffffff;
-	display:inline-block;
-	vertical-align: center;
-}
-.box:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #d1c2d1), color-stop(1, #f9f9f9) );
-	background:-moz-linear-gradient( center top, #d1c2d1 5%, #f9f9f9 50% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d1c2d1', endColorstr='#f9f9f9');
-	background-color:#d1c2d1;
-}.box:active {
-	position:relative;
-	top:1px;
-}
 header {
-  padding: 1px 0 1px 0;
-  background: blue;
+  padding: 8px;
+  background: #FC4B1F;
   overflow: auto;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
+  text-align: left;
+  border: 2px #ddd dotted;
 }
 
-/*
-h1 {
-  font-family: 'Ubuntu', sans-serif;
-  font-style: italic;
-  font-size: 3em;
-  color: #b33;
-  float: left;
-  width: 570px;
-}
-*/
 header nav#right {
+  margin: 5px;
   float: right;
-  //width: 400px;
 }
 
 header nav#left {
+  font-style: italic;
+  margin: 6px;
   float: left;
-  //width: 285px;
-}
-
-#thisUser {
-	text-align:center;
-	float: center;
+  width: 200px;
 }

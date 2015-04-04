@@ -13,7 +13,7 @@ exports.index = function(req, res){
 	if (req.session.currentUser!=undefined) {
   		res.render('home', 
   			{ 
-  				title: " Welcome " + req.session.currentUser.username, 
+  				title: " Welcome, " + req.session.currentUser.username + "!", 
   				currentUser : req.session.currentUser
   			}
   		);
@@ -59,7 +59,7 @@ exports.help = function(db) {
 		console.log("going into help")
 		res.render('help', {
 			currentUser : req.session.currentUser,
-			title: 'Hangdog Help' 
+			title: 'Help' 
 		});
 	};
 }
@@ -69,7 +69,7 @@ exports.aboutUs = function(db) {
 		console.log("going into About Us")
 		res.render('aboutUs', {
 			currentUser : req.session.currentUser,
-			title: 'Hangdog About Us' 
+			title: 'About Us' 
 		});
 	};
 }
@@ -79,7 +79,7 @@ exports.mail = function(db) {
 		console.log("going into Mail")
 		res.render('mail', {
 			currentUser : req.session.currentUser,
-			title: 'Hangdog Mail' 
+			title: 'Mail' 
 		});
 	};
 }
@@ -88,7 +88,7 @@ exports.friends = function(db) {
 		console.log("going into friends")
 		res.render('friends', {
 			currentUser : req.session.currentUser,
-			title: 'Hangdog friends' 
+			title: 'Friends' 
 		});
 	};
 }
