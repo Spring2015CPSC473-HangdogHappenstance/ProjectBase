@@ -15,23 +15,25 @@ html
       header
         h1= title
         div("content"='' "class"='container')
+        nav#left
+          if (currentUser)
+            &nbsp &nbsp
+            label#thisUser User:    #{currentUser.username}
+
         nav#right
           if (currentUser)
-            label#thisUser User: #{currentUser.username}
-            a(href='/logout').btn.btn-danger Logout
+            a(href='/').btn.btn-success Homepage
             a(href='/friend/discover').btn.btn-success Friends
-            a(href='/likeStuff').btn.btn-success Like Stuff
             a(href='/mail').btn.btn-success Mail
-            a(href='/viewuser?_id=#{currentUser._id}').btn.btn-success Account Info
+            a(href='/likeStuff').btn.btn-success Like Stuff
+            a(href='/viewuser?_id=#{currentUser._id}').btn.btn-success Account Info             
+            a(href='/aboutUs').btn.btn-primary About Us
+            a(href='/help').btn.btn-primary Help
+            a(href='/logout').btn.btn-danger Logout
+            &nbsp &nbsp
           else
             a(href='http://localhost:2200/Login').btn.btn-warning Log In
             a(href='http://localhost:2200/newuser').btn.btn-warning Register
-
-        nav#left
-          a(href='/aboutUs').btn.btn-primary About Us
-          a(href='/help').btn.btn-primary Help
-          if (currentUser)
-            a(href='/').btn.btn-primary Hangdog Happenstance
 
     block content
     block footer
