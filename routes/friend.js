@@ -28,9 +28,10 @@ exports.api = function (db) {
                 friends.push(BSON.ObjectID.createFromHexString(friendid)); // Convert all friend strings to hex items
               });
             }
-            users.find({"_id": {$in: _.uniq(friends,false)}}, 'username', function (err, userfriends) { // Now get all friends usernames
+            users.find({"_id": {$in: _.uniq(friends,false)}, "friends": p_id.toString()}, 'username', function (err, userfriends) { // Now get all friends usernames
+              console.log(userfriends);
               // Have list of users, plus logged in user. Get all relevent user's likes
-              if(userfriends.length){
+              if(typeof userfriends !== "undefined" && userfriends.length > 0){
                 var everyone = friendslists.friends;
                 everyone.push(p_id.toString());// Create object of all friends plus logged in user to search with
                 likes.find( // Get all users likes

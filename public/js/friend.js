@@ -13,7 +13,11 @@ var friend = function () {
             var payload = {extra:userid};
             $.post('/friend/api/addfriend',payload,function(response){
               console.log(response);
-              loadData(0,4);
+              if($("input#searchName").val() == undefined){
+                loadData(0,4);
+              } else {
+               action.search();
+              }
             },"json");
         },
         /* Runs API call to remove userid from friends list */
