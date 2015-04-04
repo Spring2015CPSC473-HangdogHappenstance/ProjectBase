@@ -5,7 +5,7 @@ extends ../layout
 block content
     div(class='container')
         ul(class='nav nav-pills',role="tablist")
-            li(role="presentation")
+            li(class="not-selected", role="presentation")
                 a(href="/friend/discover") Discover Friends
             // scienceiscool edited this section,
             // took the class="active" that was originally above
@@ -15,7 +15,7 @@ block content
             // only the "Discover Friends" tab would look selected.
             li(role="presentation", class="active")
                 a(href="/friend/find") Find Friends
-            li(role="presentation")
+            li(class="not-selected", role="presentation")
                 a(href="/friend/list") Friend List
                 
     div(class="container")

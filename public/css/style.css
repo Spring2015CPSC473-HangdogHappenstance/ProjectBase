@@ -1,5 +1,7 @@
 /* Written by scienceiscool
-   Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+   References:
+     - https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+     - http://stackoverflow.com/questions/9285451/handling-css-id-and-classes-with-spaces
 */
 
 body {
@@ -10,6 +12,22 @@ body {
 
 a {
   color: #141515;
+}
+
+/* Knew how to access the class "nav nav-pills" from
+   http://stackoverflow.com/questions/9285451/handling-css-id-and-classes-with-spaces
+ul .nav.nav-pills {
+  padding: 5px;
+}*/
+
+.row .col-md-6 {
+  font-size: x-large;
+  text-align: center;
+}
+
+.row .col-md-4 {
+  font-size: x-large;
+  text-align: center;
 }
 
 #AddUser {
