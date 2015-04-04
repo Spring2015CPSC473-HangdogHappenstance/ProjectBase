@@ -15,7 +15,8 @@ body {
  background-color: transparent;
 }
 .jumbotron .btn {
- font-size: 21px;
+ /*font-size: 21px;*/
+ font-size: 15px;
  padding: 14px 24px;
 }
 
