@@ -80,9 +80,7 @@ app.get('/logout', function (req, res) {
   delete req.session.authStatus;
   delete req.session.currentUser;
   res.send([
-    'You are now logged out.',
-    '&lt;br/>',
-    '<a href="./login">Return to the login page. You will have to log in again.</a>',
+    'You are now logged out. <a href="./login">Click here to log in again.</a>',
   ].join(''));
 });
 
