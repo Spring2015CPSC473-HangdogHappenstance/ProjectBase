@@ -38,7 +38,6 @@ exports.api = function(db) {
               },
               "friends": p_id.toString()
             }, "username", function(err, userfriends) { // Now get all friends usernames
-              console.log(userfriends);
               // Have list of users, plus logged in user. Get all relevent user's likes
               if (typeof userfriends !== "undefined" && userfriends.length > 0) {
                 var everyone = friendslists.friends;
@@ -52,7 +51,6 @@ exports.api = function(db) {
                   "category name userRec._id",
                   function(err, alllikes) {
                     // Have all matches's likes
-                    //                    console.log(alllikes);
                     var organizedLikes = {};
                     var organizedOutput = [];
                     _.each(alllikes, function(entry) { // reorganize and filter the likes to be easier to compare
@@ -65,7 +63,6 @@ exports.api = function(db) {
                       organizedLikes[entry.userRec._id][entry.category].push(entry.name);
                     });
                     _.each(userfriends, function(entry) { // Cycle through the friends to compare their like rankings
-                      console.log(entry);
                       organizedOutput.push({
                         _id: entry._id,
                         username: entry.username,
@@ -119,7 +116,6 @@ exports.api = function(db) {
                   "category name userRec._id",
                   function(err, alllikes) {
                     // Have all matches's likes
-                    //                    console.log(alllikes);
                     var organizedLikes = {};
                     var organizedOutput = [];
                     _.each(alllikes, function(entry) { // reorganize and filter the likes to be easier to compare
@@ -132,7 +128,6 @@ exports.api = function(db) {
                       organizedLikes[entry.userRec._id][entry.category].push(entry.name);
                     });
                     _.each(userfriends, function(entry) { // Cycle through the friends to compare their like rankings
-                      console.log(entry);
                       organizedOutput.push({
                         _id: entry._id,
                         username: entry.username,
@@ -180,7 +175,6 @@ exports.api = function(db) {
                 "category name userRec._id",
                 function(err, alllikes) {
                   // Have all matches's likes
-                  //                  console.log(alllikes);
                   var organizedLikes = {};
                   var organizedOutput = [];
                   _.each(alllikes, function(entry) { // reorganize and filter the likes to be easier to compare
@@ -193,7 +187,6 @@ exports.api = function(db) {
                     organizedLikes[entry.userRec._id][entry.category].push(entry.name);
                   });
                   _.each(matches, function(entry) { // Cycle through the friends to compare their like rankings
-                    console.log(entry);
                     organizedOutput.push({
                       _id: entry._id,
                       username: entry.username,
@@ -250,7 +243,6 @@ exports.api = function(db) {
                   "category name userRec._id",
                   function(err, alllikes) {
                     // Have all matches's likes
-                    //                    console.log(alllikes);
                     var organizedLikes = {};
                     var organizedOutput = [];
                     _.each(alllikes, function(entry) { // reorganize and filter the likes to be easier to compare
@@ -263,7 +255,6 @@ exports.api = function(db) {
                       organizedLikes[entry.userRec._id][entry.category].push(entry.name);
                     });
                     _.each(newpeople, function(entry) { // Cycle through the friends to compare their like rankings
-                      console.log(entry);
                       organizedOutput.push({
                         _id: entry._id,
                         username: entry.username,
@@ -389,10 +380,6 @@ exports.api = function(db) {
 
       var utility = {
         compareLikes: function(data, data2) {
-          console.log({
-            data: data,
-            data2: data2
-          });
           var categories = [];
           var replydata = {};
           _.each(Object.keys(data), function(entry) {
@@ -423,15 +410,12 @@ exports.api = function(db) {
               }
             }
           });
-          console.log(replydata);
           return replydata;
         }
       };
 
       var action = req.params.action.toLowerCase();
-      console.log(reply[action]);
       if (typeof reply[action] !== "undefined") {
-        //        console.log(req);
         // Get logged in user's #id number
         var extra = req.session.currentUser._id; // TODO: loggedInUserID, should be pulled from user session somewhere
         if (typeof req.body.extra !== "undefined") { // If API passsed an "extra" param, means that we need to search something specific

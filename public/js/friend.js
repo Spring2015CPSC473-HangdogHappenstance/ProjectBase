@@ -14,7 +14,6 @@ var friend = function() {
         extra: userid
       };
       $.post("/friend/api/addfriend", payload, function(response) {
-        console.log(response);
         if ($("input#searchName")
             .val() === undefined) {
           loadData(0, 4);
@@ -29,7 +28,6 @@ var friend = function() {
         extra: userid
       };
       $.post("/friend/api/deletefriend", payload, function(response) {
-        console.log(response);
         loadData(0, 4);
       }, "json");
     },
