@@ -17,23 +17,21 @@ html
         div("content"='' "class"='container')
         nav#left
           if (currentUser)
-            &nbsp &nbsp
-            label#thisUser Currently logged in as:    #{currentUser.username}
+            label#thisUser Currently logged in as: #{currentUser.username}
 
         nav#right
           if (currentUser)
-            a(href='/').btn.btn-success Homepage
-            a(href='/friend/discover').btn.btn-success Friends
-            a(href='/mail').btn.btn-success Mail
-            a(href='/likeStuff').btn.btn-success Like Stuff
-            a(href='/viewuser?_id=#{currentUser._id}').btn.btn-success Account Info             
+            a(href='/').btn.btn-primary Homepage
+            a(href='/friend/discover').btn.btn-primary Friends
+            a(href='/mail').btn.btn-primary Mail
+            a(href='/likeStuff').btn.btn-primary Like Stuff
+            a(href='/viewuser?_id=#{currentUser._id}').btn.btn-primary Account Info             
             a(href='/aboutUs').btn.btn-primary About Us
             a(href='/help').btn.btn-primary Help
             a(href='/logout').btn.btn-danger Logout
-            &nbsp &nbsp
           else
-            a(href='http://localhost:2200/Login').btn.btn-warning Log In
-            a(href='http://localhost:2200/newuser').btn.btn-warning Register
+            a(href='http://localhost:2200/Login').btn.btn-primary Log In
+            a(href='http://localhost:2200/newuser').btn.btn-primary Register
 
     block content
     block footer
