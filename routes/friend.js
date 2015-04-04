@@ -2,8 +2,7 @@
 /**
  * Created by Eric on 3/21/15.
  */
-var BSON = require("mongodb")
-  .BSONPure;
+var BSON = require("mongodb").BSONPure;
 var _ = require("underscore");
 
 /* The ServerSide API connection to get appropriate data for all the below chunks */
@@ -25,9 +24,7 @@ exports.api = function(db) {
           //var temp = users.slice(offset, offset + limit);
           var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
           users.findOne({
-            "_id": {
-              $in: [p_id]
-            }
+            "_id": {$in: [p_id]}
           }, "friends friendspending", function(err, friendslists) { // Get logged in user's friends
             var friends = [];
             if (typeof friendslists.friends !== "undefined") {
@@ -432,6 +429,7 @@ exports.api = function(db) {
       };
 
       var action = req.params.action.toLowerCase();
+      console.log(reply[action]);
       if (typeof reply[action] !== "undefined") {
         //        console.log(req);
         // Get logged in user's #id number
@@ -440,8 +438,8 @@ exports.api = function(db) {
           /* for existingfriends and discoverfriends, extra should not be set, but for searches in findfriends, extra should be set */
           extra = req.body.extra;
         }
-        if (reply[req.params.action.toLowerCase()].length === 4) {
-          var temp = reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit, "default");
+        if (reply[req.params.action.toLowerCase()].length === 3) {
+          var temp = reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit);
           if (typeof temp === "object") {
             res.json(temp);
           }
