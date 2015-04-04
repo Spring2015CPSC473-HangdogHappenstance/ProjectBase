@@ -21,13 +21,13 @@ html
 
         nav#right
           if (currentUser)
-            a(href='/').btn.btn-warning Homepage
+            a(href='/').btn.btn-success Homepage
             a(href='/friend/discover').btn.btn-warning Friends
             a(href='/mail').btn.btn-warning Mail
             a(href='/likeStuff').btn.btn-warning Like Stuff
-            a(href='/viewuser?_id=#{currentUser._id}').btn.btn-warning Account Info             
-            a(href='/aboutUs').btn.btn-warning About Us
-            a(href='/help').btn.btn-warning Help
+            a(href='/viewuser?_id=#{currentUser._id}').btn.btn-primary Account Info             
+            a(href='/aboutUs').btn.btn-primary About Us
+            a(href='/help').btn.btn-primary Help
             a(href='/logout').btn.btn-danger Logout
           else
             a(href='http://localhost:2200/Login').btn.btn-primary Log In
