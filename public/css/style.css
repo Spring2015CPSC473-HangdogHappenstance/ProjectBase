@@ -20,6 +20,10 @@ ul .nav.nav-pills {
   padding: 5px;
 }*/
 
+.form-control { /* This controls the text being typed into a text box on the log in or create account page */
+  color: black;
+}
+
 .row .col-md-6 {
   font-size: x-large;
   /*text-align: center;*/
