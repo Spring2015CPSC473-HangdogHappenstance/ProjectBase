@@ -12,7 +12,8 @@ var friend = function () {
         addfriend: function (userid) {
             var payload = {extra:userid};
             $.post('/friend/api/addfriend',payload,function(response){
-                console.log(response);
+              console.log(response);
+              loadData(0,4);
             },"json");
         },
         /* Runs API call to remove userid from friends list */
@@ -20,6 +21,7 @@ var friend = function () {
             var payload = {extra:userid};
             $.post('/friend/api/deletefriend',payload,function(response){
                 console.log(response);
+              loadData(0,4);
             },"json");
         },
         /* Runs API calls to get next set of users, and pass that data back to the output functions */

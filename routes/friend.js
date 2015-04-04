@@ -115,7 +115,7 @@ exports.api = function (db) {
                   });
                 // res.json(userfriends.slice(offset,offset+limit));
               } else {
-                res.json([{_id:"error",username:"This is awkward... Make some friends."}]);
+                res.json([{_id:"error",username:"Well... This is awkward too, maybe someone will eventually ask to be your friend?"}]);
               }
             });
           });
