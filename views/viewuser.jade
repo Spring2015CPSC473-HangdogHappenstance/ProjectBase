@@ -31,13 +31,13 @@ block content
 			.form-group
 				if IsEnabled===true
 					label(for="status") Choose Status:
-					select(name="status", value="#{user.status}")
+					select#Dropdown(name="status", value="#{user.status}")
 						option(value="Initialized", selected=user.status=="Initialized") Initialized
 						option(value="Active", selected=user.status=="Active") Active
 						option(value="Locket Out", selected=user.status=="Locked Out") Locked Out
 						
 					label(for="role") Choose Role:
-					select(name="role", value="#{user.Role}")
+					select#Dropdown(name="role", value="#{user.Role}")
 						option(value="Free", selected=(user.Role=="Free")) Free Account
 						option(value="Basic", selected=(user.Role=="Basic")) Basic Account
 						option(value="Premium", selected=(user.Role=="Premium")) Premium Account
