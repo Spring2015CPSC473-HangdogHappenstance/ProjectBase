@@ -4,7 +4,7 @@ block content
 	h1= title
 	form#AddProject(role="form", method="post", action="/addlike")
 		.form-group
-			label(for="category") Select Category
+			label(for="category") Choose Category
 			select(name="category")
 				option(value="Books", selected="selected") Books
 				option(value="Friends") Friends
@@ -20,7 +20,7 @@ block content
 			label(for="sbn") SBN (if book)
 			input.form-control#inputstartdate(type="text", placeholder="SBN", name="sbn")
 
-		button#btnSubmit(type="submit").btn.btn-danger submit
+		button#btnSubmit(type="submit").btn.btn-danger Submit
 		if messges
 			each msg, i in messges
 				p #{msg.msg}

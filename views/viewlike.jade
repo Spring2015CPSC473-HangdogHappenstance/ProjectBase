@@ -6,7 +6,7 @@ block content
 		form#editProject(role="form", method="post", action="/editlike?_id=#{proj._id}")
 			.form-group
 				if IsEnabled===true
-					label(for="category") Enter Category
+					label(for="category") Choose Category
 					select(name="category" value="{proj.category}")
 						option(value="Books", selected=proj.category=="Books") Books
 						option(value="Friends", selected=proj.category=="Friends") Friends
