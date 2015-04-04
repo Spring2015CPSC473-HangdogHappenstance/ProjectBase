@@ -19,15 +19,15 @@ block content
 			input.form-control#inputUserPasswordValid(type="password"
 				, placeholder="confirm user password", name="userpasswordvalid")
 		.form-group
-			label#dropdown(for="status") Choose Status
-			select(name="status")
+			label(for="status") Choose Status
+			select#Dropdown(name="status")
 				option(value="Initialized", selected="selected") Initialized
 				option(value="Active") Active
 				option(value="Locked Out") Locked Out
 				
 		.form-group
-			label#dropdown(for="role") Choose Role
-			select(name="role")
+			label(for="role") Choose Role
+			select#Dropdown(name="role")
 				option(value="Free") Free Account
 				option(value="Basic") Basic Account
 				option(value="Premium", selected="selected") Premium Account
