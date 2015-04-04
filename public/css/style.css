@@ -1,21 +1,27 @@
+/* Written by scienceiscool
+   Reference: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference
+*/
+
+
 body {
-  padding: 10px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 15px;
+  font-size: small;
+  font-family: "Arial", sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #141515;
 }
 
 .dash {
-	float: left;
-	width: 30%
+  float: left;
+  width: 30%;
 }
 
 
 #AddUser{
 	padding-left: 5%;
-	padding-top: 5%
+	padding-top: 5%;
 }
 #AddUser input{
 	width: 200px;
