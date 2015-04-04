@@ -1,27 +1,27 @@
 //
-   Created by zaephor on 3/21/15.
+   Created by Eric on 3/21/15.
 
 extends ../layout
 block content
-    div(class='container')
-        ul(class='nav nav-pills',role="tablist")
-            li(role="presentation",class="active")
-                a(href="/friend/discover") Discover Friends
-            li(role="presentation")
-                a(href="/friend/find") Find Friends
-            li(role="presentation")
-                a(href="/friend/pending") Friend Requests
-            li(role="presentation")
-                a(href="/friend/list") Friends list
-    div(class="container")
-        div(class="row")
-            h1(class="col-md-4") Search for people
-            div(class="col-md-4 pull-right")
-                form(class="form-inline",id="searchForm")
-                    div(class="form-group")
-                        input(type="text",class="form-control",id="searchName",placeholder="Search name")
-                        button(type="submit",class="btn btn-default")
-                            span(class="glyphicon glyphicon-search")
-        div(class="row findfriends")
+  div(class='container')
+    ul(class='nav nav-pills',role="tablist")
+      li(role="presentation",class="active")
+        a(href="/friend/discover") Discover Friends
+      li(role="presentation")
+        a(href="/friend/find") Find Friends
+      li(role="presentation")
+        a(href="/friend/pending") Friend Requests
+      li(role="presentation")
+        a(href="/friend/list") Friends list
+  div(class="container")
+    div(class="row")
+      h1(class="col-md-4") Search for people
+      div(class="col-md-4 pull-right")
+        form(class="form-inline",id="searchForm")
+          div(class="form-group")
+            input(type="text",class="form-control",id="searchName",placeholder="Search name")
+            button(type="submit",class="btn btn-default")
+              span(class="glyphicon glyphicon-search")
+    div(class="row findfriends")
 block footer
   script(src="/js/friend.js")
