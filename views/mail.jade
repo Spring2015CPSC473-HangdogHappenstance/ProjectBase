@@ -25,5 +25,11 @@ block content
 						div(class='col-md-2')
 							if !message.Read
 								span(class="badge") New
-							h5(class='list-group-item-text text-heading')=message.Date
-							h5(class='list-group-item-text text-heading')=message.Time
+
+							//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+							- var date = message.Date;
+							- var currentTimeZoneOffsetinHours = -480;
+							- console.log(currentTimeZoneOffsetinHours);
+							- var offsetTime = new Date(date.getTime() + currentTimeZoneOffsetinHours * 60 * 1000);
+							h5(class='list-group-item-text text-heading')=offsetTime.toLocaleDateString()
+							h5(class='list-group-item-text text-heading')=offsetTime.toLocaleTimeString()
