@@ -13,6 +13,8 @@ block content
 		form#AddMail(role="form", method="post",action="/addmail?_id=#{message._id}")
 			div(class='jumbotron')
 				div(class='container' id='chat')
+					each line in bod
+						p #{message.From} : #{line.friend_username}
 				div(class='col-md-2')
 				div(class='container col-md-8')
 					div(class='input-group')
@@ -22,9 +24,8 @@ block content
 						span(class='input-group-addon',id='sizing-addon2') Subject
 						input(type='text',class='form-control',placeholder='Subject', name='Subject',aria-describedby='sizing-addon2', value="#{message.Subject}")
 					div(class='input-group')
-						each line in bod
-							span(class='input-group-addon',id='sizing-addon2') Message   		
-							textarea(class='form-control',rows='5',placeholder="Enter your message here...", name='Message', style="resize:none") #{message.From} :>>> #{line.friend_username}
-				button(type='submit',class="input-group-addon btn btn-primary glyphicon glyphicon-send", name="respond")
-			
+						span(class='input-group-addon',id='sizing-addon2') Message   		
+						textarea(class='form-control',rows='5',placeholder="Enter your message here...", name='Message', style="resize:none")
+					button(type='submit',class="input-group-button btn btn-primary", name="respond") Send
+						span(class='glyphicon glyphicon-send', aria-hidden='true')
 				div(class='col-md-2')

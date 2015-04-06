@@ -97,7 +97,6 @@ exports.add = function(db) {
 		 	"To": req.body.Username,  
 		 	"Date": new Date(),
 		 	"Subject" : req.body.Subject,
-		 	"Time" : "5:00:00 PM",
 		 	"Body": [
 		 		{ "friend_username" : req.body.Message}
 		 	],
