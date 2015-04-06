@@ -25,6 +25,6 @@ block content
 						each line in bod
 							span(class='input-group-addon',id='sizing-addon2') Message   		
 							textarea(class='form-control',rows='5',placeholder="Enter your message here...", name='Message', style="resize:none") #{message.From} :>>> #{line.friend_username}
-				button(type='submit',class="input-group-addon btn btn-primary glyphicon glyphicon-send", name="respond")
-			
+					button(type='submit',class="input-group-button btn btn-primary", name="respond") Send
+						span(class='glyphicon glyphicon-send', aria-hidden='true')
 				div(class='col-md-2')
