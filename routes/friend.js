@@ -348,6 +348,12 @@ exports.api = function (db) {
                     // Assumed organized as data[cateogory] = [item,item,item]
                     var categories = [];
                     var replydata = {};
+                    if(typeof data === "undefined"){
+                        data = {};
+                    }
+                    if(typeof data2 === "undefined"){
+                        data2 = {};
+                    }
 
                     // Get category labels from both lists
                     _.each(Object.keys(data), function (entry) {
@@ -360,6 +366,12 @@ exports.api = function (db) {
                     categories = _.uniq(categories, true); // Use underscore to ensure that we only have unique entries
                     _.each(categories, function (entry) { // Cycle through each category
                         // Obtain the intersection of likes for each category in both lists
+                        if(typeof data[entry] === "undefined"){
+                            data[entry] = {};
+                        }
+                        if(typeof data2[entry] === "undefined"){
+                            data2[entry] = {};
+                        }
                         var common = _.intersection(data[entry], data2[entry]);
                         if (typeof data[entry] !== "undefined" && typeof data2[entry] !== "undefined") {
                             var tempsize = 0;
