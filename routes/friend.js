@@ -373,7 +373,7 @@ exports.api = function (db) {
                             data2[entry] = {};
                         }
                         var common = _.intersection(data[entry], data2[entry]);
-                        if (typeof data[entry] !== "undefined" && typeof data2[entry] !== "undefined") {
+                        if (data[entry].length > 0 && data2[entry].length > 0) {
                             var tempsize = 0;
                             // use size of largest list as divisor, this ensures both users see same %
                             if (data[entry].length >= data2[entry].length) {
@@ -383,9 +383,9 @@ exports.api = function (db) {
                             }
                             replydata[entry] = Math.round((common.length / tempsize) * 100);
                         } else {
-                            if (typeof data[entry] !== "undefined") {
+                            if (data[entry].length > 0) {
                                 replydata[entry] = Math.round((common.length / data[entry].length) * 100);
-                            } else if (typeof data2[entry] !== "undefined") {
+                            } else if (data2[entry].length > 0) {
                                 replydata[entry] = Math.round((common.length / data2[entry].length) * 100);
                             } else {
                                 replydata[entry] = 0;
