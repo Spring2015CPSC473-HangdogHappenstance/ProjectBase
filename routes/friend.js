@@ -348,6 +348,12 @@ exports.api = function (db) {
                     // Assumed organized as data[cateogory] = [item,item,item]
                     var categories = [];
                     var replydata = {};
+                    if(typeof data === "undefined"){
+                        data = {};
+                    }
+                    if(typeof data2 === "undefined"){
+                        data2 = {};
+                    }
 
                     // Get category labels from both lists
                     _.each(Object.keys(data), function (entry) {
@@ -360,8 +366,14 @@ exports.api = function (db) {
                     categories = _.uniq(categories, true); // Use underscore to ensure that we only have unique entries
                     _.each(categories, function (entry) { // Cycle through each category
                         // Obtain the intersection of likes for each category in both lists
+                        if(typeof data[entry] === "undefined"){
+                            data[entry] = {};
+                        }
+                        if(typeof data2[entry] === "undefined"){
+                            data2[entry] = {};
+                        }
                         var common = _.intersection(data[entry], data2[entry]);
-                        if (typeof data[entry] !== "undefined" && typeof data2[entry] !== "undefined") {
+                        if (data[entry].length > 0 && data2[entry].length > 0) {
                             var tempsize = 0;
                             // use size of largest list as divisor, this ensures both users see same %
                             if (data[entry].length >= data2[entry].length) {
@@ -371,9 +383,9 @@ exports.api = function (db) {
                             }
                             replydata[entry] = Math.round((common.length / tempsize) * 100);
                         } else {
-                            if (typeof data[entry] !== "undefined") {
+                            if (data[entry].length > 0) {
                                 replydata[entry] = Math.round((common.length / data[entry].length) * 100);
-                            } else if (typeof data2[entry] !== "undefined") {
+                            } else if (data2[entry].length > 0) {
                                 replydata[entry] = Math.round((common.length / data2[entry].length) * 100);
                             } else {
                                 replydata[entry] = 0;
