@@ -32,7 +32,7 @@ block content
 										h4(class='list-group-item-heading text-left')=message.From
 										h5(class='list-group-item-heading text-left')=message.Subject
 										- var len = message.Body.length;
-										p(class='list-group-item-text text-left')=message.Body[len-1].friend_username
+										p(class='list-group-item-text text-left', id='brief-message')=message.Body[len-1].friend_username
 									div(class='col-md-2')
 										if !message.Read
 											span(class="badge") New
