@@ -74,7 +74,7 @@ app.get('/friend/pending', friend.pending);
 /* Eric End */
 
 app.get('/mail', mail.list(db));
-//app.get('/compose', mail.compose); unused
+app.get('/compose', mail.compose);
 app.get('/respond', mail.record(db));
 
 app.get('/login', user.login);
