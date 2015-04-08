@@ -1,7 +1,8 @@
 
 var BSON = require('mongodb').BSONPure,
 	tableName = 'messages';
-
+/*
+OLD data used to test before mail was connected to the entire project.
 var someMail = [
 	{"From": "Chris",
 	 "Friend_id" : "1234", 
@@ -60,7 +61,9 @@ var someMail = [
 	 ],
 	 "Read" : true
 	}];
+*/
 
+//Respond to a GET from the user. We get from the database all the messages and render the mail.jade file.
 exports.list = function(db) {
 	return function(req, res){
 		var collection = db.get(tableName);
@@ -74,7 +77,8 @@ exports.list = function(db) {
 	};
 };
 
-
+/*
+OLD route used to test that the GET was working with the global data that was created on this file.
 exports.compose = function(req, res) {
 	var someFriendsList = [
 	{"Username": "Chris Danan"}];
@@ -84,18 +88,23 @@ exports.compose = function(req, res) {
 		currentUser : req.session.currentUser
 	});
 }
+*/
 
+/*This route is taken when a user composes a new message with another user.
+	A new message object is created and added to the database. Once the response
+	is saved in the database, the server redirects the user to mail.jade otherwise
+	known as the list of messages.*/
 exports.add = function(db) {
 	return function(req, res){
 		var userInfo = {
 			username: req.session.currentUser.username, 
 			_id: req.session.currentUser._id
 		},		
-		message = {
+		message = { //Message Template taken 
 			"From": userInfo.username,
-		 	"Friend_id" : "2222", 
+		 	//"Friend_id" : "2222",  This data is used before _id from the db was used.
 		 	"To": req.body.Username,  
-		 	"Date": new Date(),
+		 	"Date": new Date(), //Timestamp, taken in UTC
 		 	"Subject" : req.body.Subject,
 		 	"Body": [
 		 		{ "friend_username" : req.body.Message}
@@ -146,6 +155,8 @@ exports.add = function(db) {
 	}
 }
 
+/*This route is to update the message that is currently viewed by the user as Read, and then display,
+  said message, along with a response page.*/
 exports.record = function(db){
 	return function(req, res){
 		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
@@ -164,7 +175,8 @@ exports.record = function(db){
 		});
 	};
 };
-
+/*
+OLD route that was used to test whether the global data would be able to be returned to client side js which got scrapped.
 exports.query = function(req, res) {
 	console.log(req.body);
 	var object = someMail.forEach(function (values) {
@@ -179,4 +191,4 @@ exports.query = function(req, res) {
 		//not working
 		res.json(object);
 	});
-}
+}*/
