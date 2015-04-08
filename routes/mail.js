@@ -150,6 +150,7 @@ exports.record = function(db){
 	return function(req, res){
 		var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
 			collection = db.get(tableName);
+		collection.update({_id: obj_id}, {$set: {"Read" : true}});
 		collection.find({_id: obj_id},{}, function(e, message){
 			console.log(message);
 			for (var t in message)
