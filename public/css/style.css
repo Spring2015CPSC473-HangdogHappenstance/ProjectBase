@@ -47,6 +47,10 @@ ul .nav.nav-pills {
   color: #040705;
 }
 
+option {
+  color:black;
+}
+
 header {
   padding: 8px;
   background: #FC4B1F;
