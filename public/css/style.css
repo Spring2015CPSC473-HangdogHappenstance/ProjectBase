@@ -47,8 +47,11 @@ ul .nav.nav-pills {
   color: #040705;
 }
 
+select {
+  color: black;
+}
 option {
-  color:black;
+  color: black;
 }
 
 header {
