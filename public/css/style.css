@@ -66,3 +66,12 @@ header nav#left {
   float: left;
   width: 200px;
 }
+
+/*Obtained from:
+http://stackoverflow.com/questions/21447269/how-to-limit-the-length-of-text-in-a-paragraph*/
+#brief-message {
+     width: 750px;
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+}
