@@ -7,8 +7,7 @@ block content
 					span(class="badge")
 			li(role="presentation",class="active")
 				a(href="compose") Compose
-			li(role="presentation")
-				a(href="#") Clear Message List
+				
 	each message in mail
 		form#AddMail(role="form", method="post",action="/addmail?_id=#{message._id}")
 			div(class='jumbotron')

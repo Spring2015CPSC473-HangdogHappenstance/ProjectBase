@@ -1,5 +1,6 @@
 extends layout
 block content
+	//Navigation for mail
 	div(class='container')
 		ul(class='nav nav-pills',role="tablist")
 			li(role="presentation")
@@ -7,9 +8,9 @@ block content
 					span(class="badge")
 			li(role="presentation",class="active")
 				a(href="compose") Compose
-			li(role="presentation")
-				a(href="#") Clear Message List
     
+    //This form is used to make POST back to the server with a new message being composed from the user to
+    //another.
 	form#AddMail(role="form", method="post",action="/addmail")
 		div(class='jumbotron')
 			div(class='container' id='chat')
