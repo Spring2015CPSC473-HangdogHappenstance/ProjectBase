@@ -77,18 +77,15 @@ exports.list = function(db) {
 	};
 };
 
-/*
-OLD route used to test that the GET was working with the global data that was created on this file.
 exports.compose = function(req, res) {
-	var someFriendsList = [
-	{"Username": "Chris Danan"}];
+	/*var someFriendsList = [
+	{"Username": "Chris Danan"}]; unused test data*/
 	res.render('compose', {
 		title: 'Mailbox - Compose A Message', 
-		friends: someFriendsList,
+		//friends: someFriendsList, unused param
 		currentUser : req.session.currentUser
 	});
 }
-*/
 
 /*This route is taken when a user composes a new message with another user.
 	A new message object is created and added to the database. Once the response
@@ -174,7 +171,7 @@ exports.record = function(db){
 				});
 		});
 	};
-};
+}
 /*
 OLD route that was used to test whether the global data would be able to be returned to client side js which got scrapped.
 exports.query = function(req, res) {
