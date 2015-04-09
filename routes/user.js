@@ -19,39 +19,20 @@ exports.list = function (db) {
     };
 };
 
+
 exports.record = function (db) {
     "use strict";
     return function (req, res) {
         var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
             collection = db.get(tableName);
-        var collection1 = db.get("Timesheets"),
-            collection2 = db.get("Tasks"),
-            collection3 = db.get("Projects");
         collection.find({_id: obj_id}, {}, function (e, account) {
             console.log("account search for:", req.query._id);
             req.session.curRecord = {"table": tableName, Record: account};
-            collection1.find({"user": req.query._id}, {}, function (e, timesheet) {
-                var filter = [];
-                for (var rec in timesheet) {
-                    filter.push(BSON.ObjectID.createFromHexString(timesheet[rec].Task));
-                }
-                collection2.find({_id: {$in: filter}}, {}, function (e, task) {
-                    var filter = [];
-                    for (var t in task) {
-                        filter.push(BSON.ObjectID.createFromHexString(task[t].Project));
-                    }
-                    collection3.find({_id: {$in: filter}}, {}, function (e, proj) {
-                        req.session.oldValues = account;
-                        res.render("viewuser", {
-                            "userlist": account,
-                            "timesheetlist": timesheet,
-                            "tasklist": task,
-                            "projectlist": proj,
-                            "IsEnabled": false,
-                            "currentUser": req.session.currentUser
-                        });
-                    });
-                });
+            req.session.oldValues = account;
+            res.render("viewuser", {
+                "userlist": account,
+                "IsEnabled": false,
+                "currentUser": req.session.currentUser
             });
         });
     };
