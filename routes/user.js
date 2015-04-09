@@ -9,23 +9,11 @@ exports.list = function (db) {
     "use strict";
     return function (req, res) {
         var collection = db.get(tableName);
-        var collection1 = db.get("Tasks");
-        var collection2 = db.get("Projects");
-        var collection3 = db.get("Timesheets");
 
         collection.find({}, {}, function (e, account) {
-            collection1.find({}, {}, function (e, task) {
-                collection2.find({}, {}, function (e, proj) {
-                    collection3.find({}, {}, function (e, timesheet) {
-                        res.render("users", {
-                            "users": account,
-                            "tasklist": task,
-                            "projectlist": proj,
-                            "timesheetlist": timesheet,
-                            "currentUser": req.session.currentUser
-                        });
-                    });
-                });
+            res.render("users", {
+                "users": account,
+                "currentUser": req.session.currentUser
             });
         });
     };
@@ -185,36 +173,21 @@ exports.edit = function (db) {
         } else {
 
             console.log("exports.edit", req.query._id !== null ? req.query._id : "no value");
-            var obj_id = BSON.ObjectID.createFromHexString(req.query._id),
-                collection1 = db.get("Timesheets"),
-                collection2 = db.get("Tasks"),
-                collection3 = db.get("Projects");
+            var obj_id = BSON.ObjectID.createFromHexString(req.query._id);
+            var IsEnabled = "Disabled";
             if (req.body.enabler === "") {
                 console.log("Enabled");
+                IsEnabled = true;
             } else {
                 console.log("Not Enabled");
+                IsEnabled = "Disabled";
             }
+            console.log("IsEnabled", IsEnabled);
             collection.find({_id: obj_id}, {}, function (e, account) {
-                collection1.find({"user": req.query._id}, {}, function (e, timesheet) {
-                    var filter = [];
-                    for (var rec in timesheet) {
-                        filter.push(BSON.ObjectID.createFromHexString(timesheet[rec].Task));
-                    }
-                    collection2.find({_id: {$in: filter}}, {}, function (e, task) {
-                        var filter = [];
-                        for (var t in task) {
-                            filter.push(BSON.ObjectID.createFromHexString(task[t].Project));
-                        }
-                        collection3.find({_id: {$in: filter}}, {}, function (e, proj) {
-                            res.render("viewuser", {
-                                "userlist": account,
-                                "timesheetlist": timesheet,
-                                "tasklist": task,
-                                "projectlist": proj,
-                                "currentUser": req.session.currentUser
-                            });
-                        });
-                    });
+                res.render("viewuser", {
+                    "userlist": account,
+                    "IsEnabled": IsEnabled,
+                    "currentUser": req.session.currentUser
                 });
             });
         }
