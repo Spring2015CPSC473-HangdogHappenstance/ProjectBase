@@ -19,6 +19,24 @@ div.thumbnail div.caption div.match a {
   color: #ffffff;
 }
 
+/* resolving styling in likestuff page */
+.box {
+  border:2px solid #a1a1a1;
+  padding:0px 5px; 
+  background:white;
+  margin-left:5px;
+  margin-top:5px;
+  margin-bottom:5px;
+  height:200px;
+  width:200px;
+  float:left;
+  border-radius:10px;
+  text-align:left;
+  text-shadow:1px 0px 0px #ffffff;
+  display:inline-block;
+  vertical-align: center;
+}
+
 /* Knew how to access the class "nav nav-pills" from
    http://stackoverflow.com/questions/9285451/handling-css-id-and-classes-with-spaces
 ul .nav.nav-pills {
