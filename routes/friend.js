@@ -23,14 +23,12 @@ exports.api = function (db) {
             // Database connections to their appropriate collections
             var users = db.get("accounts");
             var likes = db.get("likes");
-//      var categories = ["Friends", "Books", "Movies", "Searches"];
 
             // Object with core functionality. Organized as object so that each function may be checked for and executed
             //  using reply[variable] functionality.
             var reply = {
-                existingfriends: function (userid, offset, limit) {
-                    // Get list of friend objects, sort them according to SORT, start at the OFFSET and return LIMIT many afterwards
-                    //var temp = users.slice(offset, offset + limit);
+                existingfriends: function (userid) {
+                    // Get list of friend objects
                     var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
 
                     // Find the first entry in the users collection matching a users _id. Only return their friends list as we
@@ -79,10 +77,10 @@ exports.api = function (db) {
                                                 match: utility.compareLikes(organizedLikes[p_id.toString()], organizedLikes[entry._id])
                                             });
                                         });
-                                        res.json(organizedOutput.slice(offset, offset + limit));
-                                        //res.json(userfriends.slice(offset,offset+limit));
+                                        res.json(organizedOutput);
+                                        // In preperation to add some sort of pagination system
+                                        //res.json(organizedOutput.slice(offset, offset + limit));
                                     });
-                                // res.json(userfriends.slice(offset,offset+limit));
                             } else {
                                 res.json([{
                                     _id: "error",
@@ -93,9 +91,8 @@ exports.api = function (db) {
                     });
                 },
 
-                friendspending: function (userid, offset, limit) {
+                friendspending: function (userid) {
                     // Get list of friend requests for the logged in user
-                    //var temp = users.slice(offset, offset + limit);
                     var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
                     users.findOne({
                         "_id": {$in: [p_id]}
@@ -142,10 +139,10 @@ exports.api = function (db) {
                                                 match: utility.compareLikes(organizedLikes[p_id.toString()], organizedLikes[entry._id])
                                             });
                                         });
-                                        res.json(organizedOutput.slice(offset, offset + limit));
-                                        //res.json(userfriends.slice(offset,offset+limit));
+                                        res.json(organizedOutput);
+                                        // In preperation to add some sort of pagination system
+                                        //res.json(organizedOutput.slice(offset, offset + limit));
                                     });
-                                // res.json(userfriends.slice(offset,offset+limit));
                             } else {
                                 res.json([{
                                     _id: "error",
@@ -156,9 +153,8 @@ exports.api = function (db) {
                     });
                 },
 
-                findfriends: function (username, offset, limit) {
-                    // Get list of users related to username, sort according to SORT, start at the OFFSET and return LIMIT many afterwards
-                    //var temp = users.slice(offset, offset + limit);
+                findfriends: function (username) {
+                    // Get list of users related to username
                     var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
                     users.find(
                         {"_id": {$nin: [p_id]}, username: {$regex: new RegExp(username.toLowerCase(), "i")}},
@@ -194,10 +190,10 @@ exports.api = function (db) {
                                             match: utility.compareLikes(organizedLikes[p_id.toString()], organizedLikes[entry._id])
                                         });
                                     });
-                                    res.json(organizedOutput.slice(offset, offset + limit));
-                                    //res.json(matches.slice(offset, offset + limit));
+                                    res.json(organizedOutput);
+                                    // In preperation to add some sort of pagination system
+                                    //res.json(organizedOutput.slice(offset, offset + limit));
                                 });
-                            //res.json(matches.slice(offset, offset + limit));
                         } else {
                             res.json([{
                                 _id: "error",
@@ -207,9 +203,9 @@ exports.api = function (db) {
                     });
                 },
 
-                discoverfriends: function (userid, offset, limit) {
+                discoverfriends: function (userid) {
                     // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
-                    // Get list of users, sort according to SORT, start at OFFSET and return LIMIT many afterwards
+                    // Get list of users
                     var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
                     users.findOne(
                         {"_id": {$in: [p_id]}},
@@ -255,10 +251,10 @@ exports.api = function (db) {
                                                 match: utility.compareLikes(organizedLikes[p_id.toString()], organizedLikes[entry._id])
                                             });
                                         });
-                                        res.json(organizedOutput.slice(offset, offset + limit));
-                                        //res.json(newpeople.slice(offset,offset+limit));
+                                        res.json(organizedOutput);
+                                        // In preperation to add some sort of pagination system
+                                        //res.json(organizedOutput.slice(offset, offset + limit));
                                     });
-                                //res.json(newpeople.slice(offset,offset+limit));
                             } else {
                                 res.json([{
                                     _id: "error",
@@ -405,14 +401,16 @@ exports.api = function (db) {
                     /* for existingfriends and discoverfriends, extra should be logged in user, but for searches in findfriends, extra should be set parameter */
                     extra = req.body.extra;
                 }
-                if (reply[req.params.action.toLowerCase()].length === 3) {
-                    var temp = reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit);
+                if (reply[req.params.action.toLowerCase()].length === 1) {
+                    var temp = reply[req.params.action.toLowerCase()](extra);
+
+                    // In preperation to add some sort of pagination system
+                    //var temp = reply[req.params.action.toLowerCase()](extra, req.body.offset, req.body.limit);
+
                     // if temp returns an object, means the function didn't do anything on res
                     if (typeof temp === "object") {
                         res.json(temp);
                     }
-                } else if (reply[req.params.action.toLowerCase()].length === 1) {
-                    res.json(reply[req.params.action.toLowerCase()](extra));
                 } else {
                     res.json({
                         error: "Invalid request"
