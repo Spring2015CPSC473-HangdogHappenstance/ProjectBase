@@ -1,3 +1,4 @@
+/* jshint browser: true, jquery: true, curly: true, eqeqeq: true, forin: true, immed: true, indent: 4, latedef: true, newcap: true, nonew: true, quotmark: double, strict: true, undef: true, unused: true */
 // Client-side code
 $(document).ready(function(){
     "use strict";
@@ -14,7 +15,7 @@ $(document).ready(function(){
                 dataType: "jsonp",
                 jsonp: "searchTerm",
                 async: "true",
-                success: function (data) {
+                success: function () {
                     alert("success");
                 }
             });
@@ -27,5 +28,5 @@ function searchTerm(data) {
     $.each(data.responseData.results, function(i, rows) {
         $("#results").append("<li class='list-group-info'>"+rows.title + "<br>" +"<a href='"+rows.url+"' >"+rows.url+"</a>"+"</br></li>");
     });
-    $("#results").append("</ul>"); 
+    $("#results").append("</ul>");
 }
