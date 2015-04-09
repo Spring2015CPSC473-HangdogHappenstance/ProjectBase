@@ -3,7 +3,6 @@
  * GET home page.
  */
 
-
 var BSON = require("mongodb").BSONPure;
 
 exports.index = function (req, res) {
