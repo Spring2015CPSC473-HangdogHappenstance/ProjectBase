@@ -14,6 +14,11 @@ a {
   color: #141515;
 }
 
+/* Resolving Black on Black color issue on friend's pages */
+div.thumbnail div.caption div.match a {
+  color: #ffffff;
+}
+
 /* Knew how to access the class "nav nav-pills" from
    http://stackoverflow.com/questions/9285451/handling-css-id-and-classes-with-spaces
 ul .nav.nav-pills {
