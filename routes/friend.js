@@ -29,7 +29,7 @@ exports.api = function (db) {
             var reply = {
                 existingfriends: function (userid) {
                     // Get list of friend objects
-                    var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+                    var p_id = BSON.ObjectID.createFromHexString(userid);
 
                     // Find the first entry in the users collection matching a users _id. Only return their friends list as we
                     //  don't need more than that at this point
@@ -93,7 +93,7 @@ exports.api = function (db) {
 
                 friendspending: function (userid) {
                     // Get list of friend requests for the logged in user
-                    var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
+                    var p_id = BSON.ObjectID.createFromHexString(userid);
                     users.findOne({
                         "_id": {$in: [p_id]}
                     }, "friendspending", function (err, friendslists) { // Get logged in user's friend requests
@@ -159,71 +159,10 @@ exports.api = function (db) {
                     users.find(
                         {"_id": {$nin: [p_id]}, username: {$regex: new RegExp(username.toLowerCase(), "i")}},
                         "username", function (err, matches) {
-                        // Have list of users, plus logged in user.
-                        if (matches.length) {
-                            var everyone = [p_id.toString()];
-                            _.each(matches, function (entry) {
-                                everyone.push(entry._id.toString());
-                            });
-                            likes.find( // Get all users likes
-                                {"userRec._id": {$in: everyone}},
-                                "category name userRec._id",
-                                function (err, alllikes) {
-                                    // Have all matches's likes
-                                    var organizedLikes = {};
-                                    var organizedOutput = [];
-                                    // reorganize and filter the likes to be easier to compare
-                                    _.each(alllikes, function (entry) {
-                                        if (typeof organizedLikes[entry.userRec._id] === "undefined") {
-                                            organizedLikes[entry.userRec._id] = {};
-                                        }
-                                        if (typeof organizedLikes[entry.userRec._id][entry.category] === "undefined") {
-                                            organizedLikes[entry.userRec._id][entry.category] = [];
-                                        }
-                                        organizedLikes[entry.userRec._id][entry.category].push(entry.name);
-                                    });
-                                    // Cycle through the friends to compare their like rankings
-                                    _.each(matches, function (entry) {
-                                        organizedOutput.push({
-                                            _id: entry._id,
-                                            username: entry.username,
-                                            match: utility.compareLikes(organizedLikes[p_id.toString()], organizedLikes[entry._id])
-                                        });
-                                    });
-                                    res.json(organizedOutput);
-                                    // In preperation to add some sort of pagination system
-                                    //res.json(organizedOutput.slice(offset, offset + limit));
-                                });
-                        } else {
-                            res.json([{
-                                _id: "error",
-                                username: "No matches found."
-                            }]);
-                        }
-                    });
-                },
-
-                discoverfriends: function (userid) {
-                    // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
-                    // Get list of users
-                    var p_id = BSON.ObjectID.createFromHexString(req.session.currentUser._id);
-                    users.findOne(
-                        {"_id": {$in: [p_id]}},
-                        "friends friendspending", function (err, friendslists) {
-                        var friends = [p_id];
-                        if (typeof friendslists.friends !== "undefined") {
-                            _.each(friendslists.friends, function (friendid) {
-                                friends.push(BSON.ObjectID.createFromHexString(friendid));
-                            });
-                        }
-                        // Now pull all non-friend users
-                        users.find(
-                            {"_id": {$nin: _.uniq(friends, false)}},
-                            "username", function (err, newpeople) {
                             // Have list of users, plus logged in user.
-                            if (newpeople.length) {
+                            if (matches.length) {
                                 var everyone = [p_id.toString()];
-                                _.each(newpeople, function (entry) {
+                                _.each(matches, function (entry) {
                                     everyone.push(entry._id.toString());
                                 });
                                 likes.find( // Get all users likes
@@ -244,7 +183,7 @@ exports.api = function (db) {
                                             organizedLikes[entry.userRec._id][entry.category].push(entry.name);
                                         });
                                         // Cycle through the friends to compare their like rankings
-                                        _.each(newpeople, function (entry) {
+                                        _.each(matches, function (entry) {
                                             organizedOutput.push({
                                                 _id: entry._id,
                                                 username: entry.username,
@@ -258,11 +197,72 @@ exports.api = function (db) {
                             } else {
                                 res.json([{
                                     _id: "error",
-                                    username: "You're friends with everyone already"
+                                    username: "No matches found."
                                 }]);
                             }
                         });
-                    });
+                },
+
+                discoverfriends: function (userid) {
+                    // List of users should have high similarity rankings to logged in user... not sure on how to do that yet
+                    // Get list of users
+                    var p_id = BSON.ObjectID.createFromHexString(userid);
+                    users.findOne(
+                        {"_id": {$in: [p_id]}},
+                        "friends friendspending", function (err, friendslists) {
+                            var friends = [p_id];
+                            if (typeof friendslists.friends !== "undefined") {
+                                _.each(friendslists.friends, function (friendid) {
+                                    friends.push(BSON.ObjectID.createFromHexString(friendid));
+                                });
+                            }
+                            // Now pull all non-friend users
+                            users.find(
+                                {"_id": {$nin: _.uniq(friends, false)}},
+                                "username", function (err, newpeople) {
+                                    // Have list of users, plus logged in user.
+                                    if (newpeople.length) {
+                                        var everyone = [p_id.toString()];
+                                        _.each(newpeople, function (entry) {
+                                            everyone.push(entry._id.toString());
+                                        });
+                                        likes.find( // Get all users likes
+                                            {"userRec._id": {$in: everyone}},
+                                            "category name userRec._id",
+                                            function (err, alllikes) {
+                                                // Have all matches's likes
+                                                var organizedLikes = {};
+                                                var organizedOutput = [];
+                                                // reorganize and filter the likes to be easier to compare
+                                                _.each(alllikes, function (entry) {
+                                                    if (typeof organizedLikes[entry.userRec._id] === "undefined") {
+                                                        organizedLikes[entry.userRec._id] = {};
+                                                    }
+                                                    if (typeof organizedLikes[entry.userRec._id][entry.category] === "undefined") {
+                                                        organizedLikes[entry.userRec._id][entry.category] = [];
+                                                    }
+                                                    organizedLikes[entry.userRec._id][entry.category].push(entry.name);
+                                                });
+                                                // Cycle through the friends to compare their like rankings
+                                                _.each(newpeople, function (entry) {
+                                                    organizedOutput.push({
+                                                        _id: entry._id,
+                                                        username: entry.username,
+                                                        match: utility.compareLikes(organizedLikes[p_id.toString()], organizedLikes[entry._id])
+                                                    });
+                                                });
+                                                res.json(organizedOutput);
+                                                // In preperation to add some sort of pagination system
+                                                //res.json(organizedOutput.slice(offset, offset + limit));
+                                            });
+                                    } else {
+                                        res.json([{
+                                            _id: "error",
+                                            username: "You're friends with everyone already"
+                                        }]);
+                                    }
+                                });
+                        });
                 },
 
                 deletefriend: function (friendid) {
@@ -273,13 +273,16 @@ exports.api = function (db) {
 
                     users.update(
                         {"_id": {$in: [p_id, f_id]}},
-                        {$pullAll: {
-                            friends: [p_id.toString(), f_id.toString()],
-                            friendspending: [p_id.toString(), f_id.toString()]
-                        }},
-                        {upsert: false,
-                        multi: true
-                    });
+                        {
+                            $pullAll: {
+                                friends: [p_id.toString(), f_id.toString()],
+                                friendspending: [p_id.toString(), f_id.toString()]
+                            }
+                        },
+                        {
+                            upsert: false,
+                            multi: true
+                        });
                     // Poor error checking, but not yet sure how to handle verifying both of the above steps before returning a value in async
                     return {
                         result: "deleted",
@@ -344,10 +347,10 @@ exports.api = function (db) {
                     // Assumed organized as data[cateogory] = [item,item,item]
                     var categories = [];
                     var replydata = {};
-                    if(typeof data === "undefined"){
+                    if (typeof data === "undefined") {
                         data = {};
                     }
-                    if(typeof data2 === "undefined"){
+                    if (typeof data2 === "undefined") {
                         data2 = {};
                     }
 
@@ -362,10 +365,10 @@ exports.api = function (db) {
                     categories = _.uniq(categories, true); // Use underscore to ensure that we only have unique entries
                     _.each(categories, function (entry) { // Cycle through each category
                         // Obtain the intersection of likes for each category in both lists
-                        if(typeof data[entry] === "undefined"){
+                        if (typeof data[entry] === "undefined") {
                             data[entry] = {};
                         }
-                        if(typeof data2[entry] === "undefined"){
+                        if (typeof data2[entry] === "undefined") {
                             data2[entry] = {};
                         }
                         var common = _.intersection(data[entry], data2[entry]);
