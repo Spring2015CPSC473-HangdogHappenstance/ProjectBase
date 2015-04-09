@@ -3,7 +3,7 @@
  * References:
  * * https://api.jquery.com/
  * * http://getbootstrap.com/
-*/
+ */
 var friend = function () {
     "use strict";
 
@@ -28,7 +28,7 @@ var friend = function () {
         },
         /* Runs API call to remove userid from friends list */
         deletefriend: function (userid) {
-            var payload = { extra: userid };
+            var payload = {extra: userid};
             $.post("/friend/api/deletefriend", payload, function () {
                 loadData(0, 4);
             }, "json");
